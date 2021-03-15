@@ -11,5 +11,8 @@
         "sourceType": "module"
     },
     "rules": {
+      "no-undef": "off",
+      "max-len": "off",
+      "linebreak-style": "off"
     }
 }
