@@ -10,7 +10,8 @@
     "eslint-plugin-import": "^2.22.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "eslint js/src --fix && http-server"
   },
   "repository": {
     "type": "git",
