@@ -1,5 +1,10 @@
 // Exploratory view
 d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
+  // Initialize the charts
+  const householdSizeBarChart = new HouseholdSizeBarChart({
+    parentElement: '#householdSizeBarChart',
+  }, exploratoryData);
+
   console.log(exploratoryData);
 });
 
