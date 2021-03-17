@@ -1,16 +1,16 @@
-class HouseholdSizeBarChart {
+class FoodSafetyBarChart {
   /**
-     * Class constructor with initial configuration
-     * @param {Object}
-     * @param {Array}
-     */
+       * Class constructor with initial configuration
+       * @param {Object}
+       * @param {Array}
+       */
   constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 300,
       containerHeight: 200,
       margin: {
-        top: 25, right: 15, bottom: 20, left: 35,
+        top: 25, right: 25, bottom: 30, left: 25,
       },
     };
     this.data = _data;
@@ -19,9 +19,18 @@ class HouseholdSizeBarChart {
     this.initVis();
   }
 
+  // Return colour of semi-circle depending on the catagory
+  xAxisScale(d) {
+    const xAxisName = d3.scaleOrdinal()
+      .domain(['1', '2', '3', '4', '5'])
+      .range(['Not Important', 'Moderately Important', 'Important', 'Very Important', 'Extremely Important']);
+
+    return xAxisName(d);
+  }
+
   /**
-       * We initialize the arc generator, scales, axes, and append static elements
-       */
+         * We initialize the arc generator, scales, axes, and append static elements
+         */
   initVis() {
     const vis = this;
 
@@ -52,18 +61,16 @@ class HouseholdSizeBarChart {
       .range([vis.height, 0]);
 
     // Set axis domains
-    vis.xScale.domain(['1', '2', '3', '4', '5', '6']);
+    vis.xScale.domain(['1', '2', '3', '4', '5']);
 
     // Initialize axes
     vis.xAxis = d3.axisBottom(vis.xScale)
-      .tickFormat((d) => {
-        if (d === '6') return `${d}+`;
-        return d;
-      })
-      .ticks(2);
+      .tickFormat((d) => vis.xAxisScale(d))
+      .ticks(3);
 
     vis.yAxis = d3.axisLeft(vis.yScale)
       .ticks(5)
+      .tickFormat(d3.format('d'))
       .tickSize(-vis.width);
 
     // Append axis groups
@@ -78,21 +85,22 @@ class HouseholdSizeBarChart {
   }
 
   /**
-       * Prepare the data and scales before we render it.
-       */
+         * Prepare the data and scales before we render it.
+         */
   updateVis() {
     const vis = this;
 
-    vis.count = d3.rollups(vis.data, (v) => v.length / 6, (d) => d.Houshold_size);
+    vis.count = d3.rollups(vis.data, (v) => Math.floor(v.length / 6), (d) => d.Food_safety_importance);
     vis.yValue = (d) => d[1];
     vis.yScale.domain([0, d3.max(vis.count, vis.yValue)]);
+    console.log(vis.count);
 
     vis.renderVis();
   }
 
   /**
-       * Bind data to visual elements (enter-update-exit) and update axes
-       */
+         * Bind data to visual elements (enter-update-exit) and update axes
+         */
   renderVis() {
     const vis = this;
 
@@ -109,10 +117,40 @@ class HouseholdSizeBarChart {
     // render axis
     vis.xAxisG
       .call(vis.xAxis)
-      .call((g) => g.select('.domain').remove());
+      .call((g) => g.select('.domain').remove())
+      .selectAll('.tick text')
+      .call(vis.wrap, vis.xScale.bandwidth());
 
     vis.yAxisG
       .call(vis.yAxis)
       .call((g) => g.select('.domain').remove());
+  }
+
+  // Function to wrap X axis labs
+  // Sampled from : bl.ocks.org/mbostock/7555321
+  wrap(text, width) {
+    text.each(function () {
+      const text = d3.select(this);
+      const words = text.text().split(/\s+/).reverse();
+      let word;
+      let line = [];
+      let lineNumber = 0;
+      const lineHeight = 1.1; // ems
+      const y = text.attr('y');
+      const dy = parseFloat(text.attr('dy'));
+      let tspan = text.text(null).append('tspan').attr('x', 0).attr('y', y)
+        .attr('dy', `${dy}em`);
+      while (word = words.pop()) {
+        line.push(word);
+        tspan.text(line.join(' '));
+        if (tspan.node().getComputedTextLength() > width) {
+          line.pop();
+          tspan.text(line.join(' '));
+          line = [word];
+          tspan = text.append('tspan').attr('x', 0).attr('y', y).attr('dy', `${++lineNumber * lineHeight + dy}em`)
+            .text(word);
+        }
+      }
+    });
   }
 }
