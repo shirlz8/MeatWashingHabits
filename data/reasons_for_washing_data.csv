@@ -740,7 +740,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
-0,0,0,0,0,0
 7,5,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -794,7 +793,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 1,7,6,2,3,5
-0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -1245,7 +1243,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 6,7,0,5,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
-0,0,0,0,0,0
 5,1,7,3,2,4
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -1385,7 +1382,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,6,5,7
-0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -1564,7 +1560,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 4,2,3,6,5,7
-0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
 7,1,6,3,4,5
@@ -1881,7 +1876,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 6,2,3,5,4,7
-0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -2612,7 +2606,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
-0,0,0,0,0,0
 7,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -2810,7 +2803,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
-0,0,0,0,0,0
 3,2,4,7,5,6
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -2862,7 +2854,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 6,0,7,0,0,0
 6,0,0,7,0,5
-0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -3094,7 +3085,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 7,2,1,5,4,3
 0,0,0,0,0,0
-7,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -3461,10 +3451,8 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
-0,0,0,0,0,0
 5,0,7,6,0,0
 7,1,2,5,4,3
-0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -3520,7 +3508,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,7,0,0
-1,0,0,3,2,0
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -3574,7 +3561,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,7,0,0
-7,1,2,6,4,5
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -4005,7 +3991,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
-7,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -4078,12 +4063,10 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 7,4,1,3,2,6
 0,0,0,0,0,0
-0,0,0,0,0,0
 7,0,0,6,5,4
 7,0,6,4,0,5
 0,0,0,0,0,0
 0,0,0,7,0,0
-0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -4316,7 +4299,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 2,0,0,7,5,6
-0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -4574,7 +4556,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 1,2,6,4,5,7
 1,2,6,4,5,7
-0,0,0,0,0,0
 0,0,0,5,7,6
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -4658,7 +4639,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 7,0,0,5,6,4
 0,0,0,0,0,0
 0,0,0,0,0,0
-3,1,2,4,5,6
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -4795,14 +4775,12 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 7,6,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
-0,0,0,0,0,0
 6,0,7,0,0,0
 0,0,0,0,0,0
 2,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
 7,2,6,4,3,1
-0,0,0,0,0,0
 0,0,0,7,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -5170,7 +5148,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
-0,0,0,0,0,0
 7,4,5,6,2,1
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -5271,7 +5248,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 4,1,2,6,3,5
 7,2,3,4,6,5
-0,0,0,0,0,0
 7,0,0,4,5,6
 0,0,0,0,0,0
 6,0,5,1,3,4
@@ -5677,7 +5653,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 7,0,0,0,0,0
-0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
@@ -6089,7 +6064,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
-0,0,0,0,0,0
 7,0,0,0,0,0
 0,0,0,0,0,0
 4,0,7,0,0,5
@@ -6137,7 +6111,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 0,0,0,0,0,0
 0,0,0,0,0,0
 0,0,0,0,0,0
-7,1,2,3,5,4
 0,0,0,0,0,0
 2,1,5,7,6,4
 0,0,0,0,0,0
@@ -6261,7 +6234,6 @@ Health_and_safety_of_meat,Religious_practice,Non_religious_practice,Improve_tast
 1,0,0,2,5,4
 0,0,0,0,0,0
 1,0,5,4,2,3
-4,0,0,0,3,2
 0,0,0,0,0,0
 7,0,0,0,0,0
 1,2,3,6,4,5
