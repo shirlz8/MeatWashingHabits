@@ -90,7 +90,11 @@ class FoodSafetyBarChart {
   updateVis() {
     const vis = this;
 
-    vis.washCount = d3.rollup(vis.data, v => d3.sum(v, d => d.Beef), d => d.Food_safety_importance);
+    vis.washCount = d3.rollup(vis.data, v => d3.sum(v, d => {
+      if (meatTypeFilter != "")
+        return d[meatTypeFilter];
+      else return d.Wash_Any;
+    }), d => d.Food_safety_importance);
     vis.totalCount = d3.rollup(vis.data, v => v.length, d => d.Food_safety_importance);
 
     console.log(this.washCount);
@@ -137,6 +141,7 @@ class FoodSafetyBarChart {
          */
   renderVis() {
     const vis = this;
+    vis.tooltipPadding = 10;
 
     const bars = vis.chart.selectAll('.bar_g')
       .data(vis.stackedWashCountData, (d) => d)
@@ -146,11 +151,35 @@ class FoodSafetyBarChart {
       .selectAll('.bar_rect')
       .data(d => d)
       .join('rect')
-      .attr('class', 'bar_rect')
+      .attr('class', (d) => "foodSafety" + d.data.foodSafetyImportance)
       .attr('width', vis.xScale.bandwidth())
       .attr('height', (d) => vis.yScale(d[0]) - vis.yScale(d[1]))
       .attr('y', (d) => vis.yScale(d[1]))
       .attr('x', (d) => vis.xScale(d.data.foodSafetyImportance));
+
+    bars.on('mouseover', (event, d) => {
+      // Add hover shading
+      d3.selectAll("rect.foodSafety" + d.data.foodSafetyImportance)
+        .style("stroke", 'black')
+        .attr('stroke-width', '2');
+
+      // Add Tooltip
+      d3.select('#tooltip')
+        .style('display', 'block')
+        .style('left', (event.pageX + vis.tooltipPadding + 'px'))
+        .style('top', (event.pageY + vis.tooltipPadding + 'px'))
+        .html(`
+                <div>Do not wash : ${d.data.dontWash}</div>
+                <div>Wash : ${d.data.wash}</div>
+            `);
+    }).on('mouseleave', (event, d) => {
+      // Remove hover shading
+      d3.selectAll("rect.foodSafety" + d.data.foodSafetyImportance)
+        .attr('stroke-width', '0');
+
+      // Remove tooltip
+      d3.select('#tooltip').style('display', 'none');
+    });
 
     // render axis
     vis.xAxisG
