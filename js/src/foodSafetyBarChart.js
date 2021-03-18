@@ -19,7 +19,7 @@ class FoodSafetyBarChart {
     this.initVis();
   }
 
-  // Return colour of semi-circle depending on the catagory
+  // Return axis names corresponding to the numbers
   xAxisScale(d) {
     const xAxisName = d3.scaleOrdinal()
       .domain(['1', '2', '3', '4', '5'])
@@ -90,7 +90,7 @@ class FoodSafetyBarChart {
   updateVis() {
     const vis = this;
 
-    vis.count = d3.rollups(vis.data, (v) => Math.floor(v.length / 6), (d) => d.Food_safety_importance);
+    vis.count = d3.rollups(vis.data, (v) => v.length, (d) => d.Food_safety_importance);
     vis.yValue = (d) => d[1];
     vis.yScale.domain([0, d3.max(vis.count, vis.yValue)]);
     console.log(vis.count);
