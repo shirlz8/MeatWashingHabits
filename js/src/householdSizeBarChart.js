@@ -60,10 +60,10 @@ class HouseholdSizeBarChart {
                 if (d === '6') return `${d}+`;
                 return d;
             })
-            .ticks(2);
+            .ticks(6);
 
         vis.yAxis = d3.axisLeft(vis.yScale)
-            .ticks(5)
+            .ticks(6)
             .tickSize(-vis.width);
 
         // Append axis groups
@@ -83,7 +83,7 @@ class HouseholdSizeBarChart {
     updateVis() {
         const vis = this;
 
-        vis.washCount = d3.rollup(vis.data, v => d3.sum(v, d => d.Wash_Any), d => d.Houshold_size);
+        vis.washCount = d3.rollup(vis.data, v => d3.sum(v, d => d.Beef), d => d.Houshold_size);
         vis.totalCount = d3.rollup(vis.data, v => v.length, d => d.Houshold_size);
 
         vis.washCountData = [];
@@ -96,35 +96,25 @@ class HouseholdSizeBarChart {
             vis.washCountData.push(row);
         })
 
-        console.log(vis.washCountData);
-
         vis.subgroups = ["wash", "dontWash"];
 
         vis.stackedWashCountData = d3.stack()
             .keys(vis.subgroups)
             (vis.washCountData);
 
-        console.log(vis.stackedWashCountData);
-
-        vis.yValue = (d) => d.wash;
-        vis.yScale.domain([0, d3.max(vis.washCountData, vis.yValue)]);
-
-        console.log(d3.max(vis.washCountData, vis.yValue));
-
+        vis.yScale.domain([0, d3.max(vis.totalCount.values()) + 200]);
         vis.renderVis();
     }
-
     // Return colour of the wash and dont wash categories
     color(d) {
         const vis = this;
 
         const color = d3.scaleOrdinal()
             .domain(vis.subgroups)
-            .range(["#3483eb", "#ebad31"]);
+            .range(["#4E81BE", "#C1504F"]);
 
         return color(d);
     }
-
     /**
          * Bind data to visual elements (enter-update-exit) and update axes
          */
