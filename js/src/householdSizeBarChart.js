@@ -96,7 +96,7 @@ class HouseholdSizeBarChart {
             vis.washCountData.push(row);
         })
 
-        vis.subgroups = ["wash", "dontWash"];
+        vis.subgroups = ["dontWash", "wash"];
 
         vis.stackedWashCountData = d3.stack()
             .keys(vis.subgroups)
@@ -105,16 +105,18 @@ class HouseholdSizeBarChart {
         vis.yScale.domain([0, d3.max(vis.totalCount.values()) + 200]);
         vis.renderVis();
     }
+
     // Return colour of the wash and dont wash categories
     color(d) {
         const vis = this;
 
         const color = d3.scaleOrdinal()
             .domain(vis.subgroups)
-            .range(["#4E81BE", "#C1504F"]);
+            .range(["#C1504F", "#4E81BE"]);
 
         return color(d);
     }
+
     /**
          * Bind data to visual elements (enter-update-exit) and update axes
          */

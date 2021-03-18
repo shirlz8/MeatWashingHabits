@@ -93,19 +93,21 @@ class FoodSafetyBarChart {
     vis.washCount = d3.rollup(vis.data, v => d3.sum(v, d => d.Beef), d => d.Food_safety_importance);
     vis.totalCount = d3.rollup(vis.data, v => v.length, d => d.Food_safety_importance);
 
+    console.log(this.washCount);
+
     vis.washCountData = [];
     vis.washCount.forEach((value, key) => {
       var row = {
         foodSafetyImportance: key,
-        wash: value,
-        dontWash: vis.totalCount.get(key) - value
+        dontWash: vis.totalCount.get(key) - value,
+        wash: value
       };
       vis.washCountData.push(row);
     })
 
     // console.log(vis.washCountData);
 
-    vis.subgroups = ["wash", "dontWash"];
+    vis.subgroups = ["dontWash", "wash"];
 
     vis.stackedWashCountData = d3.stack()
       .keys(vis.subgroups)
@@ -125,7 +127,7 @@ class FoodSafetyBarChart {
 
     const color = d3.scaleOrdinal()
       .domain(vis.subgroups)
-      .range(["#4E81BE", "#C1504F"]);
+      .range(["#C1504F", "#4E81BE"]);
 
     return color(d);
   }
