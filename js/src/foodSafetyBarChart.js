@@ -90,12 +90,44 @@ class FoodSafetyBarChart {
   updateVis() {
     const vis = this;
 
-    vis.count = d3.rollups(vis.data, (v) => v.length, (d) => d.Food_safety_importance);
-    vis.yValue = (d) => d[1];
-    vis.yScale.domain([0, d3.max(vis.count, vis.yValue)]);
-    console.log(vis.count);
+    vis.washCount = d3.rollup(vis.data, v => d3.sum(v, d => d.Beef), d => d.Food_safety_importance);
+    vis.totalCount = d3.rollup(vis.data, v => v.length, d => d.Food_safety_importance);
+
+    vis.washCountData = [];
+    vis.washCount.forEach((value, key) => {
+      var row = {
+        foodSafetyImportance: key,
+        wash: value,
+        dontWash: vis.totalCount.get(key) - value
+      };
+      vis.washCountData.push(row);
+    })
+
+    // console.log(vis.washCountData);
+
+    vis.subgroups = ["wash", "dontWash"];
+
+    vis.stackedWashCountData = d3.stack()
+      .keys(vis.subgroups)
+      (vis.washCountData);
+
+    // console.log(vis.stackedWashCountData);
+
+    vis.yValue = (d) => d.wash;
+    vis.yScale.domain([0, d3.max(vis.totalCount.values()) + 200]);
 
     vis.renderVis();
+  }
+
+  // Return colour of the wash and dont wash categories
+  color(d) {
+    const vis = this;
+
+    const color = d3.scaleOrdinal()
+      .domain(vis.subgroups)
+      .range(["#4E81BE", "#C1504F"]);
+
+    return color(d);
   }
 
   /**
@@ -104,15 +136,19 @@ class FoodSafetyBarChart {
   renderVis() {
     const vis = this;
 
-    const bars = vis.chart.selectAll('.bar')
-      .data(vis.count, (d) => d)
+    const bars = vis.chart.selectAll('.bar_g')
+      .data(vis.stackedWashCountData, (d) => d)
+      .join('g')
+      .attr('class', 'bar_g')
+      .attr('fill', (d) => vis.color(d.key))
+      .selectAll('.bar_rect')
+      .data(d => d)
       .join('rect')
-      .attr('class', 'bar')
+      .attr('class', 'bar_rect')
       .attr('width', vis.xScale.bandwidth())
-      .attr('height', (d) => vis.yScale(0) - vis.yScale(d[1]))
+      .attr('height', (d) => vis.yScale(d[0]) - vis.yScale(d[1]))
       .attr('y', (d) => vis.yScale(d[1]))
-      .attr('x', (d) => vis.xScale(d[0]))
-      .style('fill', '#92b7e0');
+      .attr('x', (d) => vis.xScale(d.data.foodSafetyImportance));
 
     // render axis
     vis.xAxisG
