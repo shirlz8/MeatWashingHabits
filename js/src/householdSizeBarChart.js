@@ -82,12 +82,18 @@ class HouseholdSizeBarChart {
     updateVis() {
         const vis = this;
 
-        vis.washCount = d3.rollup(vis.data, v => d3.sum(v, d => {
+        if (meatTypeFilter != "")
+            vis.filteredData = vis.data.filter(d => {
+                return d[meatTypeFilter] != "NA";
+            })
+        else vis.filteredData = vis.data;
+
+        vis.washCount = d3.rollup(vis.filteredData, v => d3.sum(v, d => {
             if (meatTypeFilter != "")
                 return d[meatTypeFilter];
             else return d.Wash_Any;
         }), d => d.Houshold_size);
-        vis.totalCount = d3.rollup(vis.data, v => v.length, d => d.Houshold_size);
+        vis.totalCount = d3.rollup(vis.filteredData, v => v.length, d => d.Houshold_size);
 
         vis.washCountData = [];
         vis.washCount.forEach((value, key) => {

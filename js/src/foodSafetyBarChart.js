@@ -89,13 +89,20 @@ class FoodSafetyBarChart {
          */
   updateVis() {
     const vis = this;
+    console.log(vis.data);
+    
+    if (meatTypeFilter != "")
+      vis.filteredData = vis.data.filter(d => {
+        return d[meatTypeFilter] != "NA";
+      })
+    else vis.filteredData = vis.data;
 
-    vis.washCount = d3.rollup(vis.data, v => d3.sum(v, d => {
+    vis.washCount = d3.rollup(vis.filteredData, v => d3.sum(v, d => {
       if (meatTypeFilter != "")
         return d[meatTypeFilter];
       else return d.Wash_Any;
     }), d => d.Food_safety_importance);
-    vis.totalCount = d3.rollup(vis.data, v => v.length, d => d.Food_safety_importance);
+    vis.totalCount = d3.rollup(vis.filteredData, v => v.length, d => d.Food_safety_importance);
 
     console.log(this.washCount);
 
