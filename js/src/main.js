@@ -1,3 +1,5 @@
+let meatTypeFilter = "Pork";
+
 // Exploratory view
 d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
   // Initialize the charts
@@ -14,8 +16,6 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
   var subgroups = exploratoryData.columns.slice(1)
   // console.log(subgroups);
 });
-
-
 
 // What are people trying to remove view
 d3.csv('data/wash_to_remove_data.csv').then((removeData) => {

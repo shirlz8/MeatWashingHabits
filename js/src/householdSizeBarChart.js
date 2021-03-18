@@ -24,8 +24,7 @@ class HouseholdSizeBarChart {
          */
     initVis() {
         const vis = this;
-
-        console.log('init vis');
+        vis.tooltipPadding = 10;
 
         // Calculate inner chart size. Margin specifies the space around the actual chart.
         vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
@@ -83,7 +82,11 @@ class HouseholdSizeBarChart {
     updateVis() {
         const vis = this;
 
-        vis.washCount = d3.rollup(vis.data, v => d3.sum(v, d => d.Beef), d => d.Houshold_size);
+        vis.washCount = d3.rollup(vis.data, v => d3.sum(v, d => {
+            if (meatTypeFilter != "")
+                return d[meatTypeFilter];
+            else return d.Wash_Any;
+        }), d => d.Houshold_size);
         vis.totalCount = d3.rollup(vis.data, v => v.length, d => d.Houshold_size);
 
         vis.washCountData = [];
@@ -131,11 +134,35 @@ class HouseholdSizeBarChart {
             .selectAll('.bar_rect')
             .data(d => d)
             .join('rect')
-            .attr('class', 'bar_rect')
+            .attr('class', (d) => "household" + d.data.householdSize)
             .attr('width', vis.xScale.bandwidth())
             .attr('height', (d) => vis.yScale(d[0]) - vis.yScale(d[1]))
             .attr('y', (d) => vis.yScale(d[1]))
             .attr('x', (d) => vis.xScale(d.data.householdSize));
+
+        bars.on('mouseover', (event, d) => {
+            // Add hover shading
+            d3.selectAll("rect.household" + d.data.householdSize)
+                .style("stroke", 'black')
+                .attr('stroke-width', '2');
+
+            // Add Tooltip
+            d3.select('#tooltip')
+                .style('display', 'block')
+                .style('left', (event.pageX + vis.tooltipPadding + 'px'))
+                .style('top', (event.pageY + vis.tooltipPadding + 'px'))
+                .html(`
+                    <div>Do not wash : ${d.data.dontWash}</div>
+                    <div>Wash : ${d.data.wash}</div>
+                `);
+        }).on('mouseleave', (event, d) => {
+            // Remove hover shading
+            d3.selectAll("rect.household" + d.data.householdSize)
+                .attr('stroke-width', '0');
+
+            // Remove tooltip
+            d3.select('#tooltip').style('display', 'none');
+        });
 
         // render axis
         vis.xAxisG
