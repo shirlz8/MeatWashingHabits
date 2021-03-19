@@ -4,7 +4,7 @@
     <title>Do You Wash Your Meat?</title>
     <link rel="icon" href="data:;base64,iVBORwOKGO=" />
     <!-- <link rel="stylesheet" href="css/style.css"> -->
-    <link rel="stylesheet" href="css/barCharts.css">
+    <link rel="stylesheet" href="css/barCharts.css" />
 
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
@@ -18,15 +18,34 @@
       <div id="vis"></div>
       <div id="householdSizeBarChart"></div>
       <div id="foodSafetyBarChart"></div>
+      <svg id="fillgauge1" width="97%" height="250"></svg>
     </div>
 
     <div id="tooltip"></div>
 
-    
     <script src="js/d3.v6.min.js"></script>
     <script src="js/src/timeline.js"></script>
     <script src="js/src/householdSizeBarChart.js"></script>
-    <script src="js/src/foodSafetyBarChart.js"></script>    
+    <script src="js/src/foodSafetyBarChart.js"></script>
     <script src="js/src/main.js"></script>
+    <script src="js/src/liquidFillGauge.js" language="JavaScript"></script>
+    <script language="JavaScript">
+      var config4 = liquidFillGaugeDefaultSettings();
+      config4.circleThickness = 0.15;
+      config4.circleColor = '#808015';
+      config4.textColor = '#555500';
+      config4.waveTextColor = '#FFFFAA';
+      config4.waveColor = '#AAAA39';
+      config4.textVertPosition = 0.8;
+      config4.waveAnimateTime = 1000;
+      config4.waveHeight = 0.05;
+      config4.waveAnimate = true;
+      config4.waveRise = false;
+      config4.waveHeightScaling = false;
+      config4.waveOffset = 0.25;
+      config4.textSize = 0.75;
+      config4.waveCount = 3;
+      var gauge5 = loadLiquidFillGauge('fillgauge5', 60.44, config4);
+    </script>
   </body>
 </html>
