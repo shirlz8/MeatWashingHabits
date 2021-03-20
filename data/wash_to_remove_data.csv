@@ -740,7 +740,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0
 1,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -794,7 +793,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,1,0,0
-0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -1245,7 +1243,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 1,1,0,1,1,1,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0
 0,0,1,1,1,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -1385,7 +1382,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,1,0,1,0,1,0,0
-0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -1564,7 +1560,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,1,1,1,0,1,0,0
-0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,1,0,1,0,0,0
@@ -1887,7 +1882,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,1,0,0,1,0,0
-0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -2611,7 +2605,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 1,0,1,0,1,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0
 1,0,1,0,1,1,0,0
 1,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -2810,7 +2803,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0
 0,1,1,1,1,1,1,0
 0,1,1,0,0,0,0,1
 0,0,0,0,0,0,0,0
@@ -2862,7 +2854,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,1,0,1,0,1
 0,1,1,0,0,1,0,1
-0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -3094,7 +3085,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 1,1,1,1,1,1,0,1
 0,0,0,0,0,0,0,0
-1,0,0,0,1,0,1,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -3461,10 +3451,8 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0
 1,1,1,1,1,1,1,0
 1,0,1,0,0,0,0,0
-0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -3520,7 +3508,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 1,0,0,1,0,1,0,0
-1,1,1,1,1,1,0,1
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -3574,7 +3561,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,1,1,1,0,1
-1,1,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -4005,7 +3991,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,1,1,1,1,1,0,0
 0,0,1,0,0,0,0,0
 0,0,0,0,0,0,0,0
-0,0,1,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -4079,11 +4064,9 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 1,1,1,1,1,1,1,1
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0
 0,1,1,0,1,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,1,0,1,0,0
-0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -4317,7 +4300,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,1,0,1,1,1
 0,1,0,0,0,0,0,0
-0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -4574,7 +4556,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,1,1,0,1
 0,0,0,0,1,1,0,1
-0,0,1,0,0,0,0,0
 1,1,1,1,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -4658,7 +4639,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,1,1,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
-1,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -4795,14 +4775,12 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 1,0,0,0,1,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0
 0,0,0,0,0,1,0,1
 0,0,0,0,0,0,0,0
 1,0,1,0,1,1,1,1
 1,1,1,1,0,1,0,0
 0,0,0,0,0,0,0,0
 1,1,0,0,0,1,0,1
-0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -5170,7 +5148,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0
 1,0,1,1,0,1,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -5271,7 +5248,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,1,1,0,1
 1,0,1,0,0,0,0,0
-0,0,0,0,0,0,0,0
 0,0,1,1,1,1,0,1
 0,0,0,0,0,0,0,0
 0,0,1,0,0,0,0,1
@@ -5677,7 +5653,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 1,0,0,0,0,1,0,0
-0,0,1,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
@@ -6089,7 +6064,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0
 1,0,1,0,1,1,0,0
 0,0,0,0,0,0,0,0
 1,0,1,1,1,1,0,0
@@ -6137,7 +6111,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 0,0,1,0,0,0,0,0
-1,1,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 1,1,1,1,1,1,0,0
 0,0,0,0,0,0,0,0
@@ -6261,7 +6234,6 @@ Remove_pathogens,Remove_artificial_chemicals,Remove_debris,Remove_undesirable_fl
 1,1,1,1,1,1,0,1
 0,0,0,0,0,0,0,0
 0,0,1,0,0,1,0,0
-0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0
 1,1,1,1,1,1,0,1
 0,1,1,0,0,1,0,0
