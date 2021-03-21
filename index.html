@@ -19,6 +19,7 @@
       <div id="householdSizeBarChart"></div>
       <div id="foodSafetyBarChart"></div>
       <svg id="fillgauge1" width="97%" height="250"></svg>
+      <div id="test"></div>
     </div>
 
     <div id="tooltip"></div>
@@ -28,14 +29,19 @@
     <script src="js/src/householdSizeBarChart.js"></script>
     <script src="js/src/foodSafetyBarChart.js"></script>
     <script src="js/src/main.js"></script>
-    <script src="js/src/liquidFillGauge.js" language="JavaScript"></script>
+    <script src="js/src/test.js"></script>
+    <script src="js/src/liquidFillGauge.js"></script>
     <script language="JavaScript">
       var config4 = liquidFillGaugeDefaultSettings();
-      config4.circleThickness = 0.15;
+      config4.circleThickness = 0;
+      config4.circleFillGap = 0;
+      config4.maxValue = 100;
+      config4.minValue = 0;
+      config4.valueCountUp = true;
       config4.circleColor = '#808015';
       config4.textColor = '#555500';
       config4.waveTextColor = '#FFFFAA';
-      config4.waveColor = '#AAAA39';
+      config4.waveColor = '#00DDDD';
       config4.textVertPosition = 0.8;
       config4.waveAnimateTime = 1000;
       config4.waveHeight = 0.05;
@@ -45,7 +51,7 @@
       config4.waveOffset = 0.25;
       config4.textSize = 0.75;
       config4.waveCount = 3;
-      var gauge5 = loadLiquidFillGauge('fillgauge5', 60.44, config4);
+      var gauge5 = loadLiquidFillGauge('fillgauge5', 20, config4);
     </script>
   </body>
 </html>
