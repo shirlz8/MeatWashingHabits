@@ -13,7 +13,7 @@ let paths = [
     d:
       'M151.319 294.971C191.033 299.249 227.502 264.585 232.735 217.586C234.988 197.058 223.761 169.456 198.839 135.734C194.933 130.441 192.979 124.043 192.958 117.309L193.163 109.234C193.142 102.5 188.092 96.7933 181.368 96.4302L182.217 62.9781C185.895 62.1095 189.207 60.4622 191.967 57.839C199.862 49.9596 200.184 37.2708 192.305 29.3757C184.987 22.0719 173.077 21.3848 165.024 27.9136C156.948 20.2059 144.239 20.6528 136.344 28.5322C128.449 36.4116 129.083 49.317 136.963 57.2122C139.408 59.3904 142.061 60.9968 145.117 61.8439L144.258 95.6805C137.899 96.0962 132.764 101.352 132.598 107.889L132.383 116.348C132.208 123.269 129.538 129.935 124.974 135.398C102.778 160.998 90.2824 183.381 88.2661 202.183C85.5998 223.854 90.6139 246.105 102.459 264.489C114.709 282.114 131.936 293.132 151.319 294.971ZM153.664 58.598C153.526 56.4784 152.224 54.7139 150.114 54.468C143.4 53.7204 138.745 47.6385 139.68 41.1214C140.615 34.6043 146.509 29.7521 153.026 30.6871C155.708 31.1399 158.37 32.3618 160.244 34.3331C160.806 34.9245 161.368 35.5159 161.733 36.2947C162.838 38.2465 165.323 38.8867 167.472 37.5946C167.669 37.4073 167.866 37.2199 168.063 37.0325C168.26 36.8451 168.457 36.6578 168.654 36.4704C169.059 35.7111 169.65 35.149 170.241 34.5869C174.973 30.0899 182.663 30.2852 187.16 35.0164C191.657 39.7476 191.461 47.4378 186.73 51.9347C184.562 53.9958 181.644 55.2684 178.568 55.1903C176.261 55.1317 174.486 56.8181 174.428 59.1252L173.491 96.0379L152.727 95.5108L153.664 58.598ZM109.695 259.863C98.9638 243.046 94.0882 222.915 96.7057 203.167C98.6733 186.287 110.568 164.851 131.571 140.76C137.318 134.172 140.618 125.407 140.843 116.563L141.057 108.104C141.116 105.797 143.284 103.736 145.591 103.794L180.966 104.692C183.273 104.751 185.334 106.919 185.276 109.226L185.071 117.301C184.856 125.76 187.343 133.903 192.363 140.764C215.609 172.327 226.865 198.776 224.868 216.809C222.822 236.764 214.072 255.587 199.671 269.65C186.661 282.017 169.941 288.903 152.49 286.728C135.039 284.554 120.071 275.517 109.695 259.863Z',
     d2:
-      'M22.6948 239.31C11.9638 222.493 7.08825 202.362 9.70574 182.613C11.6733 165.734 23.5677 144.297 44.5714 120.206C50.3175 113.619 53.6181 104.853 53.8426 96.0095L54.0573 87.5504C54.1159 85.2433 63.4203 74.8988 65.7273 74.9573L76.109 75.2209L86.4907 75.4844L91.5675 79.5C93.8746 79.5586 98.3343 86.3659 98.2757 88.6729L98.0708 96.7476C97.856 105.207 100.343 113.35 105.363 120.21C128.609 151.773 139.865 178.222 137.868 196.255C135.822 216.211 127.072 235.034 112.671 249.097C99.6606 261.463 82.9413 268.349 65.4901 266.175C48.039 264 33.0705 254.963 22.6948 239.31Z',
+      'M143.97 281.595C181.901 288.306 216.914 257.382 222.133 212.56C224.381 192.982 213.78 165.722 190.12 131.686C186.412 126.344 184.575 120.068 184.586 113.596L184.819 105.85C184.83 99.3774 180.031 93.5627 173.607 92.7738L174.574 60.6834C178.092 60.0895 181.265 58.7232 183.914 56.3831C191.496 49.328 191.862 37.1558 184.369 29.0533C177.411 21.5559 166.032 20.1162 158.306 25.863C150.624 17.9277 138.477 17.5255 130.896 24.5806C123.314 31.6356 123.861 44.0786 131.354 52.1811C133.681 54.4343 136.208 56.1516 139.125 57.1656L138.147 89.6248C132.068 89.6081 127.137 94.323 126.948 100.594L126.703 108.708C126.503 115.348 123.921 121.578 119.534 126.529C98.2043 149.677 86.1592 170.369 84.1451 188.304C81.4966 208.955 86.185 230.665 97.4195 249.106C109.044 266.844 125.455 278.56 143.97 281.595Z',
   },
 ];
 
@@ -51,13 +51,30 @@ function loadLiquidFillGauge(elementId, value, config) {
   // });
   var gauge = d3.select('#fillgauge1');
 
-  gauge
-    .append('svg')
+  // gauge
+  //   .append('svg')
+  //   .append('path')
+  //   .attr('id', 'beef2')
+  //   .attr('d', paths[0].d)
+  //   .style('fill', paths[0].fill)
+  //   .style('stroke', paths[0].stroke);
+
+  let beef = gauge.append('svg');
+
+  beef
+    .append('path')
+    .attr('id', 'beef2')
+    .attr('d', paths[0].d2)
+    .style('fill', 'black')
+    .style('stroke', 'none');
+
+  beef
     .append('path')
     .attr('id', 'beef')
-    .attr('d', paths[0].d)
-    .style('fill', paths[0].fill)
-    .style('stroke', paths[0].stroke);
+    .attr('d', paths[0].d2)
+    .style('fill', 'none')
+    .style('stroke', 'black')
+    .style('stroke-width', '10px');
 
   let BBox = d3.select('#beef').node().getBBox();
 
@@ -68,12 +85,14 @@ function loadLiquidFillGauge(elementId, value, config) {
     Math.max(config.minValue, Math.min(config.maxValue, value)) /
     config.maxValue;
 
+  console.log(fillPercent);
+
   var waveHeightScale;
   if (config.waveHeightScaling) {
     waveHeightScale = d3
       .scaleLinear()
-      .range([0, config.waveHeight, 0])
-      .domain([0, 50, 100]);
+      .range([0, config.waveHeight])
+      .domain([0, 100]);
   } else {
     waveHeightScale = d3
       .scaleLinear()
@@ -89,8 +108,11 @@ function loadLiquidFillGauge(elementId, value, config) {
   var circleFillGap = config.circleFillGap * radius;
   var fillCircleMargin = circleThickness + circleFillGap;
   var fillCircleRadius = radius - fillCircleMargin;
+  console.log(fillCircleRadius);
+  console.log(waveHeightScale(fillPercent * 100));
+  console.log(fillPercent);
   var waveHeight = fillCircleRadius * waveHeightScale(fillPercent * 100);
-
+  console.log(waveHeight);
   var waveLength = (fillCircleRadius * 2) / config.waveCount;
   var waveClipCount = 1 + config.waveCount;
   var waveClipWidth = waveLength * waveClipCount;
@@ -127,16 +149,15 @@ function loadLiquidFillGauge(elementId, value, config) {
   var waveScaleX = d3.scaleLinear().range([0, waveClipWidth]).domain([0, 1]);
   var waveScaleY = d3.scaleLinear().range([0, waveHeight]).domain([0, 1]);
 
+  console.log(fillCircleMargin + fillCircleRadius * 2 + waveHeight);
+  console.log(fillCircleMargin - waveHeight);
   // Scales for controlling the position of the clipping path.
   var waveRiseScale = d3
     .scaleLinear()
     // The clipping area size is the height of the fill circle + the wave height, so we position the clip wave
     // such that the it will overlap the fill circle at all when at 0%, and will totally cover the fill
     // circle at 100%.
-    .range([
-      fillCircleMargin + fillCircleRadius * 2 + waveHeight,
-      fillCircleMargin - waveHeight,
-    ])
+    .range([270, 0]) // settubg wave rise range here!!!
     .domain([0, 1]);
   var waveAnimateScale = d3
     .scaleLinear()
@@ -156,23 +177,6 @@ function loadLiquidFillGauge(elementId, value, config) {
   var gaugeGroup = gauge
     .append('g')
     .attr('transform', 'translate(' + locationX + ',' + locationY + ')');
-
-  // Draw the outer circle.
-  // var gaugeCircleArc = d3
-  //   .arc()
-  //   .startAngle(gaugeCircleX(0))
-  //   .endAngle(gaugeCircleX(1))
-  //   .outerRadius(gaugeCircleY(radius))
-  //   .innerRadius(gaugeCircleY(radius - circleThickness));
-  // gaugeGroup
-  //   .append('path')
-  //   .attr('d', gaugeCircleArc)
-  //   .style('fill', config.circleColor)
-  //   .attr('transform', 'translate(' + radius + ',' + radius + ')');
-
-  // d3.xml('svgs/beef.svg').then((data) => {
-  //   d3.select('#test').node().append(data.documentElement);
-  // });
 
   // Text where the wave does not overlap.
   var text1 = gaugeGroup
@@ -198,16 +202,23 @@ function loadLiquidFillGauge(elementId, value, config) {
       return waveScaleX(d.x);
     })
     .y0(function (d) {
-      return waveScaleY(
-        Math.sin(
-          Math.PI * 2 * config.waveOffset * -1 +
-            Math.PI * 2 * (1 - config.waveCount) +
-            d.y * 2 * Math.PI
-        )
-      );
+      return -60;
+      // return waveScaleY(
+      //   Math.sin(
+      //     Math.PI * 2 * config.waveOffset * -1 +
+      //       Math.PI * 2 * (1 - config.waveCount) +
+      //       d.y * 2 * Math.PI
+      //   )
+      // );
+      // return Math.sin(
+      //   Math.PI * 2 * config.waveOffset * -1 +
+      //     Math.PI * 2 * (1 - config.waveCount) +
+      //     d.y * 2 * Math.PI
+      // );
     })
     .y1(function (d) {
-      return fillCircleRadius * 2 + waveHeight;
+      // console.log(fillCircleRadius * 2 + waveHeight);
+      return 210; // controls bottom limit of image
     });
   var waveGroup = gaugeGroup
     .append('defs')
@@ -231,15 +242,18 @@ function loadLiquidFillGauge(elementId, value, config) {
   //   .attr('r', fillCircleRadius)
   //   .style('fill', config.waveColor);
 
-  // fillCircleGroup.append(function () {
-  //   var shape = d3.select('#beef');
-  //   console.log(shape);
-  //   shape
-  //     .attr('transform', 'translate(' + -locationX + ',' + -locationY + ')')
-  //     .style('fill', config.waveColor);
-  //   console.log(shape.node());
-  //   return shape.node();
-  // });
+  fillCircleGroup.append(function () {
+    var shape = d3.select('#beef2');
+    console.log(shape);
+    shape
+      .attr('transform', 'translate(' + -locationX + ',' + -locationY + ')')
+      .style('fill', config.waveColor);
+    console.log(shape.node());
+
+    var shape2 = d3.select('#beef');
+    shape2.attr('class', 'good');
+    return shape.node();
+  });
 
   // Text where the wave does overlap.
   var text2 = fillCircleGroup
