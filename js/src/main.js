@@ -1,4 +1,4 @@
-let meatTypeFilter = "Pork";
+let meatTypeFilter = "Beef";
 
 // Exploratory view
 d3.csv('data/exploratory_data.csv').then((exploratoryData) => {

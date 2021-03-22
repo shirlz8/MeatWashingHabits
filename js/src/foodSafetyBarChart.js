@@ -89,33 +89,35 @@ class FoodSafetyBarChart {
          */
   updateVis() {
     const vis = this;
+    console.log(vis.data);
 
-    vis.washCount = d3.rollup(vis.data, v => d3.sum(v, d => {
-      if (meatTypeFilter != "")
-        return d[meatTypeFilter];
-      else return d.Wash_Any;
-    }), d => d.Food_safety_importance);
-    vis.totalCount = d3.rollup(vis.data, v => v.length, d => d.Food_safety_importance);
+    if (meatTypeFilter !== '') vis.filteredData = vis.data.filter((d) => d[meatTypeFilter] !== 'NA');
+    else vis.filteredData = vis.data;
+
+    vis.washCount = d3.rollup(vis.filteredData, (v) => d3.sum(v, (d) => {
+      if (meatTypeFilter !== '') return d[meatTypeFilter];
+      return d.Wash_Any;
+    }), (d) => d.Food_safety_importance);
+    vis.totalCount = d3.rollup(vis.filteredData, (v) => v.length, (d) => d.Food_safety_importance);
 
     console.log(this.washCount);
 
     vis.washCountData = [];
     vis.washCount.forEach((value, key) => {
-      var row = {
+      const row = {
         foodSafetyImportance: key,
         dontWash: vis.totalCount.get(key) - value,
-        wash: value
+        wash: value,
       };
       vis.washCountData.push(row);
-    })
+    });
 
     // console.log(vis.washCountData);
 
-    vis.subgroups = ["dontWash", "wash"];
+    vis.subgroups = ['dontWash', 'wash'];
 
     vis.stackedWashCountData = d3.stack()
-      .keys(vis.subgroups)
-      (vis.washCountData);
+      .keys(vis.subgroups)(vis.washCountData);
 
     // console.log(vis.stackedWashCountData);
 
@@ -131,7 +133,7 @@ class FoodSafetyBarChart {
 
     const color = d3.scaleOrdinal()
       .domain(vis.subgroups)
-      .range(["#C1504F", "#4E81BE"]);
+      .range(['#C1504F', '#4E81BE']);
 
     return color(d);
   }
@@ -149,9 +151,9 @@ class FoodSafetyBarChart {
       .attr('class', 'bar_g')
       .attr('fill', (d) => vis.color(d.key))
       .selectAll('.bar_rect')
-      .data(d => d)
+      .data((d) => d)
       .join('rect')
-      .attr('class', (d) => "foodSafety" + d.data.foodSafetyImportance)
+      .attr('class', (d) => `foodSafety${d.data.foodSafetyImportance}`)
       .attr('width', vis.xScale.bandwidth())
       .attr('height', (d) => vis.yScale(d[0]) - vis.yScale(d[1]))
       .attr('y', (d) => vis.yScale(d[1]))
@@ -159,22 +161,22 @@ class FoodSafetyBarChart {
 
     bars.on('mouseover', (event, d) => {
       // Add hover shading
-      d3.selectAll("rect.foodSafety" + d.data.foodSafetyImportance)
-        .style("stroke", 'black')
+      d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`)
+        .style('stroke', 'black')
         .attr('stroke-width', '2');
 
       // Add Tooltip
       d3.select('#tooltip')
         .style('display', 'block')
-        .style('left', (event.pageX + vis.tooltipPadding + 'px'))
-        .style('top', (event.pageY + vis.tooltipPadding + 'px'))
+        .style('left', (`${event.pageX + vis.tooltipPadding}px`))
+        .style('top', (`${event.pageY + vis.tooltipPadding}px`))
         .html(`
                 <div>Do not wash : ${d.data.dontWash}</div>
                 <div>Wash : ${d.data.wash}</div>
             `);
     }).on('mouseleave', (event, d) => {
       // Remove hover shading
-      d3.selectAll("rect.foodSafety" + d.data.foodSafetyImportance)
+      d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`)
         .attr('stroke-width', '0');
 
       // Remove tooltip
