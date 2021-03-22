@@ -39,6 +39,8 @@ function loadLiquidFillGauge(elementId, value, config) {
     2;
   var locationX = parseInt(gauge.style('width')) / 2 - radius;
   var locationY = parseInt(gauge.style('height')) / 2 - radius;
+  console.log(locationX);
+  console.log(locationY);
   var fillPercent =
     Math.max(config.minValue, Math.min(config.maxValue, value)) /
     config.maxValue;
@@ -65,10 +67,13 @@ function loadLiquidFillGauge(elementId, value, config) {
   var fillCircleMargin = circleThickness + circleFillGap;
   var fillCircleRadius = radius - fillCircleMargin;
   var waveHeight = fillCircleRadius * waveHeightScale(fillPercent * 100);
+  console.log(waveHeight);
 
   var waveLength = (fillCircleRadius * 2) / config.waveCount;
   var waveClipCount = 1 + config.waveCount;
   var waveClipWidth = waveLength * waveClipCount;
+  console.log('waveLength ' + waveLength);
+  console.log('waveClipWidth: ' + waveClipWidth);
 
   // Rounding functions so that the correct number of decimal places is always displayed as the value counts up.
   var textRounder = function (value) {
@@ -90,6 +95,8 @@ function loadLiquidFillGauge(elementId, value, config) {
   for (var i = 0; i <= 40 * waveClipCount; i++) {
     data.push({ x: i / (40 * waveClipCount), y: i / 40 });
   }
+
+  console.log(data);
 
   // Scales for drawing the outer circle.
   var gaugeCircleX = d3
@@ -166,9 +173,20 @@ function loadLiquidFillGauge(elementId, value, config) {
   var clipArea = d3
     .area()
     .x(function (d) {
+      console.log('x: ' + waveScaleX(d.x));
       return waveScaleX(d.x);
     })
     .y0(function (d) {
+      console.log(
+        'y: ' +
+          waveScaleY(
+            Math.sin(
+              Math.PI * 2 * config.waveOffset * -1 +
+                Math.PI * 2 * (1 - config.waveCount) +
+                d.y * 2 * Math.PI
+            )
+          )
+      );
       return waveScaleY(
         Math.sin(
           Math.PI * 2 * config.waveOffset * -1 +
@@ -178,6 +196,8 @@ function loadLiquidFillGauge(elementId, value, config) {
       );
     })
     .y1(function (d) {
+      // console.log(waveHeight);
+      // console.log(fillCircleRadius);
       return fillCircleRadius * 2 + waveHeight;
     });
   var waveGroup = gaugeGroup
@@ -233,6 +253,7 @@ function loadLiquidFillGauge(elementId, value, config) {
   // Make the wave rise. wave and waveGroup are separate so that horizontal and vertical movement can be controlled independently.
   var waveGroupXPosition =
     fillCircleMargin + fillCircleRadius * 2 - waveClipWidth;
+  console.log(waveGroupXPosition);
   if (config.waveRise) {
     waveGroup
       .attr(
@@ -269,10 +290,10 @@ function loadLiquidFillGauge(elementId, value, config) {
     wave
       .transition()
       .duration(config.waveAnimateTime * (1 - wave.attr('T')))
-      .ease('linear')
+      .ease(d3.easeLinear)
       .attr('transform', 'translate(' + waveAnimateScale(1) + ',0)')
       .attr('T', 1)
-      .each('end', function () {
+      .on('end', function () {
         wave.attr('T', 0);
         animateWave(config.waveAnimateTime);
       });
