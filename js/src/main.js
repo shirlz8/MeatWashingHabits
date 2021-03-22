@@ -15,6 +15,14 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
 
   var subgroups = exploratoryData.columns.slice(1)
   // console.log(subgroups);
+  console.log(exploratoryData);
+
+  // Create the habitsBubblePlot.css
+  const habitsBubblePlot = new HabitsBubblePlot({
+    parentElement: '#habitsBubblePlot',
+  }, exploratoryData);
+
+
 });
 
 // What are people trying to remove view
