@@ -33,36 +33,12 @@ function liquidFillGaugeDefaultSettings() {
 function loadLiquidFillGauge(elementId, value, config) {
   if (config == null) config = liquidFillGaugeDefaultSettings();
 
-  vis.paths = [
-    {
-      fill: 'black',
-      d:
-        'M456.6,145c-0.3-2.9-2.5-5.4-5.4-6c-3-0.6-71.5-14.4-113.3,14.6c-21.5-12.2-42.3-19.2-57.8-19.2c-15.1,0-35.3,6.6-56.3,18.3c-0.1,0.1-0.2,0.1-0.4,0.2c-0.1,0-0.1-0.1-0.2-0.1c-41.9-27.8-109.1-14.3-112-13.7c-3,0.6-5.1,3-5.4,6c-5.2,58.1,18.1,91.5,27.6,102.5c0.1,0.1,0.2,0.2,0.3,0.3c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-11,25.6-16.4,57.6-4,93.4c15,43.4,43.7,74.5,82.8,90c18.5,7.2,38.2,11,58,11c3.7,0,6.5-0.1,8.2-0.3c0.8-0.1,1.7-0.1,2.5,0c22.6,1.2,45.2-2.4,66.3-10.7c39.1-15.5,67.7-46.6,82.8-90c12.1-35,7.2-66.4-3.3-91.7C434.7,241.4,462.1,207.7,456.6,145z',
-    },
-  ];
-
   var gauge = d3.select('#fillgauge1');
-
-  gauge
-    .append('path')
-    .attr('id', 'beef')
-    .attr('d', vis.paths[0].d)
-    .style('fill', 'none')
-    .style('stroke', 'black')
-    .style('stroke-width', '10px');
-
-  // Get bounding box
-  var BBox = d3.select('#beef').node().getBBox();
-
-  console.log(BBox);
-
-  // Get radius = half of the width
-  var radius = Math.min(parseInt(BBox.width), parseInt(BBox.height)) / 2;
-
-  // This is basically vis.BBox.x, top left x of bound box
-  var locationX = parseInt(BBox.width) / 2 - radius + BBox.x;
-  // This is top left y of bounding box, plus height/2 - width/2
-  var locationY = parseInt(BBox.height) / 2 - radius + BBox.y;
+  var radius =
+    Math.min(parseInt(gauge.style('width')), parseInt(gauge.style('height'))) /
+    2;
+  var locationX = parseInt(gauge.style('width')) / 2 - radius;
+  var locationY = parseInt(gauge.style('height')) / 2 - radius;
   console.log(locationX);
   console.log(locationY);
   var fillPercent =
@@ -163,6 +139,19 @@ function loadLiquidFillGauge(elementId, value, config) {
     .append('g')
     .attr('transform', 'translate(' + locationX + ',' + locationY + ')');
 
+  // Draw the outer circle.
+  var gaugeCircleArc = d3
+    .arc()
+    .startAngle(gaugeCircleX(0))
+    .endAngle(gaugeCircleX(1))
+    .outerRadius(gaugeCircleY(radius))
+    .innerRadius(gaugeCircleY(radius - circleThickness));
+  gaugeGroup
+    .append('path')
+    .attr('d', gaugeCircleArc)
+    .style('fill', config.circleColor)
+    .attr('transform', 'translate(' + radius + ',' + radius + ')');
+
   // Text where the wave does not overlap.
   var text1 = gaugeGroup
     .append('text')
@@ -221,30 +210,16 @@ function loadLiquidFillGauge(elementId, value, config) {
     .attr('d', clipArea)
     .attr('T', 0);
 
-  //   // The inner circle with the clipping wave attached.
-  //   var fillCircleGroup = gaugeGroup
-  //     .append('g')
-  //     .attr('clip-path', 'url(#clipWave' + elementId + ')');
-  //   fillCircleGroup
-  //     .append('circle')
-  //     .attr('cx', radius)
-  //     .attr('cy', radius)
-  //     .attr('r', fillCircleRadius + 100)
-  //     .style('fill', config.waveColor);
-
   // The inner circle with the clipping wave attached.
   var fillCircleGroup = gaugeGroup
     .append('g')
     .attr('clip-path', 'url(#clipWave' + elementId + ')');
-
   fillCircleGroup
-    .append('path')
-    .attr('transform', 'translate(' + -locationX + ',' + -locationY + ')')
-    .attr('id', 'beef')
-    .attr('d', vis.paths[0].d)
-    .style('fill', config.waveColor)
-    .style('stroke', 'black')
-    .style('stroke-width', '10px');
+    .append('circle')
+    .attr('cx', radius)
+    .attr('cy', radius)
+    .attr('r', fillCircleRadius)
+    .style('fill', config.waveColor);
 
   // Text where the wave does overlap.
   var text2 = fillCircleGroup
