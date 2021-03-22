@@ -10,14 +10,13 @@ class LiquidFillGauge {
       containerWidth: 300,
       containerHeight: 350,
       margin: {
-        top: 25,
-        right: 15,
-        bottom: 20,
-        left: 35,
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
       },
     };
     this.data = _data;
-    console.log('con vis');
 
     this.initVis();
   }
@@ -40,8 +39,6 @@ class LiquidFillGauge {
     ];
 
     vis.value = 99;
-
-    console.log('init vis');
 
     // Calculate inner chart size. Margin specifies the space around the actual chart.
     vis.width =
@@ -75,7 +72,6 @@ class LiquidFillGauge {
     vis.maxValue = 100; // The gauge maximum value.
     vis.circleThickness = 0.0; // The outer circle thickness as a percentage of it's radius.
     vis.circleFillGap = 0.0; // The size of the gap between the outer circle and wave circle as a percentage of the outer circles radius.
-    vis.circleColor = '#178BCA'; // The color of the outer circle.
     vis.waveHeight = 0.05; // The wave height as a percentage of the radius of the wave circle.
     vis.waveCount = 1; // The number of full waves per width of the wave circle.
     vis.waveRiseTime = 1000; // The amount of time in milliseconds for the wave to rise from 0 to it's final height.
@@ -85,12 +81,6 @@ class LiquidFillGauge {
     vis.waveAnimate = true; // Controls if the wave scrolls or is static.
     vis.waveColor = '#178BCA'; // The color of the fill wave.
     vis.waveOffset = 0; // The amount to initially offset the wave. 0 = no offset. 1 = offset of one full wave.
-    vis.textVertPosition = 0.5; // The height at which to display the percentage text withing the wave circle. 0 = bottom, 1 = top.
-    vis.textSize = 2; // The relative height of the text to display in the wave circle. 1 = 50%
-    vis.valueCountUp = true; // If true, the displayed value counts up from 0 to it's final value upon loading. If false, the final value is displayed.
-    vis.displayPercent = false; // If true, a % symbol is displayed after the value.
-    vis.textColor = '#045681'; // The color of the value text when the wave does not overlap it.
-    vis.waveTextColor = '#A4DBf8'; // The color of the value text when the wave overlaps it.
 
     // // Initialize scales
     // vis.xScale = d3.scaleBand().range([0, vis.width]).paddingInner(0.15);
@@ -143,12 +133,18 @@ class LiquidFillGauge {
       .style('stroke', 'black')
       .style('stroke-width', '10px');
 
-    vis.BBox = d3.select('#beef').node().getBBox();
+    vis.BBox = d3.select('#beef2').node().getBBox();
+
+    console.log(vis.BBox);
 
     vis.radius =
       Math.min(parseInt(vis.BBox.width), parseInt(vis.BBox.height)) / 2;
+
+    console.log(vis.radius);
     vis.locationX = parseInt(vis.BBox.width) / 2 - vis.radius + vis.BBox.x;
     vis.locationY = parseInt(vis.BBox.height) / 2 - vis.radius + vis.BBox.y;
+    console.log('locationX ' + vis.locationX);
+    console.log('locationY ' + vis.locationY);
     vis.fillPercent =
       Math.max(vis.minValue, Math.min(vis.maxValue, vis.value)) / vis.maxValue;
 
@@ -165,10 +161,7 @@ class LiquidFillGauge {
         .domain([0, 100]);
     }
 
-    vis.textPixels = (vis.textSize * vis.radius) / 2;
     vis.textFinalValue = parseFloat(vis.value).toFixed(2);
-    vis.textStartValue = vis.valueCountUp ? vis.minValue : vis.textFinalValue;
-    vis.percentText = vis.displayPercent ? '%' : '';
     vis.circleThickness = vis.circleThickness * vis.radius;
     vis.circleFillGap = vis.circleFillGap * vis.radius;
     vis.fillCircleMargin = vis.circleThickness + vis.circleFillGap;
@@ -210,13 +203,6 @@ class LiquidFillGauge {
       vis.data.push({ x: i / (40 * vis.waveClipCount), y: i / 40 });
     }
 
-    // Scales for drawing the outer circle.
-    // var gaugeCircleX = d3
-    //   .scaleLinear()
-    //   .range([0, 2 * Math.PI])
-    //   .domain([0, 1]);
-    // var gaugeCircleY = d3.scaleLinear().range([0, radius]).domain([0, radius]);
-
     // Scales for controlling the size of the clipping path.
     vis.waveScaleX = d3
       .scaleLinear()
@@ -234,47 +220,29 @@ class LiquidFillGauge {
       // The clipping area size is the height of the fill circle + the wave height, so we position the clip wave
       // such that the it will overlap the fill circle at all when at 0%, and will totally cover the fill
       // circle at 100%.
-      .range([270, 0]) // settubg wave rise range here!!!
+      .range([270, 0]) // setting wave rise range here!!!
       .domain([0, 1]);
     vis.waveAnimateScale = d3
       .scaleLinear()
       .range([0, vis.waveClipWidth - vis.fillCircleRadius * 2]) // Push the clip area one full wave then snap back.
       .domain([0, 1]);
 
-    // Scale for controlling the position of the text within the gauge.
-    vis.textRiseScaleY = d3
-      .scaleLinear()
-      .range([
-        vis.fillCircleMargin + vis.fillCircleRadius * 2,
-        vis.fillCircleMargin + vis.textPixels * 0.7,
-      ])
-      .domain([0, 1]);
+    vis.renderVis();
+  }
 
-    // var gauge = d3.select('#fillgauge1');
+  /**
+   * Bind data to visual elements (enter-update-exit) and update axes
+   */
+  renderVis() {
+    const vis = this;
 
     // Center the gauge within the parent SVG.
     vis.gaugeGroup = vis.chartArea
       .append('g')
+      .attr('id', 'gaugeGroup')
       .attr(
         'transform',
         'translate(' + vis.locationX + ',' + vis.locationY + ')'
-      );
-
-    // Text where the wave does not overlap.
-    vis.text1 = vis.gaugeGroup
-      .append('text')
-      .text(vis.textRounder(vis.textStartValue) + vis.percentText)
-      .attr('class', 'liquidFillGaugeText')
-      .attr('text-anchor', 'middle')
-      .attr('font-size', vis.textPixels + 'px')
-      .style('fill', vis.textColor)
-      .attr(
-        'transform',
-        'translate(' +
-          vis.radius +
-          ',' +
-          vis.textRiseScaleY(vis.textVertPosition) +
-          ')'
       );
 
     // The clipping wave area.
@@ -302,6 +270,7 @@ class LiquidFillGauge {
         // console.log(fillCircleRadius * 2 + waveHeight);
         return 210; // controls bottom limit of image
       });
+
     vis.waveGroup = vis.gaugeGroup
       .append('defs')
       .append('clipPath')
@@ -317,12 +286,6 @@ class LiquidFillGauge {
     vis.fillCircleGroup = vis.gaugeGroup
       .append('g')
       .attr('clip-path', 'url(#clipWave' + ')');
-    // fillCircleGroup
-    //   .append('circle')
-    //   .attr('cx', radius)
-    //   .attr('cy', radius)
-    //   .attr('r', fillCircleRadius)
-    //   .style('fill', config.waveColor);
 
     vis.fillCircleGroup.append(function () {
       var shape = d3.select('#beef2');
@@ -339,41 +302,6 @@ class LiquidFillGauge {
       shape2.attr('class', 'good');
       return shape.node();
     });
-
-    // Text where the wave does overlap.
-    vis.text2 = vis.fillCircleGroup
-      .append('text')
-      .text(vis.textRounder(vis.textStartValue) + vis.percentText)
-      .attr('class', 'liquidFillGaugeText')
-      .attr('text-anchor', 'middle')
-      .attr('font-size', vis.textPixels + 'px')
-      .style('fill', vis.waveTextColor)
-      .attr(
-        'transform',
-        'translate(' +
-          vis.radius +
-          ',' +
-          vis.textRiseScaleY(vis.textVertPosition) +
-          ')'
-      );
-
-    // Make the value count up.
-    if (vis.valueCountUp) {
-      var textTween = function () {
-        var i = d3.interpolate(this.textContent, vis.textFinalValue);
-        return function (t) {
-          this.textContent = vis.textRounder(i(t)) + vis.percentText;
-        };
-      };
-      vis.text1
-        .transition()
-        .duration(vis.waveRiseTime)
-        .tween('text', textTween);
-      vis.text2
-        .transition()
-        .duration(vis.waveRiseTime)
-        .tween('text', textTween);
-    }
 
     // Make the wave rise. wave and waveGroup are separate so that horizontal and vertical movement can be controlled independently.
     vis.waveGroupXPosition =
@@ -397,65 +325,44 @@ class LiquidFillGauge {
             ',' +
             vis.waveRiseScale(vis.fillPercent) +
             ')'
-        )
-        .each('start', function () {
-          vis.wave.attr('transform', 'translate(1,0)');
-        }); // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
-    } else {
-      vis.waveGroup.attr(
-        'transform',
-        'translate(' +
-          vis.waveGroupXPosition +
-          ',' +
-          vis.waveRiseScale(vis.fillPercent) +
-          ')'
-      );
-    }
-
-    // if (config.waveAnimate) animateWave();
-
-    function animateWave() {
-      try {
-        vis.wave.attr(
-          'transform',
-          'translate(' + vis.waveAnimateScale(vis.wave.attr('T')) + ',0)'
         );
-        vis.wave
-          .transition()
-          .duration(vis.waveAnimateTime * (1 - vis.wave.attr('T')))
-          .ease('linear')
-          .attr('transform', 'translate(' + vis.waveAnimateScale(1) + ',0)')
-          .attr('T', 1)
-          .each('end', function () {
-            vis.wave.attr('T', 0);
-            animateWave(vis.waveAnimateTime);
-          });
-      } catch (e) {
-        console.log(e);
-      }
+      // .each('start', function () {
+      //   vis.wave.attr('transform', 'translate(1,0)');
+      // }); // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
     }
+    // else {
+    //   vis.waveGroup.attr(
+    //     'transform',
+    //     'translate(' +
+    //       vis.waveGroupXPosition +
+    //       ',' +
+    //       vis.waveRiseScale(vis.fillPercent) +
+    //       ')'
+    //   );
+    // }
 
-    vis.renderVis();
-  }
+    // if (vis.waveAnimate) animateWave();
 
-  /**
-   * Bind data to visual elements (enter-update-exit) and update axes
-   */
-  renderVis() {
-    const vis = this;
-
-    // vis.fillCircleGroup.append(function () {
-    //   var shape = d3.select('#beef2');
-    //   console.log(shape);
-    //   shape
-    //     .attr('transform', 'translate(' + -locationX + ',' + -locationY + ')')
-    //     .style('fill', config.waveColor);
-    //   console.log(shape.node());
-
-    //   var shape2 = d3.select('#beef');
-    //   shape2.attr('class', 'good');
-    //   return shape.node();
-    // });
+    // function animateWave() {
+    //   try {
+    //     vis.wave.attr(
+    //       'transform',
+    //       'translate(' + vis.waveAnimateScale(vis.wave.attr('T')) + ',0)'
+    //     );
+    //     vis.wave
+    //       .transition()
+    //       .duration(vis.waveAnimateTime * (1 - vis.wave.attr('T')))
+    //       .ease('linear')
+    //       .attr('transform', 'translate(' + vis.waveAnimateScale(1) + ',0)')
+    //       .attr('T', 1)
+    //       .each('end', function () {
+    //         vis.wave.attr('T', 0);
+    //         animateWave(vis.waveAnimateTime);
+    //       });
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // }
 
     // const bars = vis.chart
     //   .selectAll('.bar_g')
