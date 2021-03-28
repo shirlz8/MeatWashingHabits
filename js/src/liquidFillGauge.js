@@ -21,10 +21,6 @@ function liquidFillGaugeDefaultSettings() {
     waveAnimate: true, // Controls if the wave scrolls or is static.
     waveColor: '#178BCA', // The color of the fill wave.
     waveOffset: 0, // The amount to initially offset the wave. 0 = no offset. 1 = offset of one full wave.
-    textVertPosition: 0.5, // The height at which to display the percentage text withing the wave circle. 0 = bottom, 1 = top.
-    textSize: 1, // The relative height of the text to display in the wave circle. 1 = 50%
-    valueCountUp: true, // If true, the displayed value counts up from 0 to it's final value upon loading. If false, the final value is displayed.
-    displayPercent: true, // If true, a % symbol is displayed after the value.
   };
 }
 
@@ -35,7 +31,7 @@ function loadLiquidFillGauge(elementId, value, config) {
     {
       fill: 'black',
       d:
-        'M143.97 281.595C181.901 288.306 216.914 257.382 222.133 212.56C224.381 192.982 213.78 165.722 190.12 131.686C186.412 126.344 184.575 120.068 184.586 113.596L184.819 105.85C184.83 99.3774 180.031 93.5627 173.607 92.7738L174.574 60.6834C178.092 60.0895 181.265 58.7232 183.914 56.3831C191.496 49.328 191.862 37.1558 184.369 29.0533C177.411 21.5559 166.032 20.1162 158.306 25.863C150.624 17.9277 138.477 17.5255 130.896 24.5806C123.314 31.6356 123.861 44.0786 131.354 52.1811C133.681 54.4343 136.208 56.1516 139.125 57.1656L138.147 89.6248C132.068 89.6081 127.137 94.323 126.948 100.594L126.703 108.708C126.503 115.348 123.921 121.578 119.534 126.529C98.2043 149.677 86.1592 170.369 84.1451 188.304C81.4966 208.955 86.185 230.665 97.4195 249.106C109.044 266.844 125.455 278.56 143.97 281.595Z',
+        'M51.2074 174.866C81.8865 176.965 109.076 154.133 111.896 123.903C113.106 110.7 103.806 93.1407 83.7064 71.9492C80.5862 68.5847 78.8348 64.4792 78.7066 60.2289L78.6566 55.0477C78.6032 52.9655 77.6013 50.9781 75.8539 49.4884C74.1066 47.9988 71.7446 47.1185 69.2469 47.0259L69.0469 25.5596C71.8312 24.9788 74.3768 23.7848 76.4167 22.1026C77.8294 20.8791 78.9382 19.4352 79.6794 17.8539C80.4206 16.2725 80.7797 14.5848 80.736 12.8875C80.6924 11.1903 80.2468 9.5169 79.4249 7.96344C78.603 6.40998 77.421 5.007 75.9467 3.835C73.1219 1.63168 69.427 0.365374 65.5588 0.274841C61.6905 0.184308 57.9161 1.2758 54.9473 3.34353C51.8692 1.05314 47.8368 -0.142188 43.7138 0.0135061C39.5907 0.1692 35.7047 1.66354 32.888 4.17653C26.9682 9.39109 27.8081 17.6544 34.0579 22.5941C35.898 23.9369 38.0844 24.9088 40.4477 25.4346L40.6577 47.1509C38.2693 47.3389 36.053 48.2681 34.4488 49.7541C32.8446 51.2401 31.9698 53.1743 31.998 55.1726V60.6038C32 65.0877 30.1697 69.4385 26.8082 72.9405C10.3987 89.7254 1.34893 104.286 0.278961 116.373C-1.19935 130.427 3.22969 144.472 12.8086 156.107C22.6883 167.219 36.2379 174 51.2074 174.866Z',
     },
   ];
 
@@ -76,10 +72,6 @@ function loadLiquidFillGauge(elementId, value, config) {
       .domain([0, 100]);
   }
 
-  var textPixels = (config.textSize * radius) / 2;
-  var textFinalValue = parseFloat(value).toFixed(2);
-  var textStartValue = config.valueCountUp ? config.minValue : textFinalValue;
-  var percentText = config.displayPercent ? '%' : '';
   var circleThickness = config.circleThickness * radius;
   var circleFillGap = config.circleFillGap * radius;
   var fillCircleMargin = circleThickness + circleFillGap;
@@ -90,33 +82,11 @@ function loadLiquidFillGauge(elementId, value, config) {
   var waveClipCount = 1 + config.waveCount;
   var waveClipWidth = waveLength * waveClipCount;
 
-  // Rounding functions so that the correct number of decimal places is always displayed as the value counts up.
-  var textRounder = function (value) {
-    return Math.round(value);
-  };
-  if (parseFloat(textFinalValue) != parseFloat(textRounder(textFinalValue))) {
-    textRounder = function (value) {
-      return parseFloat(value).toFixed(1);
-    };
-  }
-  if (parseFloat(textFinalValue) != parseFloat(textRounder(textFinalValue))) {
-    textRounder = function (value) {
-      return parseFloat(value).toFixed(2);
-    };
-  }
-
   // Data for building the clip wave area.
   var data = [];
   for (var i = 0; i <= 40 * waveClipCount; i++) {
     data.push({ x: i / (40 * waveClipCount), y: i / 40 });
   }
-
-  // Scales for drawing the outer circle.
-  var gaugeCircleX = d3
-    .scaleLinear()
-    .range([0, 2 * Math.PI])
-    .domain([0, 1]);
-  var gaugeCircleY = d3.scaleLinear().range([0, radius]).domain([0, radius]);
 
   // Scales for controlling the size of the clipping path.
   var waveScaleX = d3.scaleLinear().range([0, waveClipWidth]).domain([0, 1]);
@@ -136,15 +106,6 @@ function loadLiquidFillGauge(elementId, value, config) {
   var waveAnimateScale = d3
     .scaleLinear()
     .range([0, waveClipWidth - fillCircleRadius * 2]) // Push the clip area one full wave then snap back.
-    .domain([0, 1]);
-
-  // Scale for controlling the position of the text within the gauge.
-  var textRiseScaleY = d3
-    .scaleLinear()
-    .range([
-      fillCircleMargin + fillCircleRadius * 2,
-      fillCircleMargin + textPixels * 0.7,
-    ])
     .domain([0, 1]);
 
   // Center the gauge within the parent SVG.
