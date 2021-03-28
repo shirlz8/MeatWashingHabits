@@ -4,7 +4,7 @@ class LiquidFillGauge {
    * @param {Object}
    * @param {Array}
    */
-  constructor(_config, _data) {
+  constructor(_config, _data, meatType, svg) {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 500,
@@ -17,6 +17,8 @@ class LiquidFillGauge {
       },
     };
 
+    this.meatType = meatType;
+    this.svg = svg;
     this.data = _data;
 
     this.initVis();
@@ -41,38 +43,45 @@ class LiquidFillGauge {
     };
   }
 
+  calculatePercentage() {
+    // Using vis.meatType do roll up and return percentage as number
+    const vis = this;
+    vis.data;
+
+    let sum = d3.sum(vis.data, (d) => d[vis.meatType]);
+
+    let count = d3.count(vis.data, (d) => d[vis.meatType]);
+
+    let percent = (sum / count) * 100;
+    console.log(sum);
+    console.log(percent);
+
+    vis.fillPercent =
+      Math.max(vis.config.minValue, Math.min(vis.config.maxValue, percent)) /
+      vis.config.maxValue;
+  }
+
   /**
    * We initialize the arc generator, scales, axes, and append static elements
    */
   initVis() {
-    let vis = this;
+    const vis = this;
     vis.config = this.liquidFillGaugeDefaultSettings();
     vis.value = 20;
     let elementId = 1;
-
-    vis.paths = [
-      {
-        fill: 'black',
-        d:
-          'M51.2074 174.866C81.8865 176.965 109.076 154.133 111.896 123.903C113.106 110.7 103.806 93.1407 83.7064 71.9492C80.5862 68.5847 78.8348 64.4792 78.7066 60.2289L78.6566 55.0477C78.6032 52.9655 77.6013 50.9781 75.8539 49.4884C74.1066 47.9988 71.7446 47.1185 69.2469 47.0259L69.0469 25.5596C71.8312 24.9788 74.3768 23.7848 76.4167 22.1026C77.8294 20.8791 78.9382 19.4352 79.6794 17.8539C80.4206 16.2725 80.7797 14.5848 80.736 12.8875C80.6924 11.1903 80.2468 9.5169 79.4249 7.96344C78.603 6.40998 77.421 5.007 75.9467 3.835C73.1219 1.63168 69.427 0.365374 65.5588 0.274841C61.6905 0.184308 57.9161 1.2758 54.9473 3.34353C51.8692 1.05314 47.8368 -0.142188 43.7138 0.0135061C39.5907 0.1692 35.7047 1.66354 32.888 4.17653C26.9682 9.39109 27.8081 17.6544 34.0579 22.5941C35.898 23.9369 38.0844 24.9088 40.4477 25.4346L40.6577 47.1509C38.2693 47.3389 36.053 48.2681 34.4488 49.7541C32.8446 51.2401 31.9698 53.1743 31.998 55.1726V60.6038C32 65.0877 30.1697 69.4385 26.8082 72.9405C10.3987 89.7254 1.34893 104.286 0.278961 116.373C-1.19935 130.427 3.22969 144.472 12.8086 156.107C22.6883 167.219 36.2379 174 51.2074 174.866Z',
-      },
-    ];
 
     vis.gauge = d3.select('#fillgauge1');
 
     vis.gauge
       .append('path')
-      .attr('id', 'beef')
-      .attr('d', vis.paths[0].d)
+      .attr('id', 'svg')
+      .attr('d', vis.svg)
       .style('fill', 'none')
       .style('stroke', 'black')
-      .style('stroke-width', '10px')
-      .on('mouseover', (event, d) => {
-        vis.updateVis(50);
-      });
+      .style('stroke-width', '10px');
 
     // Get bounding box
-    vis.BBox = d3.select('#beef').node().getBBox();
+    vis.BBox = d3.select('#svg').node().getBBox();
 
     // Get radius = half of the width
     vis.radius =
@@ -83,9 +92,7 @@ class LiquidFillGauge {
     // This is top left y of bounding box, plus height/2 - width/2
     vis.locationY = parseInt(vis.BBox.height) / 2 - vis.radius + vis.BBox.y;
 
-    vis.fillPercent =
-      Math.max(vis.config.minValue, Math.min(vis.config.maxValue, vis.value)) /
-      vis.config.maxValue;
+    vis.calculatePercentage();
 
     vis.waveHeightScale;
     if (vis.config.waveHeightScaling) {
@@ -188,8 +195,8 @@ class LiquidFillGauge {
         'transform',
         'translate(' + -vis.locationX + ',' + -vis.locationY + ')'
       )
-      .attr('id', 'beef')
-      .attr('d', vis.paths[0].d)
+      .attr('id', 'svg')
+      .attr('d', vis.svg)
       .style('fill', vis.config.waveColor)
       .style('stroke', 'black')
       .style('stroke-width', '10px');
@@ -253,13 +260,10 @@ class LiquidFillGauge {
     }
   }
 
-  updateVis(value) {
+  updateVis() {
     const vis = this;
 
-    vis.fillPercent =
-      Math.max(vis.config.minValue, Math.min(vis.config.maxValue, value)) /
-      vis.config.maxValue;
-
+    vis.calculatePercentage();
     console.log(vis);
 
     vis.waveHeight =
