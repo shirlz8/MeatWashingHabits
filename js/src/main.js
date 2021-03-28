@@ -41,23 +41,23 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
 
   console.log(exploratoryData);
 
-  // const liquidBeefChart = new LiquidFillGauge(
-  //   {
-  //     parentElement: '#liquidFillGauges',
-  //   },
-  //   exploratoryData,
-  //   'Wash_Any',
-  //   svgs['Beef']
-  // );
+  const liquidBeefChart = new LiquidFillGauge(
+    {
+      parentElement: '#liquidFillGauges',
+    },
+    exploratoryData,
+    'Beef',
+    svgs['Beef']
+  );
 
-  // const liquidPorkChart = new LiquidFillGauge(
-  //   {
-  //     parentElement: '#liquidFillGauges',
-  //   },
-  //   exploratoryData,
-  //   'Pork',
-  //   svgs['Pork']
-  // );
+  const liquidPorkChart = new LiquidFillGauge(
+    {
+      parentElement: '#liquidFillGauges',
+    },
+    exploratoryData,
+    'Pork',
+    svgs['Pork']
+  );
 
   const liquidPoultryChart = new LiquidFillGauge(
     {
@@ -68,14 +68,14 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     svgs['Poultry']
   );
 
-  // const liquidSheepGoatChart = new LiquidFillGauge(
-  //   {
-  //     parentElement: '#liquidFillGauges',
-  //   },
-  //   exploratoryData,
-  //   'Sheep_Goat',
-  //   svgs['Sheep_Goat']
-  // );
+  const liquidSheepGoatChart = new LiquidFillGauge(
+    {
+      parentElement: '#liquidFillGauges',
+    },
+    exploratoryData,
+    'Sheep_Goat',
+    svgs['Sheep_Goat']
+  );
 
   // const liquidGroundMeatChart = new LiquidFillGauge(
   //   {
@@ -86,16 +86,23 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
   //   svgs['Ground_Meat']
   // );
 
-  // const liquidFishChart = new LiquidFillGauge(
-  //   {
-  //     parentElement: '#liquidFillGauges',
-  //   },
-  //   exploratoryData,
-  //   'Fish',
-  //   svgs['Fish']
-  // );
+  const liquidGroundMeatChart = new LiquidFillGauge(
+    {
+      parentElement: '#liquidFillGauges',
+    },
+    exploratoryData,
+    'Wash_Any',
+    svgs['Ground_Meat']
+  );
 
-  // liquidchart.updateVis(50);
+  const liquidFishChart = new LiquidFillGauge(
+    {
+      parentElement: '#liquidFillGauges',
+    },
+    exploratoryData,
+    'Fish',
+    svgs['Fish']
+  );
 });
 
 // What are people trying to remove view
