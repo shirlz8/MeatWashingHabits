@@ -5,8 +5,11 @@ class HabitsBubblePlot {
       containerWidth: 600,
       containerHeight: 400,
       margin: {
-        top: 25, right: 25, bottom: 30, left: 100,
+        top: 30, right: 25, bottom: 30, left: 100,
       },
+      yAxisLabelWidth: 80,
+      yLabelWidth: 90
+
     };
     this.data = _data;
 
@@ -66,11 +69,11 @@ class HabitsBubblePlot {
 
     // Initialize main scales
     vis.xScale = d3.scalePoint()
-        .range([20, vis.width - 20])
+        .range([30, vis.width - 20])
         .domain(vis.frequencyLevel);
 
     vis.yScale = d3.scalePoint()
-        .range([20, vis.height - 40])
+        .range([30, vis.height - 40])
         .domain(vis.listOfHabits);
 
     // Initialize additional scales
@@ -93,6 +96,24 @@ class HabitsBubblePlot {
 
     vis.yAxisG = vis.chart.append('g')
         .attr('class', 'axis bubble-y-axis');
+
+    // Add axis titles
+    vis.chart
+        .append('g')
+        .attr('transform', 'translate(' + -vis.config.yLabelWidth + ', ' + vis.height / 2 + ')')
+        .append('text')
+        .attr("class", "axis-label")
+        .attr('text-anchor', 'middle')
+        .attr('transform', 'rotate(-90)')
+        .text('Food Safety Habits');
+
+    vis.chart
+        .append('g')
+        .attr('transform', 'translate(' + vis.width / 2 + ', ' + (vis.config.containerHeight - 35) + ')')
+        .append('text')
+        .attr("class", "axis-label")
+        .attr('text-anchor', 'middle')
+        .text('Level of Frequency');
 
     vis.updateVis();
   }
@@ -180,7 +201,13 @@ class HabitsBubblePlot {
     vis.xAxisG.call(vis.xAxis);
     vis.yAxisG.call(vis.yAxis)
         .selectAll('.tick text')
-        .call(vis.wrap, 80);
+        .attr("transform", d => {
+          if (d !== "Thermometer") {
+            console.log(d)
+            return "translate(0,-20)"
+          }
+        })
+        .call(vis.wrap, vis.config.yAxisLabelWidth);
   }
 
   // Determine the colour for different Wash/Don't Wash Ratio
