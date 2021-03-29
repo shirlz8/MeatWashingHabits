@@ -1,19 +1,26 @@
 /* Tooltip */
+
 #tooltip {
-  position: absolute;
-  display: none;
-  background: #fff;
-  box-shadow: 3px 3px 3px 0px rgb(92 92 92 / 0.5);
-  border: 1px solid #ddd;
-  font-family: Arial, sans-serif;
-  font-size: 8px;
-  font-weight: 250;
-  padding: 8px;
-  min-width: 50px;
-  color: #333;
-  text-align: left;
+    position: absolute;
+    display: none;
+    background: #fff;
+    box-shadow: 3px 3px 3px 0px rgb(92 92 92 / 0.5);
+    border: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+    font-size: 8px;
+    font-weight: 250;
+    padding: 8px;
+    min-width: 50px;
+    color: #333;
+    text-align: left;
 }
 
-#householdSizeBarChart {
-  margin: 25px;
+.axis-label {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.chart-title {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
 }

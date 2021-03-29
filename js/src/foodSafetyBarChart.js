@@ -8,9 +8,9 @@ class FoodSafetyBarChart {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 300,
-      containerHeight: 200,
+      containerHeight: 260,
       margin: {
-        top: 25, right: 25, bottom: 30, left: 25,
+        top: 35, right: 15, bottom: 60, left: 45,
       },
     };
     this.data = _data;
@@ -70,7 +70,6 @@ class FoodSafetyBarChart {
 
     vis.yAxis = d3.axisLeft(vis.yScale)
       .ticks(5)
-      .tickFormat(d3.format('d'))
       .tickSize(-vis.width);
 
     // Append axis groups
@@ -182,6 +181,33 @@ class FoodSafetyBarChart {
       // Remove tooltip
       d3.select('#tooltip').style('display', 'none');
     });
+
+    // Add chart title
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + vis.width / 2 + ', ' + -20 + ')')
+      .append('text')
+      .attr("class", "chart-title")
+      .attr('text-anchor', 'middle')
+      .text('Food Safe Importance Washing Trend');
+
+    // Add axis titles
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + -34 + ', ' + vis.height / 2 + ')')
+      .append('text')
+      .attr("class", "axis-label")
+      .attr('text-anchor', 'middle')
+      .attr('transform', 'rotate(-90)')
+      .text('# of repondants');
+
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + vis.width / 2 + ', ' + (vis.config.containerHeight - 40) + ')')
+      .append('text')
+      .attr("class", "axis-label")
+      .attr('text-anchor', 'middle')
+      .text('Level of importance');
 
     // render axis
     vis.xAxisG
