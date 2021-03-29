@@ -121,7 +121,7 @@ class LiquidFillGauge {
       .attr('fill', 'black')
       .style('font-size', '16px')
       .text(vis.meatName)
-      .attr('transform', 'translate(125,0)');
+      .attr('transform', 'translate(120,0)');
 
     // Get bounding box
     vis.BBox = d3.select('#outline').node().getBBox();
@@ -145,7 +145,7 @@ class LiquidFillGauge {
       .attr('fill', 'black')
       .style('font-size', '16px')
       .text(vis.percent + '%')
-      .attr('transform', 'translate(125,225)');
+      .attr('transform', 'translate(120,225)');
 
     vis.waveHeightScale = d3
       .scaleLinear()
