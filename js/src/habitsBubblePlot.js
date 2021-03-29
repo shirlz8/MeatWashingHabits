@@ -120,7 +120,7 @@ class HabitsBubblePlot {
           habit: habit,
           frequency: frequencyLevel[0],
           count: frequencyLevel[1],
-          washPercentage: (washPercentageMap.get(frequencyLevel[0]) / frequencyLevel[1]) * 100
+          washPercentage: washPercentageMap.get(frequencyLevel[0]) / frequencyLevel[1]
         }
         vis.aggregatedDataMap.push(newRow);
       }
@@ -131,7 +131,6 @@ class HabitsBubblePlot {
     vis.yValue = (d) => d['habit'];
     vis.xValue = (d) => d['frequency'];
     vis.count = (d) => d['count'];
-    vis.washPercentage = (d) => d['washPercentage'];
 
     const minCount = d3.least(vis.aggregatedDataMap,  d => d['count']).count;
     const maxCount = d3.greatest(vis.aggregatedDataMap,  d => d['count']).count;
@@ -163,6 +162,25 @@ class HabitsBubblePlot {
         //   } else {
         //     return '#80808C'
         //   }
+
+
+    circles.on('mouseover', (event,d) => {
+      console.log(d)
+      console.log(d['washPercentage'])
+
+        d3.select('#tooltip')
+            .style('display', 'block')
+            .style('left', (event.pageX) + 'px')
+            .style('top', (event.pageY) + 'px')
+            .html(`
+              <div class="tooltip-title">${d['count']} claims</div>
+              <div>${d['washPercentage'].toFixed(2)}% Wash Meats</div>
+              <div><i>(${100-d['washPercentage'].toFixed(2)}% Don't Wash Meats)</i></div>
+            `);
+    })
+        .on('mouseleave', () => {
+          d3.select('#tooltip').style('display', 'none');
+        });
 
     //draw the axis
     vis.xAxisG.call(vis.xAxis);

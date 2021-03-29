@@ -1,4 +1,4 @@
-let meatTypeFilter = '';
+let meatTypeFilter = 'Beef';
 
 let svgs = {
   Poultry:
