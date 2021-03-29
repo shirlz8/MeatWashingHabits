@@ -51,7 +51,7 @@ class HabitsBubblePlot {
 
     vis.chart = vis.chartArea.append('g');
 
-    // Initialize scales
+    // Initialize main scales
     vis.xScale = d3.scalePoint()
         .range([100, vis.width - 50])
         .domain(vis.xAxisData);
@@ -59,6 +59,10 @@ class HabitsBubblePlot {
     vis.yScale = d3.scalePoint()
         .range([50, vis.height - 100])
         .domain(vis.listOfHabits);
+
+    // Initialize additional scales
+    vis.radiusScale = d3.scaleSqrt()
+        .range([4, 50]);
 
     // Initialize axes
     vis.xAxis = d3.axisBottom(vis.xScale)
@@ -104,7 +108,13 @@ class HabitsBubblePlot {
 
     vis.yValue = (d) => d['habit'];
     vis.xValue = (d) => d['frequency'];
+    vis.count = (d) => d['count'];
 
+    const minCount = d3.least(vis.aggregatedDataMap,  d => d['count']).count;
+    const maxCount = d3.greatest(vis.aggregatedDataMap,  d => d['count']).count;
+
+    const countExtent = [minCount, maxCount];
+    vis.radiusScale.domain(countExtent);
 
     vis.renderVis();
   }
@@ -117,16 +127,11 @@ class HabitsBubblePlot {
         .data(vis.aggregatedDataMap, (d) => d)
         .join('circle')
         .attr('class', 'circle_data')
-        .attr('r', 10)
+        .attr('r', d => vis.radiusScale(vis.count(d)))
         .attr('cy', d => vis.yScale(vis.yValue(d)))
-        .attr('cx', d => {
-          console.log(d)
-          console.log(vis.xValue(d))
-          console.log(vis.xScale(vis.xValue(d)))
-          return vis.xScale(vis.xValue(d))})
+        .attr('cx', d => vis.xScale(vis.xValue(d)))
         .attr('opacity', 0.5)
         .attr('fill', '#80808C')
-
 
 
     //draw the axis
