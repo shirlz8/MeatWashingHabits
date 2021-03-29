@@ -8,9 +8,9 @@ class HouseholdSizeBarChart {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 300,
-      containerHeight: 200,
+      containerHeight: 250,
       margin: {
-        top: 25, right: 15, bottom: 20, left: 35,
+        top: 25, right: 15, bottom: 40, left: 45,
       },
     };
     this.data = _data;
@@ -162,6 +162,33 @@ class HouseholdSizeBarChart {
       // Remove tooltip
       d3.select('#tooltip').style('display', 'none');
     });
+
+    // Add chart title
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + vis.width / 2 + ', ' + -10 + ')')
+      .append('text')
+      .attr("class", "chart-title")
+      .attr('text-anchor', 'middle')
+      .text('Household Size Washing Trend');
+
+    // Add axis titles
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + -34 + ', ' + vis.height / 2 + ')')
+      .append('text')
+      .attr("class", "axis-label")
+      .attr('text-anchor', 'middle')
+      .attr('transform', 'rotate(-90)')
+      .text('# of repondants');
+
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + vis.width / 2 + ', ' + (vis.config.containerHeight - 30) + ')')
+      .append('text')
+      .attr("class", "axis-label")
+      .attr('text-anchor', 'middle')
+      .text('Household size');
 
     // render axis
     vis.xAxisG

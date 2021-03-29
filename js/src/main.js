@@ -8,7 +8,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
   }, exploratoryData);
 
   const foodSafetyBarChart = new FoodSafetyBarChart({
-    parentElement: '#householdSizeBarChart',
+    parentElement: '#foodSafetyBarChart',
   }, exploratoryData);
 
   // console.log(exploratoryData);
