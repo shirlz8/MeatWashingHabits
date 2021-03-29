@@ -33,6 +33,10 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
 
   var subgroups = exploratoryData.columns.slice(1);
   // console.log(subgroups);
+  // Create the habitsBubblePlot.css
+  const habitsBubblePlot = new HabitsBubblePlot({
+    parentElement: '#habitsBubblePlot',
+  }, exploratoryData);
 
   exploratoryData = exploratoryData.filter((d) => d.Houshold_size === '6');
 
