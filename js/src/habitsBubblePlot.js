@@ -10,9 +10,32 @@ class HabitsBubblePlot {
     };
     this.data = _data;
 
+    this.listOfHabits = ['Different_plates', 'Thermometer', 'Not_washing_between_utensils',
+      'Not_wash_between_cutting_boards', 'Leave_food_out_two_hours_or_more']
+
+    this.xAxisData = ['Never', 'Seldom', 'Sometimes', 'About Half the time', 'Usually', 'Always'];
+
+    this.yAxisData = ['Use different plate for handling raw meat and cooked meat', 'Use thermometer',
+      'Use same utensils without cleaning to handle both raw and cooked food',
+      'Use the same cutting board without cleaning to handle both raw and cooked food',
+      'Leave perishable out of the fridge for over 2 hours'];
+
     this.initVis();
   }
 
+
+  // Return axis names corresponding to the numbers
+  yAxisScale(d) {
+    const vis = this;
+
+    const yAxisName = d3.scaleOrdinal()
+        .domain(vis.listOfHabits)
+        .range(vis.yAxisData);
+
+    return yAxisName(d);
+  }
+
+  //Todo: refactor and look into the margin/axis calculation
   initVis() {
     const vis = this;
 
@@ -29,25 +52,20 @@ class HabitsBubblePlot {
     vis.chart = vis.chartArea.append('g');
 
     // Initialize scales
-    const xAxisData = ['Never', 'Seldom', 'Sometimes', 'Half the time', 'Usually', 'Always'];
-    const yAxisData = ['Use different plate for handling raw meat and cooked meat', 'Use thermometer',
-      'Use same utensils without cleaning to handle both raw and cooked food',
-      'Use the same cutting board without cleaning to handle both raw and cooked food',
-      'Leave perishable out of the fridge for over 2 hours'];
-
     vis.xScale = d3.scalePoint()
         .range([100, vis.width - 50])
-        .domain(xAxisData);
+        .domain(vis.xAxisData);
 
     vis.yScale = d3.scalePoint()
         .range([50, vis.height - 100])
-        .domain(yAxisData);
+        .domain(vis.listOfHabits);
 
     // Initialize axes
     vis.xAxis = d3.axisBottom(vis.xScale)
         .tickSize(-vis.width - 200);
 
     vis.yAxis = d3.axisLeft(vis.yScale)
+        .tickFormat((d) => vis.yAxisScale(d))
         .tickSize(-vis.height - 200);
 
     // Append axis groups
@@ -63,6 +81,30 @@ class HabitsBubblePlot {
 
   updateVis() {
     const vis = this;
+    console.log(vis.data)
+
+    // Count the number of each frequency lvl for each habit
+    // ie: {habit: "Different_plates", frequency: "Always", count: 5281}
+    vis.aggregatedDataMap = [];
+    for (const habit of vis.listOfHabits) {
+      const noNAData = vis.data.filter((d) => d[habit] !== 'NA');
+      const frequencyData = d3.rollups(noNAData, v => v.length, d => d[habit]);
+
+      for (const frequencyLevel of frequencyData) {
+        const newRow = {
+          habit: habit,
+          frequency: frequencyLevel[0],
+          count: frequencyLevel[1]
+        }
+        vis.aggregatedDataMap.push(newRow);
+      }
+    }
+
+    console.log(vis.aggregatedDataMap)
+
+    vis.yValue = (d) => d['habit'];
+    vis.xValue = (d) => d['frequency'];
+
 
     vis.renderVis();
   }
@@ -70,6 +112,24 @@ class HabitsBubblePlot {
   renderVis() {
     const vis = this;
 
+    //draw the circles
+    const circles = vis.chart.selectAll('circle')
+        .data(vis.aggregatedDataMap, (d) => d)
+        .join('circle')
+        .attr('class', 'circle_data')
+        .attr('r', 10)
+        .attr('cy', d => vis.yScale(vis.yValue(d)))
+        .attr('cx', d => {
+          console.log(d)
+          console.log(vis.xValue(d))
+          console.log(vis.xScale(vis.xValue(d)))
+          return vis.xScale(vis.xValue(d))})
+        .attr('opacity', 0.5)
+        .attr('fill', '#80808C')
+
+
+
+    //draw the axis
     vis.xAxisG.call(vis.xAxis);
     vis.yAxisG.call(vis.yAxis)
         .selectAll('.tick text')
