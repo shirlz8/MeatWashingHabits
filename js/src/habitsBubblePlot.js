@@ -203,7 +203,6 @@ class HabitsBubblePlot {
         .selectAll('.tick text')
         .attr("transform", d => {
           if (d !== "Thermometer") {
-            console.log(d)
             return "translate(0,-20)"
           }
         })
