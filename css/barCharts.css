@@ -1,4 +1,5 @@
 /* Tooltip */
+
 #tooltip {
     position: absolute;
     display: none;
@@ -12,15 +13,14 @@
     min-width: 50px;
     color: #333;
     text-align: left;
-  
-  }
+}
 
-  .axis-label {
+.axis-label {
     font-family: Arial, sans-serif;
     font-size: 14px;
-  }
+}
 
-  .chart-title {
+.chart-title {
     font-family: Arial, sans-serif;
     font-size: 16px;
-  }
+}

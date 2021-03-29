@@ -1,0 +1,17 @@
+#liquidFillGauges {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  margin: 15px;
+}
+
+.liquid-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.outline {
+  display: flex;
+  justify-content: center;
+}
