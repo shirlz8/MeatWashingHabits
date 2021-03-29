@@ -2,16 +2,16 @@ class HabitsBubblePlot {
   constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: 1000,
-      containerHeight: 600,
+      containerWidth: 600,
+      containerHeight: 400,
       margin: {
-        top: 25, right: 25, bottom: 30, left: 300,
+        top: 25, right: 25, bottom: 30, left: 100,
       },
     };
     this.data = _data;
 
-    this.listOfHabits = ['Different_plates', 'Thermometer', 'Not_washing_between_utensils',
-      'Not_wash_between_cutting_boards', 'Leave_food_out_two_hours_or_more']
+    this.listOfHabits = ['Different_plates', 'Thermometer', 'Different_utensil',
+      'Different_cutting_boards', 'Not_leaving_food_out']
 
     this.frequencyLevel = ['never', 'seldom', 'sometimes', 'about half the time', 'usually', 'always'];
 
@@ -66,24 +66,25 @@ class HabitsBubblePlot {
 
     // Initialize main scales
     vis.xScale = d3.scalePoint()
-        .range([100, vis.width - 50])
-        .domain(vis.xAxisData);
+        .range([20, vis.width - 20])
+        .domain(vis.frequencyLevel);
 
     vis.yScale = d3.scalePoint()
-        .range([50, vis.height - 100])
+        .range([20, vis.height - 40])
         .domain(vis.listOfHabits);
 
     // Initialize additional scales
     vis.radiusScale = d3.scaleSqrt()
-        .range([4, 50]);
+        .range([4, 40]);
 
     // Initialize axes
     vis.xAxis = d3.axisBottom(vis.xScale)
-        .tickSize(-vis.width - 200);
+        .tickFormat((d) => vis.xAxisScale(d))
+        .tickSize(-vis.width - 100);
 
     vis.yAxis = d3.axisLeft(vis.yScale)
         .tickFormat((d) => vis.yAxisScale(d))
-        .tickSize(-vis.height - 200);
+        .tickSize(-vis.height - 100);
 
     // Append axis groups
     vis.xAxisG = vis.chart.append('g')
@@ -167,7 +168,7 @@ class HabitsBubblePlot {
     vis.xAxisG.call(vis.xAxis);
     vis.yAxisG.call(vis.yAxis)
         .selectAll('.tick text')
-        .call(vis.wrap, 200);
+        .call(vis.wrap, 80);
   }
 
   closetNumber(arr, num) {
@@ -206,12 +207,12 @@ class HabitsBubblePlot {
       let word;
       let line = [];
       let lineNumber = 0;
-      const lineHeight = 1.1; // ems
+      const lineHeight = 1; // ems
       const y = text.attr('y');
       const dy = parseFloat(text.attr('dy'));
 
       let tspan = text.text(null).append('tspan')
-          .attr('x', -30)
+          .attr('x', -10)
           .attr('y', y)
           .attr('dy', `${dy}em`);
 
@@ -224,9 +225,9 @@ class HabitsBubblePlot {
           tspan.text(line.join(' '));
           line = [word];
           tspan = text.append('tspan')
-              .attr('x', -30)
+              .attr('x', -10)
               .attr('y', y)
-              .attr('dy', `${++lineNumber * lineHeight + dy}em`)
+              .attr('dy', `${1 + dy}em`)
               .text(word);
         }
       }
