@@ -8,10 +8,10 @@ class LiquidFillGauge {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 250,
-      containerHeight: 200,
+      containerHeight: 250,
       margin: {
-        x: 70,
-        y: 5,
+        x: 35,
+        y: 35,
       },
     };
 
@@ -37,7 +37,6 @@ class LiquidFillGauge {
         '#FF61EF',
         '#4E81BE',
       ]);
-    console.log(color(meatType));
     return color(meatType);
   }
 
@@ -74,8 +73,6 @@ class LiquidFillGauge {
         vis.settings.minValue,
         Math.min(vis.settings.maxValue, vis.percent)
       ) / vis.settings.maxValue;
-
-    console.log(vis.fillPercent);
   }
 
   /**
@@ -85,10 +82,22 @@ class LiquidFillGauge {
     const vis = this;
     vis.settings = this.liquidFillGaugeDefaultSettings();
 
+    vis.meatName;
+    switch (vis.meatType) {
+      case 'Sheep_Goat':
+        vis.meatName = 'Sheep';
+        break;
+      case 'Wash_Any':
+        vis.meatName = 'Any Meat Type';
+        break;
+      default:
+        vis.meatName = vis.meatType;
+    }
+
     vis.gauge = d3
       .select(vis.config.parentElement)
       .append('svg')
-      .attr('class', 'container')
+      .attr('class', 'liquid-container')
       .attr('width', vis.config.containerWidth)
       .attr('height', vis.config.containerHeight);
 
@@ -110,9 +119,9 @@ class LiquidFillGauge {
       .attr('dy', '1.2em')
       .attr('text-anchor', 'middle')
       .attr('fill', 'black')
-      .style('font-size', '10px')
-      .text(vis.meatType)
-      .attr('transform', 'translate(50,50)');
+      .style('font-size', '16px')
+      .text(vis.meatName)
+      .attr('transform', 'translate(125,0)');
 
     // Get bounding box
     vis.BBox = d3.select('#outline').node().getBBox();
@@ -134,9 +143,9 @@ class LiquidFillGauge {
       .attr('dy', '1.2em')
       .attr('text-anchor', 'middle')
       .attr('fill', 'black')
-      .style('font-size', '10px')
+      .style('font-size', '16px')
       .text(vis.percent + '%')
-      .attr('transform', 'translate(50,70)');
+      .attr('transform', 'translate(125,225)');
 
     vis.waveHeightScale = d3
       .scaleLinear()

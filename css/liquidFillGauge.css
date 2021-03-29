@@ -3,3 +3,14 @@
   justify-content: center;
   flex-wrap: wrap;
 }
+
+.liquid-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.outline {
+  display: flex;
+  justify-content: center;
+}
