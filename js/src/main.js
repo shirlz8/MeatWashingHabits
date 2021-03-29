@@ -1,4 +1,5 @@
 let meatTypeFilter = 'Beef';
+let habitsBubblePlot, mainData;
 
 let svgs = {
   Poultry:
@@ -17,6 +18,7 @@ let svgs = {
 
 // Exploratory view
 d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
+  mainData = exploratoryData;
   // Initialize the charts
   const householdSizeBarChart = new HouseholdSizeBarChart(
     {
@@ -33,8 +35,9 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
 
   var subgroups = exploratoryData.columns.slice(1);
   // console.log(subgroups);
+
   // Create the habitsBubblePlot.css
-  const habitsBubblePlot = new HabitsBubblePlot({
+  habitsBubblePlot = new HabitsBubblePlot({
     parentElement: '#habitsBubblePlot',
   }, exploratoryData);
 
@@ -106,6 +109,33 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
   );
 });
 
+// Event listener
+d3.selectAll("input[name='washHabit']").on('change', function(){
+  console.log(this.value)
+  let originalData = mainData;
+  let filteredData = [];
+  console.log(originalData)
+
+  if (this.value === 'wash') {
+    if (meatTypeFilter !== '') {
+      filteredData = originalData.filter(d => d[meatTypeFilter] === '1');
+    } else {
+      filteredData = originalData.filter(d => d['Wash_Any'] === '1');
+    }
+  } else if (this.value === 'noWash') {
+    if (meatTypeFilter !== '') {
+      filteredData = originalData.filter(d => d[meatTypeFilter] === '0');
+    } else {
+      filteredData = originalData.filter(d => d['Wash_Any'] === '0');
+    }
+  } else if (this.value === 'all') {
+    filteredData = originalData;
+  }
+
+  habitsBubblePlot.data = filteredData;
+  habitsBubblePlot.updateVis();
+});
+
 // What are people trying to remove view
 d3.csv('data/wash_to_remove_data.csv').then((removeData) => {
   // console.log(removeData);
@@ -120,3 +150,5 @@ d3.csv('data/reasons_for_washing_data.csv').then((reasonsWashingData) => {
     }
   );
 });
+
+

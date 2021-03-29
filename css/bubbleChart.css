@@ -6,6 +6,11 @@
     stroke: none;
 }
 
+.circle_data:hover {
+    stroke-width: 3px;
+    opacity: 1;
+}
+
 /* Tooltip */
 #tooltip {
     position: absolute;

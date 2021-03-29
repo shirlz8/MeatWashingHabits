@@ -84,7 +84,7 @@ class HabitsBubblePlot {
 
     vis.yAxis = d3.axisLeft(vis.yScale)
         .tickFormat((d) => vis.yAxisScale(d))
-        .tickSize(-vis.height - 100);
+        .tickSize(-vis.height - 140);
 
     // Append axis groups
     vis.xAxisG = vis.chart.append('g')
@@ -99,7 +99,6 @@ class HabitsBubblePlot {
 
   updateVis() {
     const vis = this;
-    console.log(vis.data)
 
     // Count the number of each frequency lvl for each habit
     // ie: {habit: "Different_plates", frequency: "Always", count: 5281},
@@ -108,7 +107,6 @@ class HabitsBubblePlot {
     for (const habit of vis.listOfHabits) {
       const noNAData = vis.data.filter((d) => d[habit] !== 'NA');
       const frequencyData = d3.rollups(noNAData, v => v.length, d => d[habit]);
-      console.log(frequencyData)
 
       let washPercentageMap = new Map();
       if (meatTypeFilter !== '') {
@@ -152,22 +150,18 @@ class HabitsBubblePlot {
         .attr('r', d => vis.radiusScale(vis.count(d)))
         .attr('cy', d => vis.yScale(vis.yValue(d)))
         .attr('cx', d => vis.xScale(vis.xValue(d)))
-        .attr('opacity', 1)
-        .attr('fill', '#80808C')
-        .style("stroke", "black")
-
-        // .attr('fill', function (d) {
-        //   if (meatTypeFilter !== '') {
-        //     vis.colour(d['washPercentage'])
-        //   } else {
-        //     return '#80808C'
-        //   }
+        .attr('opacity', 0.7)
+        .style("stroke", 'black')
+        .attr('fill', function (d) {
+          if (meatTypeFilter !== '') {
+            return vis.colour(d['habit'])
+          } else {
+            return '#80808C'
+          }
+        })
 
 
     circles.on('mouseover', (event,d) => {
-      console.log(d)
-      console.log(d['washPercentage'])
-
         d3.select('#tooltip')
             .style('display', 'block')
             .style('left', (event.pageX) + 'px')
@@ -189,28 +183,13 @@ class HabitsBubblePlot {
         .call(vis.wrap, 80);
   }
 
-  closetNumber(arr, num) {
-    const test = arr.reduce(function(prev, curr) {
-      return (Math.abs(curr - num) < Math.abs(prev - num) ? curr : prev);
-    });
-
-    console.log(test)
-  }
-
-
   // Determine the colour for different Wash/Don't Wash Ratio
   colour(d) {
     const vis = this;
-    console.log(d);
-    d = vis.closetNumber([100, 5/6 * 100, 4/6 * 100, 0.5 * 100, 2/6 * 100, 1/6 * 100, 0], d)
-    //
-    // console.log(d);
 
     const colourScale = d3.scaleOrdinal()
-        .domain([1, 5/6, 4/6, 0.5, 2/6, 1/6, 0])
-        .range(['#2A486B', '#4E81BE', '#73B1FA', // wash
-        '#FFFEC2', // neutral
-        '#FE9291', '#C1504F', '#672C2C']); // don't wash
+        .domain(vis.listOfHabits)
+        .range(['#3EBA9D', '#FF815D', '#7B97C1', '#F080B8', '#96D05B']);
 
     return colourScale(d);
   }
