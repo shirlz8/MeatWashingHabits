@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title>Do You Wash Your Meat?</title>
     <link rel="icon" href="data:;base64,iVBORwOKGO=" />
     <!-- <link rel="stylesheet" href="css/style.css"> -->
     <link rel="stylesheet" href="css/barCharts.css">
-
+    <link rel="stylesheet" href="css/index.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Castoro:ital@1&family=Noto+Sans+JP:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
+    <link href="https://fonts.googleapis.com/css2?family=Castoro:ital@1&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+
+<body>
     <div class="container">
-      <h1>Do your wash your meat?</h1>
-      <div id="vis"></div>
-      <div id="householdSizeBarChart"></div>
-      <div id="foodSafetyBarChart"></div>
+        <h1>Do your wash your meat?</h1>
+        <div id="vis"></div>
+        <button class="button" type="button">Clear all filters</button>
+        <div id="householdSizeBarChart"></div>
+        <div id="foodSafetyBarChart"></div>
     </div>
 
     <div id="tooltip"></div>
 
-    
+
     <script src="js/d3.v6.min.js"></script>
     <script src="js/src/timeline.js"></script>
     <script src="js/src/householdSizeBarChart.js"></script>
-    <script src="js/src/foodSafetyBarChart.js"></script>    
+    <script src="js/src/foodSafetyBarChart.js"></script>
     <script src="js/src/main.js"></script>
-  </body>
+</body>
+
 </html>
