@@ -13,18 +13,31 @@ class HabitsBubblePlot {
     this.listOfHabits = ['Different_plates', 'Thermometer', 'Not_washing_between_utensils',
       'Not_wash_between_cutting_boards', 'Leave_food_out_two_hours_or_more']
 
+    this.frequencyLevel = ['never', 'seldom', 'sometimes', 'about half the time', 'usually', 'always'];
+
     this.xAxisData = ['Never', 'Seldom', 'Sometimes', 'About Half the time', 'Usually', 'Always'];
 
     this.yAxisData = ['Use different plate for handling raw meat and cooked meat', 'Use thermometer',
-      'Use same utensils without cleaning to handle both raw and cooked food',
-      'Use the same cutting board without cleaning to handle both raw and cooked food',
-      'Leave perishable out of the fridge for over 2 hours'];
+      'Use different utensils for handling raw and cooked food',
+      'Use different cutting boards for handling raw and cooked food',
+      'Do not leave perishable out of the fridge for over 2 hours'];
 
     this.initVis();
   }
 
 
-  // Return axis names corresponding to the numbers
+  // Return axis names corresponding to the data
+  xAxisScale(d) {
+    const vis = this;
+
+    const xAxisName = d3.scaleOrdinal()
+        .domain(vis.frequencyLevel)
+        .range(vis.xAxisData);
+
+    return xAxisName(d);
+  }
+
+  // Return axis names corresponding to the data
   yAxisScale(d) {
     const vis = this;
 
@@ -88,17 +101,25 @@ class HabitsBubblePlot {
     console.log(vis.data)
 
     // Count the number of each frequency lvl for each habit
-    // ie: {habit: "Different_plates", frequency: "Always", count: 5281}
+    // ie: {habit: "Different_plates", frequency: "Always", count: 5281},
+    //     {habit: "Different_plates", frequency: "Always", count: 5281}
     vis.aggregatedDataMap = [];
     for (const habit of vis.listOfHabits) {
       const noNAData = vis.data.filter((d) => d[habit] !== 'NA');
       const frequencyData = d3.rollups(noNAData, v => v.length, d => d[habit]);
+      console.log(frequencyData)
+
+      let washPercentageMap = new Map();
+      if (meatTypeFilter !== '') {
+        washPercentageMap = d3.rollup(noNAData, v => d3.sum(v, d => d[meatTypeFilter]), d => d[habit])
+      }
 
       for (const frequencyLevel of frequencyData) {
         const newRow = {
           habit: habit,
           frequency: frequencyLevel[0],
-          count: frequencyLevel[1]
+          count: frequencyLevel[1],
+          washPercentage: (washPercentageMap.get(frequencyLevel[0]) / frequencyLevel[1]) * 100
         }
         vis.aggregatedDataMap.push(newRow);
       }
@@ -109,6 +130,7 @@ class HabitsBubblePlot {
     vis.yValue = (d) => d['habit'];
     vis.xValue = (d) => d['frequency'];
     vis.count = (d) => d['count'];
+    vis.washPercentage = (d) => d['washPercentage'];
 
     const minCount = d3.least(vis.aggregatedDataMap,  d => d['count']).count;
     const maxCount = d3.greatest(vis.aggregatedDataMap,  d => d['count']).count;
@@ -130,15 +152,48 @@ class HabitsBubblePlot {
         .attr('r', d => vis.radiusScale(vis.count(d)))
         .attr('cy', d => vis.yScale(vis.yValue(d)))
         .attr('cx', d => vis.xScale(vis.xValue(d)))
-        .attr('opacity', 0.5)
+        .attr('opacity', 1)
         .attr('fill', '#80808C')
+        .style("stroke", "black")
 
+        // .attr('fill', function (d) {
+        //   if (meatTypeFilter !== '') {
+        //     vis.colour(d['washPercentage'])
+        //   } else {
+        //     return '#80808C'
+        //   }
 
     //draw the axis
     vis.xAxisG.call(vis.xAxis);
     vis.yAxisG.call(vis.yAxis)
         .selectAll('.tick text')
         .call(vis.wrap, 200);
+  }
+
+  closetNumber(arr, num) {
+    const test = arr.reduce(function(prev, curr) {
+      return (Math.abs(curr - num) < Math.abs(prev - num) ? curr : prev);
+    });
+
+    console.log(test)
+  }
+
+
+  // Determine the colour for different Wash/Don't Wash Ratio
+  colour(d) {
+    const vis = this;
+    console.log(d);
+    d = vis.closetNumber([100, 5/6 * 100, 4/6 * 100, 0.5 * 100, 2/6 * 100, 1/6 * 100, 0], d)
+    //
+    // console.log(d);
+
+    const colourScale = d3.scaleOrdinal()
+        .domain([1, 5/6, 4/6, 0.5, 2/6, 1/6, 0])
+        .range(['#2A486B', '#4E81BE', '#73B1FA', // wash
+        '#FFFEC2', // neutral
+        '#FE9291', '#C1504F', '#672C2C']); // don't wash
+
+    return colourScale(d);
   }
 
   //TODO: consider refactoring and move to util
