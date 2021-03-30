@@ -138,7 +138,19 @@ class HouseholdSizeBarChart {
       .attr('width', vis.xScale.bandwidth())
       .attr('height', (d) => vis.yScale(d[0]) - vis.yScale(d[1]))
       .attr('y', (d) => vis.yScale(d[1]))
-      .attr('x', (d) => vis.xScale(d.data.householdSize));
+      .attr('x', (d) => vis.xScale(d.data.householdSize))
+      .style('stroke', (d) => {
+        if (householdSizeFilter == d.data.householdSize)
+          return "black";
+        else
+          return "none";
+      })
+      .attr('stroke-width', (d) => {
+        if (householdSizeFilter == d.data.householdSize)
+          return "2";
+        else
+          return "0";
+      });
 
     bars.on('mouseover', (event, d) => {
       // Add hover shading
