@@ -1,15 +1,14 @@
 // Filter variables
-let meatTypeFilter = 'Beef';
+let meatTypeFilter = '';
 let householdSizeFilter = 0;
 let foodSafetyImportanceFilter = 0;
 
-var filteredData;
+var filteredMeatTypeData;
 
 // Dispatchers
 const dispatcherHouseholdSize = d3.dispatch('filterHouseholdSize');
 const dispatcherFoodSafetyImportance = d3.dispatch('filterFoodSafetyImportance');
-
-const dispatcherSelected = d3.dispatch('filterSelected');
+const dispatcherMeatType = d3.dispatch('filterMeatType');
 
 let habitsBubblePlot, mainData;
 
@@ -57,6 +56,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#liquidFillGauges',
     },
+    dispatcherMeatType,
     exploratoryData,
     'Beef',
     svgs['Beef']
@@ -66,6 +66,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#liquidFillGauges',
     },
+    dispatcherMeatType,
     exploratoryData,
     'Pork',
     svgs['Pork']
@@ -75,6 +76,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#liquidFillGauges',
     },
+    dispatcherMeatType,
     exploratoryData,
     'Poultry',
     svgs['Poultry']
@@ -84,6 +86,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#liquidFillGauges',
     },
+    dispatcherMeatType,
     exploratoryData,
     'Sheep_Goat',
     svgs['Sheep_Goat']
@@ -93,6 +96,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#liquidFillGauges',
     },
+    dispatcherMeatType,
     exploratoryData,
     'Fish',
     svgs['Fish']
@@ -102,6 +106,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#liquidFillGauges',
     },
+    dispatcherMeatType,
     exploratoryData,
     'Wash_Any',
     svgs['Wash_Any']
@@ -111,15 +116,14 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
   
   // Dispatchers for linkage
   dispatcherHouseholdSize.on('filterHouseholdSize', householdSizeFilter => {
-    console.log(householdSizeFilter);
-    filterData();
+    filterMeatTypeData();
 
-    liquidBeefChart.data = filteredData;
-    liquidPorkChart.data = filteredData;
-    liquidPoultryChart.data = filteredData;
-    liquidSheepGoatChart.data = filteredData;
-    liquidFishChart.data = filteredData;
-    liquidWashAnyChart.data = filteredData;
+    liquidBeefChart.data = filteredMeatTypeData;
+    liquidPorkChart.data = filteredMeatTypeData;
+    liquidPoultryChart.data = filteredMeatTypeData;
+    liquidSheepGoatChart.data = filteredMeatTypeData;
+    liquidFishChart.data = filteredMeatTypeData;
+    liquidWashAnyChart.data = filteredMeatTypeData;
 
     liquidBeefChart.updateVis();
     liquidPorkChart.updateVis();
@@ -129,17 +133,14 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     liquidWashAnyChart.updateVis();
   });
 
-   // Dispatchers for linkage
-  // Update when gender is selected
   dispatcherFoodSafetyImportance.on('filterFoodSafetyImportance', foodSafetyImportanceFilter => {
-    filterData();
-    
-    liquidBeefChart.data = filteredData;
-    liquidPorkChart.data = filteredData;
-    liquidPoultryChart.data = filteredData;
-    liquidSheepGoatChart.data = filteredData;
-    liquidFishChart.data = filteredData;
-    liquidWashAnyChart.data = filteredData;
+    filterMeatTypeData();    
+    liquidBeefChart.data = filteredMeatTypeData;
+    liquidPorkChart.data = filteredMeatTypeData;
+    liquidPoultryChart.data = filteredMeatTypeData;
+    liquidSheepGoatChart.data = filteredMeatTypeData;
+    liquidFishChart.data = filteredMeatTypeData;
+    liquidWashAnyChart.data = filteredMeatTypeData;
 
     liquidBeefChart.updateVis();
     liquidPorkChart.updateVis();
@@ -148,9 +149,16 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     liquidFishChart.updateVis();
     liquidWashAnyChart.updateVis();
   });
+
+  dispatcherMeatType.on('filterMeatType', meatTypeFilter => {
+    householdSizeBarChart.updateVis();
+    foodSafetyBarChart.updateVis();
+
+  });
+
 
     // Apply all active filters to data
-  function filterData(){
+  function filterMeatTypeData(){
 
     let currentData = exploratoryData;
 
@@ -162,7 +170,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
       currentData = currentData.filter(d => d.Food_safety_importance == foodSafetyImportanceFilter);
     }
 
-  filteredData = currentData
+    filteredMeatTypeData = currentData;
     
   }
 
