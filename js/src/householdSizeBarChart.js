@@ -1,9 +1,9 @@
 class HouseholdSizeBarChart {
   /**
-       * Class constructor with initial configuration
-       * @param {Object}
-       * @param {Array}
-       */
+   * Class constructor with initial configuration
+   * @param {Object}
+   * @param {Array}
+   */
   constructor(_config, _dispatcher, _data) {
     this.config = {
       parentElement: _config.parentElement,
@@ -128,30 +128,28 @@ class HouseholdSizeBarChart {
 
     vis.yAxis = d3.axisLeft(vis.yScale).ticks(6).tickSize(-vis.width);
 
-    // Add chart title
-    vis.chart
-      .append('g')
-      .attr('transform', 'translate(' + vis.width / 2 + ', ' + -10 + ')')
-      .append('text')
-      .attr("class", "chart-title")
-      .attr('text-anchor', 'middle')
-      .text('Household Size Washing Trend');
-
     // Add axis titles
     vis.chart
       .append('g')
       .attr('transform', 'translate(' + -34 + ', ' + vis.height / 2 + ')')
       .append('text')
-      .attr("class", "axis-label")
+      .attr('class', 'axis-label')
       .attr('text-anchor', 'middle')
       .attr('transform', 'rotate(-90)')
       .text('# of repondants');
 
     vis.chart
       .append('g')
-      .attr('transform', 'translate(' + vis.width / 2 + ', ' + (vis.config.containerHeight - 30) + ')')
+      .attr(
+        'transform',
+        'translate(' +
+          vis.width / 2 +
+          ', ' +
+          (vis.config.containerHeight - 30) +
+          ')'
+      )
       .append('text')
-      .attr("class", "axis-label")
+      .attr('class', 'axis-label')
       .attr('text-anchor', 'middle')
       .text('Household size');
 
@@ -245,16 +243,12 @@ class HouseholdSizeBarChart {
       .attr('y', (d) => vis.yScale(d[1]))
       .attr('x', (d) => vis.xScale(d.data.householdSize))
       .style('stroke', (d) => {
-        if (householdSizeFilter == d.data.householdSize)
-          return "black";
-        else
-          return "none";
+        if (householdSizeFilter == d.data.householdSize) return 'black';
+        else return 'none';
       })
       .attr('stroke-width', (d) => {
-        if (householdSizeFilter == d.data.householdSize)
-          return "2";
-        else
-          return "0";
+        if (householdSizeFilter == d.data.householdSize) return '2';
+        else return '0';
       });
 
     bars
@@ -273,41 +267,42 @@ class HouseholdSizeBarChart {
                     <div>Do not wash : ${d.data.dontWash}</div>
                     <div>Wash : ${d.data.wash}</div>
                 `);
-    }).on("mouseleave", (event, d) => {
-      // Remove hover shading if not selected
-      d3.selectAll("bars").attr("stroke-width", "0");
-      let selected = d.data.householdSize;
+      })
+      .on('mouseleave', (event, d) => {
+        // Remove hover shading if not selected
+        d3.selectAll('bars').attr('stroke-width', '0');
+        let selected = d.data.householdSize;
 
-      if (householdSizeFilter != selected) {
-        d3.selectAll(`rect.household${d.data.householdSize}`).attr(
-          "stroke-width",
-          "0"
-        );
-      }
-      // Remove tooltip
-      d3.select("#tooltip").style("display", "none");
-    })
-    .on("click", function (event, d) {
-      let selected = d.data.householdSize;
-      // If the clicked on is already clicked
-      if (householdSizeFilter === selected) {
-        householdSizeFilter = 0;
-        d3.selectAll(`rect.household${d.data.householdSize}`).attr(
-          "stroke-width",
-          "0"
-        );
-      } else {
-        d3.selectAll(`rect.household${householdSizeFilter}`).attr(
-          "stroke-width",
-          "0"
-        );
-        householdSizeFilter = selected;
-        d3.selectAll(`rect.household${d.data.householdSize}`)
-          .style("stroke", "black")
-          .attr("stroke-width", "2");
-      }
-      vis.dispatcher.call('filterHouseholdSize', event, householdSizeFilter);
-    });
+        if (householdSizeFilter != selected) {
+          d3.selectAll(`rect.household${d.data.householdSize}`).attr(
+            'stroke-width',
+            '0'
+          );
+        }
+        // Remove tooltip
+        d3.select('#tooltip').style('display', 'none');
+      })
+      .on('click', function (event, d) {
+        let selected = d.data.householdSize;
+        // If the clicked on is already clicked
+        if (householdSizeFilter === selected) {
+          householdSizeFilter = 0;
+          d3.selectAll(`rect.household${d.data.householdSize}`).attr(
+            'stroke-width',
+            '0'
+          );
+        } else {
+          d3.selectAll(`rect.household${householdSizeFilter}`).attr(
+            'stroke-width',
+            '0'
+          );
+          householdSizeFilter = selected;
+          d3.selectAll(`rect.household${d.data.householdSize}`)
+            .style('stroke', 'black')
+            .attr('stroke-width', '2');
+        }
+        vis.dispatcher.call('filterHouseholdSize', event, householdSizeFilter);
+      });
 
     // Add axis titles
     vis.chart

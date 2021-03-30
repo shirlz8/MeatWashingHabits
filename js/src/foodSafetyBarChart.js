@@ -1,9 +1,9 @@
 class FoodSafetyBarChart {
   /**
-       * Class constructor with initial configuration
-       * @param {Object}
-       * @param {Array}
-       */
+   * Class constructor with initial configuration
+   * @param {Object}
+   * @param {Array}
+   */
   constructor(_config, _dispatcher, _data) {
     this.config = {
       parentElement: _config.parentElement,
@@ -69,7 +69,7 @@ class FoodSafetyBarChart {
       )
       .attr('class', 'chart-title')
       .attr('text-anchor', 'middle')
-      .text('Household Size Washing Trend');
+      .text('Food Safe Importance Washing Trend');
 
     // add legend
     vis.legend = vis.svg
@@ -140,30 +140,28 @@ class FoodSafetyBarChart {
 
     vis.yAxis = d3.axisLeft(vis.yScale).ticks(5).tickSize(-vis.width);
 
-    // Add chart title
-    vis.chart
-      .append('g')
-      .attr('transform', 'translate(' + vis.width / 2 + ', ' + -20 + ')')
-      .append('text')
-      .attr("class", "chart-title")
-      .attr('text-anchor', 'middle')
-      .text('Food Safe Importance Washing Trend');
-
     // Add axis titles
     vis.chart
       .append('g')
       .attr('transform', 'translate(' + -34 + ', ' + vis.height / 2 + ')')
       .append('text')
-      .attr("class", "axis-label")
+      .attr('class', 'axis-label')
       .attr('text-anchor', 'middle')
       .attr('transform', 'rotate(-90)')
       .text('# of repondants');
 
     vis.chart
       .append('g')
-      .attr('transform', 'translate(' + vis.width / 2 + ', ' + (vis.config.containerHeight - 40) + ')')
+      .attr(
+        'transform',
+        'translate(' +
+          vis.width / 2 +
+          ', ' +
+          (vis.config.containerHeight - 40) +
+          ')'
+      )
       .append('text')
-      .attr("class", "axis-label")
+      .attr('class', 'axis-label')
       .attr('text-anchor', 'middle')
       .text('Level of importance');
 
@@ -253,7 +251,8 @@ class FoodSafetyBarChart {
 
     console.log(foodSafetyImportanceFilter);
 
-    const bars = vis.chart.selectAll('.bar_g')
+    const bars = vis.chart
+      .selectAll('.bar_g')
       .data(vis.stackedWashCountData, (d) => d)
       .join('g')
       .attr('class', 'bar_g')
@@ -268,15 +267,13 @@ class FoodSafetyBarChart {
       .attr('x', (d) => vis.xScale(d.data.foodSafetyImportance))
       .style('stroke', (d) => {
         if (foodSafetyImportanceFilter == d.data.foodSafetyImportance)
-          return "black";
-        else
-          return "none";
+          return 'black';
+        else return 'none';
       })
       .attr('stroke-width', (d) => {
         if (foodSafetyImportanceFilter == d.data.foodSafetyImportance)
-          return "2";
-        else
-          return "0";
+          return '2';
+        else return '0';
       });
 
     bars
@@ -291,45 +288,49 @@ class FoodSafetyBarChart {
           .select('#tooltip')
           .style('display', 'block')
           .style('left', `${event.pageX + vis.tooltipPadding}px`)
-          .style('top', (`${event.pageY + vis.tooltipPadding}px`))
-          .html(`
+          .style('top', `${event.pageY + vis.tooltipPadding}px`).html(`
                 <div>Do not wash : ${d.data.dontWash}</div>
                 <div>Wash : ${d.data.wash}</div>
             `);
-    }) .on("mouseleave", (event, d) => {
+      })
+      .on('mouseleave', (event, d) => {
         // Remove hover shading if not selected
-        d3.selectAll("bars").attr("stroke-width", "0");
+        d3.selectAll('bars').attr('stroke-width', '0');
         let selected = d.data.foodSafetyImportance;
 
         if (foodSafetyImportanceFilter != selected) {
           d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`).attr(
-            "stroke-width",
-            "0"
+            'stroke-width',
+            '0'
           );
         }
         // Remove tooltip
-        d3.select("#tooltip").style("display", "none");
+        d3.select('#tooltip').style('display', 'none');
       })
-      .on("click", function (event, d) {
+      .on('click', function (event, d) {
         let selected = d.data.foodSafetyImportance;
         // If the clicked on is already clicked
         if (foodSafetyImportanceFilter === selected) {
           foodSafetyImportanceFilter = 0;
           d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`).attr(
-            "stroke-width",
-            "0"
+            'stroke-width',
+            '0'
           );
         } else {
           d3.selectAll(`rect.foodSafety${foodSafetyImportanceFilter}`).attr(
-            "stroke-width",
-            "0"
+            'stroke-width',
+            '0'
           );
           foodSafetyImportanceFilter = selected;
           d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`)
-            .style("stroke", "black")
-            .attr("stroke-width", "2");
+            .style('stroke', 'black')
+            .attr('stroke-width', '2');
         }
-        vis.dispatcher.call('filterFoodSafetyImportance', event, foodSafetyImportanceFilter);
+        vis.dispatcher.call(
+          'filterFoodSafetyImportance',
+          event,
+          foodSafetyImportanceFilter
+        );
       });
 
     // Add axis titles

@@ -4,7 +4,14 @@ class LiquidFillGauge {
    * @param {Object}
    * @param {Array}
    */
-  constructor(_config, _dispatcher, _data, meatType, svgString) {
+  constructor(
+    _config,
+    _dispatcher,
+    _data,
+    meatType,
+    svgString,
+    dispatcherOnHover
+  ) {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 250,
@@ -19,6 +26,7 @@ class LiquidFillGauge {
     this.svgString = svgString;
     this.data = _data;
     this.dispatcher = _dispatcher;
+    this.dispatcherOnHover = dispatcherOnHover;
     this.initVis();
   }
 
@@ -110,6 +118,15 @@ class LiquidFillGauge {
       });
 
     vis.gauge
+      .append('circle')
+      .attr('class', `highlight${vis.meatType}`)
+      .attr('r', 90)
+      .attr('cy', 120)
+      .attr('cx', 120)
+      .attr('fill', 'grey')
+      .attr('opacity', 0);
+
+    vis.gauge
       .append('path')
       .attr(
         'transform',
@@ -122,8 +139,20 @@ class LiquidFillGauge {
       .style('stroke-width', '5px');
 
     vis.gauge
+      .append('path')
+      .attr(
+        'transform',
+        'translate(' + vis.config.margin.x + ',' + vis.config.margin.y + ')'
+      )
+      .attr('id', 'outline')
+      .attr('d', vis.svgString)
+      .style('fill', 'white')
+      .style('stroke', 'black')
+      .style('stroke-width', '5px');
+
+    vis.gauge
       .append('text')
-      .attr('class', "title")
+      .attr('class', 'title')
       .attr('dy', '1.2em')
       .attr('text-anchor', 'middle')
       .attr('fill', 'black')
@@ -172,9 +201,9 @@ class LiquidFillGauge {
     vis.waveClipWidth = vis.waveLength * vis.waveClipCount;
 
     // Data for building the clip wave area.
-    vis.data = [];
+    vis.clipWaveData = [];
     for (let i = 0; i <= 40 * vis.waveClipCount; i++) {
-      vis.data.push({ x: i / (40 * vis.waveClipCount), y: i / 40 });
+      vis.clipWaveData.push({ x: i / (40 * vis.waveClipCount), y: i / 40 });
     }
 
     // Scales for controlling the size of the clipping path.
@@ -233,7 +262,7 @@ class LiquidFillGauge {
       .attr('id', 'clipWave' + vis.meatType);
     vis.wave = vis.waveGroup
       .append('path')
-      .datum(vis.data)
+      .datum(vis.clipWaveData)
       .attr('d', vis.clipArea)
       .attr('T', 0);
 
@@ -252,7 +281,7 @@ class LiquidFillGauge {
         'transform',
         'translate(' + -vis.locationX + ',' + -vis.locationY + ')'
       )
-      .attr('id', 'outline')
+      .attr('class', `outline${vis.meatType}`)
       .attr('d', vis.svgString)
       .style('fill', vis.settings.waveColor)
       .style('stroke', 'black')
@@ -282,7 +311,6 @@ class LiquidFillGauge {
       }); // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
 
     vis.animateWave = () => {
-      console.log('animating');
       if (vis.waveActive) {
         vis.wave.attr(
           'transform',
@@ -305,32 +333,25 @@ class LiquidFillGauge {
 
     vis.gauge
       .on('mouseover', (event, d) => {
-        console.log('hover');
+        console.log('shirleysetup');
         vis.waveActive = true;
         vis.animateWave();
-        // vis.fillCircleGroup.style('fill', vis.settings.inactiveWaveColor);
-        let x = d3.select(event.currentTarget);
-        console.log(x);
-        x.style('fill', 'lightgrey');
-        // d3.select('outline').style('fill', vis.settings.inactiveWaveColor);
-        // console.log('hover');
-        // d3
-        // updateVis();
+        d3.selectAll(`circle.highlight${vis.meatType}`).attr('opacity', 100);
       })
       .on('mouseleave', (event, d) => {
-        console.log('eave');
         vis.waveActive = false;
-        // vis.updateVis();
+        d3.selectAll(`circle.highlight${vis.meatType}`).attr('opacity', 0);
       });
   }
 
   updateVis() {
     const vis = this;
 
+    console.log(vis.data);
+
     vis.calculatePercentage();
 
-    d3.selectAll(`text.percent${vis.meatType}`)
-        .text(vis.percent + "%");
+    d3.selectAll(`text.percent${vis.meatType}`).text(vis.percent + '%');
 
     // The inner circle with the clipping wave attached.
     vis.fillCircleGroup = vis.gaugeGroup
