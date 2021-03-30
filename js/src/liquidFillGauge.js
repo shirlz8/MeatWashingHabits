@@ -4,7 +4,7 @@ class LiquidFillGauge {
    * @param {Object}
    * @param {Array}
    */
-  constructor(_config, _data, meatType, svgString) {
+  constructor(_config, _dispatcher, _data, meatType, svgString) {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 250,
@@ -18,12 +18,11 @@ class LiquidFillGauge {
     this.meatType = meatType;
     this.svgString = svgString;
     this.data = _data;
-
+    this.dispatcher = _dispatcher;
     this.initVis();
   }
 
   waveColor(meatType) {
-    console.log(meatType);
     const vis = this;
 
     const color = d3
@@ -67,7 +66,6 @@ class LiquidFillGauge {
     let count = d3.count(vis.data, (d) => d[vis.meatType]);
 
     vis.percent = Math.round((sum / count) * 100);
-    console.log(sum);
     console.log(vis.percent);
 
     vis.fillPercent =
@@ -101,7 +99,15 @@ class LiquidFillGauge {
       .append('svg')
       .attr('class', 'liquid-container')
       .attr('width', vis.config.containerWidth)
-      .attr('height', vis.config.containerHeight);
+      .attr('height', vis.config.containerHeight)
+      .on('click', function (event, d) {
+        if (meatTypeFilter === vis.meatType) {
+          meatTypeFilter = '';
+        } else {
+          meatTypeFilter = vis.meatType;
+        }
+        vis.dispatcher.call('filterMeatType', event, meatTypeFilter);
+      });
 
     vis.gauge
       .append('path')
@@ -113,7 +119,7 @@ class LiquidFillGauge {
       .attr('d', vis.svgString)
       .style('fill', 'none')
       .style('stroke', 'black')
-      .style('stroke-width', '10px');
+      .style('stroke-width', '5px');
 
     vis.gauge
       .append('text')
@@ -250,7 +256,7 @@ class LiquidFillGauge {
       .attr('d', vis.svgString)
       .style('fill', vis.settings.waveColor)
       .style('stroke', 'black')
-      .style('stroke-width', '10px');
+      .style('stroke-width', '5px');
 
     // Make the wave rise. wave and waveGroup are separate so that horizontal and vertical movement can be controlled independently.
     vis.waveGroupXPosition =
@@ -301,7 +307,15 @@ class LiquidFillGauge {
       .on('mouseover', (event, d) => {
         console.log('hover');
         vis.waveActive = true;
-        // vis.updateVis();
+        vis.animateWave();
+        // vis.fillCircleGroup.style('fill', vis.settings.inactiveWaveColor);
+        let x = d3.select(event.currentTarget);
+        console.log(x);
+        x.style('fill', 'lightgrey');
+        // d3.select('outline').style('fill', vis.settings.inactiveWaveColor);
+        // console.log('hover');
+        // d3
+        // updateVis();
       })
       .on('mouseleave', (event, d) => {
         console.log('eave');
@@ -314,7 +328,27 @@ class LiquidFillGauge {
     const vis = this;
 
     vis.calculatePercentage();
-    console.log(vis);
+
+    // The inner circle with the clipping wave attached.
+    vis.fillCircleGroup = vis.gaugeGroup
+      .append('g')
+      .attr(
+        'transform',
+        'translate(' + vis.config.margin.x + ',' + vis.config.margin.y + ')'
+      ) // applying adjustment again
+      .attr('clip-path', 'url(#clipWave' + vis.meatType + ')');
+
+    vis.fillCircleGroup
+      .append('path')
+      .attr(
+        'transform',
+        'translate(' + -vis.locationX + ',' + -vis.locationY + ')'
+      )
+      .attr('id', 'outline')
+      .attr('d', vis.svgString)
+      .style('fill', vis.settings.waveColor)
+      .style('stroke', 'black')
+      .style('stroke-width', '5px');
 
     vis.waveHeight =
       vis.fillCircleRadius * vis.waveHeightScale(vis.fillPercent * 100);

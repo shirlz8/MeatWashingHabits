@@ -1,10 +1,10 @@
 class FoodSafetyBarChart {
   /**
-   * Class constructor with initial configuration
-   * @param {Object}
-   * @param {Array}
-   */
-  constructor(_config, _data) {
+       * Class constructor with initial configuration
+       * @param {Object}
+       * @param {Array}
+       */
+  constructor(_config, _dispatcher, _data) {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 350,
@@ -18,6 +18,7 @@ class FoodSafetyBarChart {
       },
     };
     this.data = _data;
+    this.dispatcher = _dispatcher;
     this.initVis();
   }
 
@@ -223,8 +224,9 @@ class FoodSafetyBarChart {
     const vis = this;
     vis.tooltipPadding = 10;
 
-    const bars = vis.chart
-      .selectAll('.bar_g')
+    console.log(foodSafetyImportanceFilter);
+
+    const bars = vis.chart.selectAll('.bar_g')
       .data(vis.stackedWashCountData, (d) => d)
       .join('g')
       .attr('class', 'bar_g')
@@ -236,7 +238,19 @@ class FoodSafetyBarChart {
       .attr('width', vis.xScale.bandwidth())
       .attr('height', (d) => vis.yScale(d[0]) - vis.yScale(d[1]))
       .attr('y', (d) => vis.yScale(d[1]))
-      .attr('x', (d) => vis.xScale(d.data.foodSafetyImportance));
+      .attr('x', (d) => vis.xScale(d.data.foodSafetyImportance))
+      .style('stroke', (d) => {
+        if (foodSafetyImportanceFilter == d.data.foodSafetyImportance)
+          return "black";
+        else
+          return "none";
+      })
+      .attr('stroke-width', (d) => {
+        if (foodSafetyImportanceFilter == d.data.foodSafetyImportance)
+          return "2";
+        else
+          return "0";
+      });
 
     bars
       .on('mouseover', (event, d) => {
@@ -250,20 +264,45 @@ class FoodSafetyBarChart {
           .select('#tooltip')
           .style('display', 'block')
           .style('left', `${event.pageX + vis.tooltipPadding}px`)
-          .style('top', `${event.pageY + vis.tooltipPadding}px`).html(`
+          .style('top', (`${event.pageY + vis.tooltipPadding}px`))
+          .html(`
                 <div>Do not wash : ${d.data.dontWash}</div>
                 <div>Wash : ${d.data.wash}</div>
             `);
-      })
-      .on('mouseleave', (event, d) => {
-        // Remove hover shading
-        d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`).attr(
-          'stroke-width',
-          '0'
-        );
+    }) .on("mouseleave", (event, d) => {
+        // Remove hover shading if not selected
+        d3.selectAll("bars").attr("stroke-width", "0");
+        let selected = d.data.foodSafetyImportance;
 
+        if (foodSafetyImportanceFilter != selected) {
+          d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`).attr(
+            "stroke-width",
+            "0"
+          );
+        }
         // Remove tooltip
-        d3.select('#tooltip').style('display', 'none');
+        d3.select("#tooltip").style("display", "none");
+      })
+      .on("click", function (event, d) {
+        let selected = d.data.foodSafetyImportance;
+        // If the clicked on is already clicked
+        if (foodSafetyImportanceFilter === selected) {
+          foodSafetyImportanceFilter = 0;
+          d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`).attr(
+            "stroke-width",
+            "0"
+          );
+        } else {
+          d3.selectAll(`rect.foodSafety${foodSafetyImportanceFilter}`).attr(
+            "stroke-width",
+            "0"
+          );
+          foodSafetyImportanceFilter = selected;
+          d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`)
+            .style("stroke", "black")
+            .attr("stroke-width", "2");
+        }
+        vis.dispatcher.call('filterFoodSafetyImportance', event, foodSafetyImportanceFilter);
       });
 
     // Add axis titles
