@@ -11,7 +11,7 @@ class FoodSafetyBarChart {
       containerHeight: 350,
       legendPosition: 50,
       margin: {
-        top: 100,
+        top: 80,
         right: 15,
         bottom: 40,
         left: 45,
@@ -93,7 +93,7 @@ class FoodSafetyBarChart {
 
     vis.legend
       .append('rect')
-      .attr('x', 220)
+      .attr('x', 225)
       .attr('y', 0)
       .attr('width', 20)
       .attr('height', 20)
@@ -108,7 +108,7 @@ class FoodSafetyBarChart {
 
     vis.legend
       .append('text')
-      .attr('x', 245)
+      .attr('x', 250)
       .attr('y', 0)
       .attr('dy', '1em')
       .text('Wash');
@@ -181,7 +181,6 @@ class FoodSafetyBarChart {
    */
   updateVis() {
     const vis = this;
-    console.log(vis.data);
 
     if (meatTypeFilter !== '')
       vis.filteredData = vis.data.filter((d) => d[meatTypeFilter] !== 'NA');
@@ -201,8 +200,6 @@ class FoodSafetyBarChart {
       (v) => v.length,
       (d) => d.Food_safety_importance
     );
-
-    console.log(this.washCount);
 
     vis.washCountData = [];
     vis.washCount.forEach((value, key) => {
@@ -248,8 +245,6 @@ class FoodSafetyBarChart {
   renderVis() {
     const vis = this;
     vis.tooltipPadding = 10;
-
-    console.log(foodSafetyImportanceFilter);
 
     const bars = vis.chart
       .selectAll('.bar_g')

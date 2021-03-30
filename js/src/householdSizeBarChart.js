@@ -11,7 +11,7 @@ class HouseholdSizeBarChart {
       containerHeight: 350,
       legendPosition: 50,
       margin: {
-        top: 100,
+        top: 60,
         right: 15,
         bottom: 40,
         left: 45,
@@ -70,7 +70,7 @@ class HouseholdSizeBarChart {
 
     vis.legend
       .append('rect')
-      .attr('x', 175)
+      .attr('x', 100)
       .attr('y', 0)
       .attr('width', 20)
       .attr('height', 20)
@@ -78,23 +78,23 @@ class HouseholdSizeBarChart {
 
     vis.legend
       .append('rect')
-      .attr('x', 175)
-      .attr('y', 25)
+      .attr('x', 225)
+      .attr('y', 0)
       .attr('width', 20)
       .attr('height', 20)
       .style('fill', '#4E81BE');
 
     vis.legend
       .append('text')
-      .attr('x', 200)
+      .attr('x', 125)
       .attr('y', 0)
       .attr('dy', '1em')
       .text('Do Not Wash');
 
     vis.legend
       .append('text')
-      .attr('x', 200)
-      .attr('y', 25)
+      .attr('x', 250)
+      .attr('y', 0)
       .attr('dy', '1em')
       .text('Wash');
 
