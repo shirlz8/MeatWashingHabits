@@ -1,4 +1,7 @@
 let meatTypeFilter = 'Beef';
+let householdSizeFilter = 0;
+let foodSafetyImportanceFilter = 0;
+
 let habitsBubblePlot, mainData;
 
 let svgs = {

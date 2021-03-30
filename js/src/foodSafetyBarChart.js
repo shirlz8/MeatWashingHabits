@@ -173,14 +173,41 @@ class FoodSafetyBarChart {
                 <div>Do not wash : ${d.data.dontWash}</div>
                 <div>Wash : ${d.data.wash}</div>
             `);
-    }).on('mouseleave', (event, d) => {
-      // Remove hover shading
-      d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`)
-        .attr('stroke-width', '0');
+    }) .on("mouseleave", (event, d) => {
+        // Remove hover shading if not selected
+        d3.selectAll("bars").attr("stroke-width", "0");
+        let selected = d.data.foodSafetyImportance;
 
-      // Remove tooltip
-      d3.select('#tooltip').style('display', 'none');
-    });
+        if (foodSafetyImportanceFilter != selected) {
+          d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`).attr(
+            "stroke-width",
+            "0"
+          );
+        }
+        // Remove tooltip
+        d3.select("#tooltip").style("display", "none");
+      })
+      .on("click", function (event, d) {
+        let selected = d.data.foodSafetyImportance;
+        // If the clicked on is already clicked
+        if (foodSafetyImportanceFilter === selected) {
+          foodSafetyImportanceFilter = 0;
+          d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`).attr(
+            "stroke-width",
+            "0"
+          );
+        } else {
+          d3.selectAll(`rect.foodSafety${foodSafetyImportanceFilter}`).attr(
+            "stroke-width",
+            "0"
+          );
+          foodSafetyImportanceFilter = selected;
+          d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`)
+            .style("stroke", "black")
+            .attr("stroke-width", "2");
+        }
+        console.log(foodSafetyImportanceFilter);
+      });
 
     // Add chart title
     vis.chart
