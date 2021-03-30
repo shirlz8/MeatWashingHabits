@@ -54,6 +54,8 @@ class LiquidFillGauge {
       waveAnimateTime: 1000, // The amount of time in milliseconds for a full wave to enter the wave circle.
       waveColor: this.waveColor(vis.meatType), // The color of the fill wave.
       waveOffset: 0.25, // The amount to initially offset the wave. 0 = no offset. 1 = offset of one full wave.
+      inactiveWaveColor: 'lightgrey',
+      active: false,
     };
   }
 
@@ -274,23 +276,38 @@ class LiquidFillGauge {
       }); // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
 
     vis.animateWave = () => {
-      vis.wave.attr(
-        'transform',
-        'translate(' + vis.waveAnimateScale(vis.wave.attr('T')) + ',0)'
-      );
-      vis.wave
-        .transition()
-        .duration(vis.settings.waveAnimateTime * (1 - vis.wave.attr('T')))
-        .ease(d3.easeLinear)
-        .attr('transform', 'translate(' + vis.waveAnimateScale(1) + ',0)')
-        .attr('T', 1)
-        .on('end', function () {
-          vis.wave.attr('T', 0);
-          vis.animateWave(vis.settings.waveAnimateTime);
-        });
+      console.log('animating');
+      if (vis.waveActive) {
+        vis.wave.attr(
+          'transform',
+          'translate(' + vis.waveAnimateScale(vis.wave.attr('T')) + ',0)'
+        );
+        vis.wave
+          .transition()
+          .duration(vis.settings.waveAnimateTime * (1 - vis.wave.attr('T')))
+          .ease(d3.easeLinear)
+          .attr('transform', 'translate(' + vis.waveAnimateScale(1) + ',0)')
+          .attr('T', 1)
+          .on('end', function () {
+            vis.wave.attr('T', 0);
+            vis.animateWave(vis.settings.waveAnimateTime);
+          });
+      }
     };
 
     vis.animateWave();
+
+    vis.gauge
+      .on('mouseover', (event, d) => {
+        console.log('hover');
+        vis.waveActive = true;
+        // vis.updateVis();
+      })
+      .on('mouseleave', (event, d) => {
+        console.log('eave');
+        vis.waveActive = false;
+        // vis.updateVis();
+      });
   }
 
   updateVis() {
@@ -365,5 +382,7 @@ class LiquidFillGauge {
         'transform',
         'translate(' + vis.waveGroupXPosition + ',' + vis.newHeight + ')'
       );
+
+    vis.animateWave();
   }
 }

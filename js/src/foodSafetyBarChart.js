@@ -84,7 +84,7 @@ class FoodSafetyBarChart {
 
     vis.legend
       .append('rect')
-      .attr('x', 175)
+      .attr('x', 100)
       .attr('y', 0)
       .attr('width', 20)
       .attr('height', 20)
@@ -92,23 +92,23 @@ class FoodSafetyBarChart {
 
     vis.legend
       .append('rect')
-      .attr('x', 175)
-      .attr('y', 25)
+      .attr('x', 220)
+      .attr('y', 0)
       .attr('width', 20)
       .attr('height', 20)
       .style('fill', '#4E81BE');
 
     vis.legend
       .append('text')
-      .attr('x', 200)
+      .attr('x', 125)
       .attr('y', 0)
       .attr('dy', '1em')
       .text('Do Not Wash');
 
     vis.legend
       .append('text')
-      .attr('x', 200)
-      .attr('y', 25)
+      .attr('x', 245)
+      .attr('y', 0)
       .attr('dy', '1em')
       .text('Wash');
 
