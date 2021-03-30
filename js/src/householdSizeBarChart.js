@@ -154,13 +154,40 @@ class HouseholdSizeBarChart {
                     <div>Do not wash : ${d.data.dontWash}</div>
                     <div>Wash : ${d.data.wash}</div>
                 `);
-    }).on('mouseleave', (event, d) => {
-      // Remove hover shading
-      d3.selectAll(`rect.household${d.data.householdSize}`)
-        .attr('stroke-width', '0');
+    }).on("mouseleave", (event, d) => {
+      // Remove hover shading if not selected
+      d3.selectAll("bars").attr("stroke-width", "0");
+      let selected = d.data.householdSize;
 
+      if (householdSizeFilter != selected) {
+        d3.selectAll(`rect.household${d.data.householdSize}`).attr(
+          "stroke-width",
+          "0"
+        );
+      }
       // Remove tooltip
-      d3.select('#tooltip').style('display', 'none');
+      d3.select("#tooltip").style("display", "none");
+    })
+    .on("click", function (event, d) {
+      let selected = d.data.householdSize;
+      // If the clicked on is already clicked
+      if (householdSizeFilter === selected) {
+        householdSizeFilter = 0;
+        d3.selectAll(`rect.household${d.data.householdSize}`).attr(
+          "stroke-width",
+          "0"
+        );
+      } else {
+        d3.selectAll(`rect.household${householdSizeFilter}`).attr(
+          "stroke-width",
+          "0"
+        );
+        householdSizeFilter = selected;
+        d3.selectAll(`rect.household${d.data.householdSize}`)
+          .style("stroke", "black")
+          .attr("stroke-width", "2");
+      }
+      console.log(householdSizeFilter);
     });
 
     // Add chart title
