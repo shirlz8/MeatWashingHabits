@@ -143,6 +143,8 @@ class FoodSafetyBarChart {
     const vis = this;
     vis.tooltipPadding = 10;
 
+    console.log(foodSafetyImportanceFilter);
+
     const bars = vis.chart.selectAll('.bar_g')
       .data(vis.stackedWashCountData, (d) => d)
       .join('g')
@@ -155,7 +157,19 @@ class FoodSafetyBarChart {
       .attr('width', vis.xScale.bandwidth())
       .attr('height', (d) => vis.yScale(d[0]) - vis.yScale(d[1]))
       .attr('y', (d) => vis.yScale(d[1]))
-      .attr('x', (d) => vis.xScale(d.data.foodSafetyImportance));
+      .attr('x', (d) => vis.xScale(d.data.foodSafetyImportance))
+      .style('stroke', (d) => {
+        if (foodSafetyImportanceFilter == d.data.foodSafetyImportance)
+          return "black";
+        else
+          return "none";
+      })
+      .attr('stroke-width', (d) => {
+        if (foodSafetyImportanceFilter == d.data.foodSafetyImportance)
+          return "2";
+        else
+          return "0";
+      });
 
     bars.on('mouseover', (event, d) => {
       // Add hover shading

@@ -4,7 +4,7 @@ class LiquidFillGauge {
    * @param {Object}
    * @param {Array}
    */
-  constructor(_config, _data, meatType, svgString) {
+  constructor(_config, _dispatcher, _data, meatType, svgString) {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 250,
@@ -18,7 +18,7 @@ class LiquidFillGauge {
     this.meatType = meatType;
     this.svgString = svgString;
     this.data = _data;
-
+    this.dispatcher = _dispatcher;
     this.initVis();
   }
 
@@ -97,7 +97,15 @@ class LiquidFillGauge {
       .append('svg')
       .attr('class', 'liquid-container')
       .attr('width', vis.config.containerWidth)
-      .attr('height', vis.config.containerHeight);
+      .attr('height', vis.config.containerHeight)
+      .on("click", function (event, d) {
+        if (meatTypeFilter === vis.meatType) {
+          meatTypeFilter = "";
+        } else {
+          meatTypeFilter =  vis.meatType;
+        }
+        vis.dispatcher.call('filterMeatType', event, meatTypeFilter);
+      });
 
     vis.gauge
       .append('path')
