@@ -4,6 +4,7 @@ body {
   margin: 0;
   padding: 0;
   border: 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 .container {
@@ -12,12 +13,20 @@ body {
 }
 
 #top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 #bottom {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.bottom-box {
+  margin: 10px;
 }
 
 #left {
