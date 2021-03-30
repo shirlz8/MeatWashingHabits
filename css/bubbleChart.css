@@ -5,6 +5,10 @@
     padding: 10px;
 }
 
+#habitsBubbleRadioFilter {
+    position: absolute;
+}
+
 .bubble-y-axis path {
     stroke: none;
 }
