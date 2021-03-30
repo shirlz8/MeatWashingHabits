@@ -1,13 +1,27 @@
-let meatTypeFilter = 'Beef';
+// Filter variables
+let meatTypeFilter = '';
+let householdSizeFilter = 0;
+let foodSafetyImportanceFilter = 0;
+
+var filteredMeatTypeData;
+
+// Dispatchers
+const dispatcherHouseholdSize = d3.dispatch('filterHouseholdSize');
+const dispatcherFoodSafetyImportance = d3.dispatch(
+  'filterFoodSafetyImportance'
+);
+const dispatcherMeatType = d3.dispatch('filterMeatType');
+const dispatcherOnHover = d3.dispatch('hoverEffect');
+
 let habitsBubblePlot, mainData;
 
 let svgs = {
   Poultry:
-  'M133.15,107.61c-.72-21.62-15-45.92-34.35-55.94a14,14,0,0,0,2.68-3.31c2.69-5.14,15-15.83-9.67-11.75C86.92,35.36,85.38,22.45,80,22.45s-4.7,10.9-10.75,14.16c-31-9.81-11.83,9.18-10.75,11.75a14.56,14.56,0,0,0,2.69,3.31C40.77,62,26.26,87.29,26.26,109.32c0,2.21.54,6.25.54,6.61.53,4,3.22,9.92,3.76,11.39,5.37,10.28,34.93,19.46,51.33,19.83,13,2.44,41.09-9.92,47-19.47.18-.36.38-.82.61-1.35l21.76-3.55C159.49,120.75,152.77,119.07,133.15,107.61Z',
+    'M133.15,107.61c-.72-21.62-15-45.92-34.35-55.94a14,14,0,0,0,2.68-3.31c2.69-5.14,15-15.83-9.67-11.75C86.92,35.36,85.38,22.45,80,22.45s-4.7,10.9-10.75,14.16c-31-9.81-11.83,9.18-10.75,11.75a14.56,14.56,0,0,0,2.69,3.31C40.77,62,26.26,87.29,26.26,109.32c0,2.21.54,6.25.54,6.61.53,4,3.22,9.92,3.76,11.39,5.37,10.28,34.93,19.46,51.33,19.83,13,2.44,41.09-9.92,47-19.47.18-.36.38-.82.61-1.35l21.76-3.55C159.49,120.75,152.77,119.07,133.15,107.61Z',
   Pork:
     'M85.71,25h2.86c4.12,1.48,8.57,2.42,12.26,4.57,4.42,2.56,7.77,3,12.65.36,9.51-5.19,20.11-4.84,30.65-3.36,3.45.49,5.78,1.74,5.87,5.57V40a16,16,0,0,0-.46,2c-.84,10.36-3.7,20-9.5,28.79a4.32,4.32,0,0,0-.16,3.18,59.94,59.94,0,0,1-1.29,39.52c-5.65,14.82-14.62,26.7-29.89,32.52-5,1.91-10.54,2.66-15.83,3.94H80.73a24.94,24.94,0,0,1-3.09-.65c-6.08-2-12.65-3.13-18-6.24C38.29,130.74,27.21,103,33.49,78.65c1.31-5.08,1.86-9.45-1.73-13.74a11.12,11.12,0,0,1-2-4.52C28.11,53.14,26.56,45.85,25,38.57v-5c1.11-2.1-.42-5.61,3.29-6.32,12.92-2.46,25.54-2.46,37.32,4.59a3.53,3.53,0,0,0,2.77.32C74.19,29.86,79.94,27.41,85.71,25Z',
   Fish:
-  'M144.15,44.05c-4,9.61-8.74,12.11-13,22.11-3.16-7-42.63-97.62-106.68,3.17,4.16,4.38,8.39,8.76,12.44,13.45,1.61,1.86,2.82,4.57,4.22,6.88-1.79,1.48-3.48,3.53-5.4,4.38-8.47,3.77-8.55,3.72-3.35,14.57,14.09,48.91,87.58,56.81,101.48-9.59,5.29,11.14,6.62,8.69,10.31,16.67,2.11,4.75,2.67,4.8,5.3.73V43.11C147.44,39.73,145.8,40,144.15,44.05Z',
+    'M144.15,44.05c-4,9.61-8.74,12.11-13,22.11-3.16-7-42.63-97.62-106.68,3.17,4.16,4.38,8.39,8.76,12.44,13.45,1.61,1.86,2.82,4.57,4.22,6.88-1.79,1.48-3.48,3.53-5.4,4.38-8.47,3.77-8.55,3.72-3.35,14.57,14.09,48.91,87.58,56.81,101.48-9.59,5.29,11.14,6.62,8.69,10.31,16.67,2.11,4.75,2.67,4.8,5.3.73V43.11C147.44,39.73,145.8,40,144.15,44.05Z',
   Wash_Any:
     'M83.41,32c-31.17,1.81-57,27.71-58.63,58.93-1.85,34.66,26.58,66,62.41,66,34.15,0,62.51-28.41,62.5-62.5C149.68,58.41,118.16,29.92,83.41,32Z',
   Sheep_Goat:
@@ -24,6 +38,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#householdSizeBarChart',
     },
+    dispatcherHouseholdSize,
     exploratoryData
   );
 
@@ -31,96 +46,172 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#foodSafetyBarChart',
     },
+    dispatcherFoodSafetyImportance,
     exploratoryData
   );
 
-  // console.log(exploratoryData);
-
-  var subgroups = exploratoryData.columns.slice(1);
-  // console.log(subgroups);
-
   // Create the habitsBubblePlot.css
-  habitsBubblePlot = new HabitsBubblePlot({
-    parentElement: '#habitsBubblePlot',
-  }, exploratoryData);
-
-  exploratoryData = exploratoryData.filter((d) => d.Houshold_size === '6');
-
-  console.log(exploratoryData);
+  habitsBubblePlot = new HabitsBubblePlot(
+    {
+      parentElement: '#habitsBubblePlot',
+    },
+    exploratoryData
+  );
 
   const liquidBeefChart = new LiquidFillGauge(
     {
       parentElement: '#liquidFillGauges',
     },
+    dispatcherMeatType,
     exploratoryData,
     'Beef',
-    svgs['Beef']
+    svgs['Beef'],
+    dispatcherOnHover
   );
 
   const liquidPorkChart = new LiquidFillGauge(
     {
       parentElement: '#liquidFillGauges',
     },
+    dispatcherMeatType,
     exploratoryData,
     'Pork',
-    svgs['Pork']
+    svgs['Pork'],
+    dispatcherOnHover
   );
 
   const liquidPoultryChart = new LiquidFillGauge(
     {
       parentElement: '#liquidFillGauges',
     },
+    dispatcherMeatType,
     exploratoryData,
     'Poultry',
-    svgs['Poultry']
+    svgs['Poultry'],
+    dispatcherOnHover
   );
 
   const liquidSheepGoatChart = new LiquidFillGauge(
     {
       parentElement: '#liquidFillGauges',
     },
+    dispatcherMeatType,
     exploratoryData,
     'Sheep_Goat',
-    svgs['Sheep_Goat']
+    svgs['Sheep_Goat'],
+    dispatcherOnHover
   );
 
   const liquidFishChart = new LiquidFillGauge(
     {
       parentElement: '#liquidFillGauges',
     },
+    dispatcherMeatType,
     exploratoryData,
     'Fish',
-    svgs['Fish']
+    svgs['Fish'],
+    dispatcherOnHover
   );
 
-  const liquidGroundMeatChart = new LiquidFillGauge(
+  const liquidWashAnyChart = new LiquidFillGauge(
     {
       parentElement: '#liquidFillGauges',
     },
+    dispatcherMeatType,
     exploratoryData,
     'Wash_Any',
-    svgs['Wash_Any']
+    svgs['Wash_Any'],
+    dispatcherOnHover
   );
+
+  currentData = exploratoryData;
+
+  // Dispatchers for linkage
+  dispatcherHouseholdSize.on('filterHouseholdSize', (householdSizeFilter) => {
+    filterMeatTypeData();
+
+    liquidBeefChart.data = filteredMeatTypeData;
+    liquidPorkChart.data = filteredMeatTypeData;
+    liquidPoultryChart.data = filteredMeatTypeData;
+    liquidSheepGoatChart.data = filteredMeatTypeData;
+    liquidFishChart.data = filteredMeatTypeData;
+    liquidWashAnyChart.data = filteredMeatTypeData;
+
+    liquidBeefChart.updateVis();
+    liquidPorkChart.updateVis();
+    liquidPoultryChart.updateVis();
+    liquidSheepGoatChart.updateVis();
+    liquidFishChart.updateVis();
+    liquidWashAnyChart.updateVis();
+  });
+
+  dispatcherFoodSafetyImportance.on(
+    'filterFoodSafetyImportance',
+    (foodSafetyImportanceFilter) => {
+      filterMeatTypeData();
+      liquidBeefChart.data = filteredMeatTypeData;
+      liquidPorkChart.data = filteredMeatTypeData;
+      liquidPoultryChart.data = filteredMeatTypeData;
+      liquidSheepGoatChart.data = filteredMeatTypeData;
+      liquidFishChart.data = filteredMeatTypeData;
+      liquidWashAnyChart.data = filteredMeatTypeData;
+
+      liquidBeefChart.updateVis();
+      liquidPorkChart.updateVis();
+      liquidPoultryChart.updateVis();
+      liquidSheepGoatChart.updateVis();
+      liquidFishChart.updateVis();
+      liquidWashAnyChart.updateVis();
+    }
+  );
+
+  dispatcherMeatType.on('filterMeatType', (meatTypeFilter) => {
+    householdSizeBarChart.updateVis();
+    foodSafetyBarChart.updateVis();
+  });
+
+  dispatcherOnHover.on('hoverEffect', (chart) => {
+    chart.updateVis();
+  });
+
+  // Apply all active filters to data
+  function filterMeatTypeData() {
+    let currentData = exploratoryData;
+
+    if (householdSizeFilter != 0) {
+      currentData = currentData.filter(
+        (d) => d.Houshold_size == householdSizeFilter
+      );
+    }
+
+    if (foodSafetyImportanceFilter != 0) {
+      currentData = currentData.filter(
+        (d) => d.Food_safety_importance == foodSafetyImportanceFilter
+      );
+    }
+
+    filteredMeatTypeData = currentData;
+  }
 });
 
 // Event listener
-d3.selectAll("input[name='washHabit']").on('change', function(){
-  console.log(this.value)
+d3.selectAll("input[name='washHabit']").on('change', function () {
+  console.log(this.value);
   let originalData = mainData;
   let filteredData = [];
-  console.log(originalData)
+  console.log(originalData);
 
   if (this.value === 'wash') {
     if (meatTypeFilter !== '') {
-      filteredData = originalData.filter(d => d[meatTypeFilter] === '1');
+      filteredData = originalData.filter((d) => d[meatTypeFilter] === '1');
     } else {
-      filteredData = originalData.filter(d => d['Wash_Any'] === '1');
+      filteredData = originalData.filter((d) => d['Wash_Any'] === '1');
     }
   } else if (this.value === 'noWash') {
     if (meatTypeFilter !== '') {
-      filteredData = originalData.filter(d => d[meatTypeFilter] === '0');
+      filteredData = originalData.filter((d) => d[meatTypeFilter] === '0');
     } else {
-      filteredData = originalData.filter(d => d['Wash_Any'] === '0');
+      filteredData = originalData.filter((d) => d['Wash_Any'] === '0');
     }
   } else if (this.value === 'all') {
     filteredData = originalData;
@@ -144,5 +235,3 @@ d3.csv('data/reasons_for_washing_data.csv').then((reasonsWashingData) => {
     }
   );
 });
-
-
