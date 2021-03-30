@@ -199,13 +199,7 @@ class HabitsBubblePlot {
         .attr('cx', d => vis.xScale(vis.xValue(d)))
         .attr('opacity', 0.7)
         .style('stroke', 'black')
-        .attr('fill', function (d) {
-          if (meatTypeFilter !== '') {
-            return vis.colour(d['habit'])
-          } else {
-            return '#80808C'
-          }
-        })
+        .attr('fill', d => vis.colour(d['habit']));
 
 
     circles.on('mouseover', (event,d) => {
