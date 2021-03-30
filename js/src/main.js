@@ -1,6 +1,15 @@
+// Filter variables
 let meatTypeFilter = 'Beef';
 let householdSizeFilter = 0;
 let foodSafetyImportanceFilter = 0;
+
+var filteredData;
+
+// Dispatchers
+const dispatcherHouseholdSize = d3.dispatch('filterHouseholdSize');
+const dispatcherFoodSafetyImportance = d3.dispatch('filterFoodSafetyImportance');
+
+const dispatcherSelected = d3.dispatch('filterSelected');
 
 let habitsBubblePlot, mainData;
 
@@ -27,6 +36,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#householdSizeBarChart',
     },
+    dispatcherHouseholdSize,
     exploratoryData
   );
 
@@ -34,22 +44,14 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#foodSafetyBarChart',
     },
+    dispatcherFoodSafetyImportance,
     exploratoryData
   );
-
-  // console.log(exploratoryData);
-
-  var subgroups = exploratoryData.columns.slice(1);
-  // console.log(subgroups);
 
   // Create the habitsBubblePlot.css
   habitsBubblePlot = new HabitsBubblePlot({
     parentElement: '#habitsBubblePlot',
   }, exploratoryData);
-
-  exploratoryData = exploratoryData.filter((d) => d.Houshold_size === '6');
-
-  console.log(exploratoryData);
 
   const liquidBeefChart = new LiquidFillGauge(
     {
@@ -96,7 +98,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     svgs['Fish']
   );
 
-  const liquidGroundMeatChart = new LiquidFillGauge(
+  const liquidWashAnyChart = new LiquidFillGauge(
     {
       parentElement: '#liquidFillGauges',
     },
@@ -104,6 +106,66 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     'Wash_Any',
     svgs['Wash_Any']
   );
+
+  currentData = exploratoryData;
+  
+  // Dispatchers for linkage
+  dispatcherHouseholdSize.on('filterHouseholdSize', householdSizeFilter => {
+    console.log(householdSizeFilter);
+    filterData();
+
+    liquidBeefChart.data = filteredData;
+    liquidPorkChart.data = filteredData;
+    liquidPoultryChart.data = filteredData;
+    liquidSheepGoatChart.data = filteredData;
+    liquidFishChart.data = filteredData;
+    liquidWashAnyChart.data = filteredData;
+
+    liquidBeefChart.updateVis();
+    liquidPorkChart.updateVis();
+    liquidPoultryChart.updateVis();
+    liquidSheepGoatChart.updateVis();
+    liquidFishChart.updateVis();
+    liquidWashAnyChart.updateVis();
+  });
+
+   // Dispatchers for linkage
+  // Update when gender is selected
+  dispatcherFoodSafetyImportance.on('filterFoodSafetyImportance', foodSafetyImportanceFilter => {
+    filterData();
+    
+    liquidBeefChart.data = filteredData;
+    liquidPorkChart.data = filteredData;
+    liquidPoultryChart.data = filteredData;
+    liquidSheepGoatChart.data = filteredData;
+    liquidFishChart.data = filteredData;
+    liquidWashAnyChart.data = filteredData;
+
+    liquidBeefChart.updateVis();
+    liquidPorkChart.updateVis();
+    liquidPoultryChart.updateVis();
+    liquidSheepGoatChart.updateVis();
+    liquidFishChart.updateVis();
+    liquidWashAnyChart.updateVis();
+  });
+
+    // Apply all active filters to data
+  function filterData(){
+
+    let currentData = exploratoryData;
+
+    if(householdSizeFilter != 0){
+      currentData = currentData.filter(d => d.Houshold_size == householdSizeFilter);
+    }
+
+    if(foodSafetyImportanceFilter != 0){
+      currentData = currentData.filter(d => d.Food_safety_importance == foodSafetyImportanceFilter);
+    }
+
+  filteredData = currentData
+    
+  }
+
 });
 
 // Event listener
@@ -131,6 +193,7 @@ d3.selectAll("input[name='washHabit']").on('change', function(){
 
   habitsBubblePlot.data = filteredData;
   habitsBubblePlot.updateVis();
+
 });
 
 // What are people trying to remove view
