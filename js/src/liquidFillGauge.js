@@ -4,21 +4,14 @@ class LiquidFillGauge {
    * @param {Object}
    * @param {Array}
    */
-  constructor(
-    _config,
-    _dispatcher,
-    _data,
-    meatType,
-    svgString,
-    dispatcherOnHover
-  ) {
+  constructor(_config, _dispatcher, _data, meatType, svgString) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: 250,
-      containerHeight: 250,
+      containerWidth: 200,
+      containerHeight: 200,
       margin: {
-        x: 35,
-        y: 35,
+        x: 15,
+        y: 15,
       },
     };
 
@@ -26,7 +19,6 @@ class LiquidFillGauge {
     this.svgString = svgString;
     this.data = _data;
     this.dispatcher = _dispatcher;
-    this.dispatcherOnHover = dispatcherOnHover;
     this.initVis();
   }
 
@@ -74,7 +66,6 @@ class LiquidFillGauge {
     let count = d3.count(vis.data, (d) => d[vis.meatType]);
 
     vis.percent = Math.round((sum / count) * 100);
-    console.log(vis.percent);
 
     vis.fillPercent =
       Math.max(
@@ -110,21 +101,27 @@ class LiquidFillGauge {
       .attr('height', vis.config.containerHeight)
       .on('click', function (event, d) {
         if (meatTypeFilter === vis.meatType) {
+          console.log('off');
           meatTypeFilter = '';
         } else {
+          console.log('on');
           meatTypeFilter = vis.meatType;
         }
         vis.dispatcher.call('filterMeatType', event, meatTypeFilter);
       });
 
     vis.gauge
-      .append('circle')
+      .append('path')
       .attr('class', `highlight${vis.meatType}`)
-      .attr('r', 90)
-      .attr('cy', 120)
-      .attr('cx', 120)
-      .attr('fill', 'grey')
-      .attr('opacity', 0);
+      .attr(
+        'transform',
+        'translate(' + vis.config.margin.x + ',' + vis.config.margin.y + ')'
+      )
+      .attr('d', vis.svgString)
+      .attr('opacity', 0)
+      .style('fill', 'grey')
+      .style('stroke', 'grey')
+      .style('stroke-width', '20px');
 
     vis.gauge
       .append('path')
@@ -158,7 +155,7 @@ class LiquidFillGauge {
       .attr('fill', 'black')
       .style('font-size', '16px')
       .text(vis.meatName)
-      .attr('transform', 'translate(120,0)');
+      .attr('transform', 'translate(100,0)');
 
     // Get bounding box
     vis.BBox = d3.select('#outline').node().getBBox();
@@ -182,7 +179,7 @@ class LiquidFillGauge {
       .attr('fill', 'black')
       .style('font-size', '16px')
       .text(vis.percent + '%')
-      .attr('transform', 'translate(120,225)');
+      .attr('transform', 'translate(100,180)');
 
     vis.waveHeightScale = d3
       .scaleLinear()
@@ -333,21 +330,18 @@ class LiquidFillGauge {
 
     vis.gauge
       .on('mouseover', (event, d) => {
-        console.log('shirleysetup');
         vis.waveActive = true;
         vis.animateWave();
-        d3.selectAll(`circle.highlight${vis.meatType}`).attr('opacity', 100);
+        d3.selectAll(`path.highlight${vis.meatType}`).attr('opacity', 100);
       })
       .on('mouseleave', (event, d) => {
         vis.waveActive = false;
-        d3.selectAll(`circle.highlight${vis.meatType}`).attr('opacity', 0);
+        d3.selectAll(`path.highlight${vis.meatType}`).attr('opacity', 0);
       });
   }
 
   updateVis() {
     const vis = this;
-
-    console.log(vis.data);
 
     vis.calculatePercentage();
 
