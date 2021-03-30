@@ -140,6 +140,33 @@ class FoodSafetyBarChart {
 
     vis.yAxis = d3.axisLeft(vis.yScale).ticks(5).tickSize(-vis.width);
 
+    // Add chart title
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + vis.width / 2 + ', ' + -20 + ')')
+      .append('text')
+      .attr("class", "chart-title")
+      .attr('text-anchor', 'middle')
+      .text('Food Safe Importance Washing Trend');
+
+    // Add axis titles
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + -34 + ', ' + vis.height / 2 + ')')
+      .append('text')
+      .attr("class", "axis-label")
+      .attr('text-anchor', 'middle')
+      .attr('transform', 'rotate(-90)')
+      .text('# of repondants');
+
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + vis.width / 2 + ', ' + (vis.config.containerHeight - 40) + ')')
+      .append('text')
+      .attr("class", "axis-label")
+      .attr('text-anchor', 'middle')
+      .text('Level of importance');
+
     // Append axis groups
     vis.xAxisG = vis.chart
       .append('g')

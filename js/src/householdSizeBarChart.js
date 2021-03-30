@@ -128,6 +128,33 @@ class HouseholdSizeBarChart {
 
     vis.yAxis = d3.axisLeft(vis.yScale).ticks(6).tickSize(-vis.width);
 
+    // Add chart title
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + vis.width / 2 + ', ' + -10 + ')')
+      .append('text')
+      .attr("class", "chart-title")
+      .attr('text-anchor', 'middle')
+      .text('Household Size Washing Trend');
+
+    // Add axis titles
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + -34 + ', ' + vis.height / 2 + ')')
+      .append('text')
+      .attr("class", "axis-label")
+      .attr('text-anchor', 'middle')
+      .attr('transform', 'rotate(-90)')
+      .text('# of repondants');
+
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + vis.width / 2 + ', ' + (vis.config.containerHeight - 30) + ')')
+      .append('text')
+      .attr("class", "axis-label")
+      .attr('text-anchor', 'middle')
+      .text('Household size');
+
     // Append axis groups
     vis.xAxisG = vis.chart
       .append('g')
@@ -216,7 +243,19 @@ class HouseholdSizeBarChart {
       .attr('width', vis.xScale.bandwidth())
       .attr('height', (d) => vis.yScale(d[0]) - vis.yScale(d[1]))
       .attr('y', (d) => vis.yScale(d[1]))
-      .attr('x', (d) => vis.xScale(d.data.householdSize));
+      .attr('x', (d) => vis.xScale(d.data.householdSize))
+      .style('stroke', (d) => {
+        if (householdSizeFilter == d.data.householdSize)
+          return "black";
+        else
+          return "none";
+      })
+      .attr('stroke-width', (d) => {
+        if (householdSizeFilter == d.data.householdSize)
+          return "2";
+        else
+          return "0";
+      });
 
     bars
       .on('mouseover', (event, d) => {
