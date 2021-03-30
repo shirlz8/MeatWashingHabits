@@ -23,7 +23,6 @@ class LiquidFillGauge {
   }
 
   waveColor(meatType) {
-    console.log(meatType);
     const vis = this;
 
     const color = d3
@@ -65,7 +64,6 @@ class LiquidFillGauge {
     let count = d3.count(vis.data, (d) => d[vis.meatType]);
 
     vis.percent = Math.round((sum / count) * 100);
-    console.log(sum);
     console.log(vis.percent);
 
     vis.fillPercent =
@@ -297,7 +295,6 @@ class LiquidFillGauge {
     const vis = this;
 
     vis.calculatePercentage();
-    console.log(vis);
 
     vis.waveHeight =
       vis.fillCircleRadius * vis.waveHeightScale(vis.fillPercent * 100);

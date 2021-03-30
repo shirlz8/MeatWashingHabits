@@ -4,7 +4,7 @@ class FoodSafetyBarChart {
        * @param {Object}
        * @param {Array}
        */
-  constructor(_config, _data) {
+  constructor(_config, _dispatcher, _data) {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 300,
@@ -14,8 +14,7 @@ class FoodSafetyBarChart {
       },
     };
     this.data = _data;
-    console.log('con vis');
-
+    this.dispatcher = _dispatcher;
     this.initVis();
   }
 
@@ -206,7 +205,7 @@ class FoodSafetyBarChart {
             .style("stroke", "black")
             .attr("stroke-width", "2");
         }
-        console.log(foodSafetyImportanceFilter);
+        vis.dispatcher.call('filterFoodSafetyImportance', event, foodSafetyImportanceFilter);
       });
 
     // Add chart title

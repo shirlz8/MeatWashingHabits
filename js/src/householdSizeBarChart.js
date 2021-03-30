@@ -4,7 +4,7 @@ class HouseholdSizeBarChart {
        * @param {Object}
        * @param {Array}
        */
-  constructor(_config, _data) {
+  constructor(_config, _dispatcher, _data) {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 300,
@@ -14,6 +14,7 @@ class HouseholdSizeBarChart {
       },
     };
     this.data = _data;
+    this.dispatcher = _dispatcher;
     this.initVis();
   }
 
@@ -187,7 +188,7 @@ class HouseholdSizeBarChart {
           .style("stroke", "black")
           .attr("stroke-width", "2");
       }
-      console.log(householdSizeFilter);
+      vis.dispatcher.call('filterHouseholdSize', event, householdSizeFilter);
     });
 
     // Add chart title
