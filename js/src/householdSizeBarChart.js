@@ -64,6 +64,33 @@ class HouseholdSizeBarChart {
       .ticks(6)
       .tickSize(-vis.width);
 
+    // Add chart title
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + vis.width / 2 + ', ' + -10 + ')')
+      .append('text')
+      .attr("class", "chart-title")
+      .attr('text-anchor', 'middle')
+      .text('Household Size Washing Trend');
+
+    // Add axis titles
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + -34 + ', ' + vis.height / 2 + ')')
+      .append('text')
+      .attr("class", "axis-label")
+      .attr('text-anchor', 'middle')
+      .attr('transform', 'rotate(-90)')
+      .text('# of repondants');
+
+    vis.chart
+      .append('g')
+      .attr('transform', 'translate(' + vis.width / 2 + ', ' + (vis.config.containerHeight - 30) + ')')
+      .append('text')
+      .attr("class", "axis-label")
+      .attr('text-anchor', 'middle')
+      .text('Household size');
+
     // Append axis groups
     vis.xAxisG = vis.chart.append('g')
       .attr('class', 'axis x-axis')
@@ -202,33 +229,6 @@ class HouseholdSizeBarChart {
       }
       vis.dispatcher.call('filterHouseholdSize', event, householdSizeFilter);
     });
-
-    // Add chart title
-    vis.chart
-      .append('g')
-      .attr('transform', 'translate(' + vis.width / 2 + ', ' + -10 + ')')
-      .append('text')
-      .attr("class", "chart-title")
-      .attr('text-anchor', 'middle')
-      .text('Household Size Washing Trend');
-
-    // Add axis titles
-    vis.chart
-      .append('g')
-      .attr('transform', 'translate(' + -34 + ', ' + vis.height / 2 + ')')
-      .append('text')
-      .attr("class", "axis-label")
-      .attr('text-anchor', 'middle')
-      .attr('transform', 'rotate(-90)')
-      .text('# of repondants');
-
-    vis.chart
-      .append('g')
-      .attr('transform', 'translate(' + vis.width / 2 + ', ' + (vis.config.containerHeight - 30) + ')')
-      .append('text')
-      .attr("class", "axis-label")
-      .attr('text-anchor', 'middle')
-      .text('Household size');
 
     // render axis
     vis.xAxisG

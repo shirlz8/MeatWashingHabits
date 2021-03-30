@@ -121,7 +121,7 @@ class LiquidFillGauge {
 
     vis.gauge
       .append('text')
-      .attr('class', 'title')
+      .attr('class', "title")
       .attr('dy', '1.2em')
       .attr('text-anchor', 'middle')
       .attr('fill', 'black')
@@ -145,7 +145,7 @@ class LiquidFillGauge {
 
     vis.gauge
       .append('text')
-      .attr('class', 'percentage')
+      .attr('class', `percent${vis.meatType}`)
       .attr('dy', '1.2em')
       .attr('text-anchor', 'middle')
       .attr('fill', 'black')
@@ -303,6 +303,9 @@ class LiquidFillGauge {
     const vis = this;
 
     vis.calculatePercentage();
+
+    d3.selectAll(`text.percent${vis.meatType}`)
+        .text(vis.percent + "%");
 
     vis.waveHeight =
       vis.fillCircleRadius * vis.waveHeightScale(vis.fillPercent * 100);
