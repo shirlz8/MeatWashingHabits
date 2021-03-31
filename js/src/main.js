@@ -2,8 +2,7 @@
 let meatTypeFilter = '';
 let householdSizeFilter = 0;
 let foodSafetyImportanceFilter = 0;
-
-var filteredMeatTypeData;
+let habitsBubbleRadioFilter = 'all';
 
 // Dispatchers
 const dispatcherHouseholdSize = d3.dispatch('filterHouseholdSize');
@@ -130,8 +129,18 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
 
   // Dispatchers for linkage
   dispatcherHouseholdSize.on('filterHouseholdSize', (householdSizeFilter) => {
-    filterMeatTypeData();
+    const filteredByBarchartsData = filterByBarchartsData();
+    const filteredData = filterBubbleData(filteredByBarchartsData);
 
+    habitsBubblePlot.data = filteredData;
+    liquidBeefChart.data = filteredByBarchartsData;
+    liquidPorkChart.data = filteredByBarchartsData;
+    liquidPoultryChart.data = filteredByBarchartsData;
+    liquidSheepGoatChart.data = filteredByBarchartsData;
+    liquidFishChart.data = filteredByBarchartsData;
+    liquidWashAnyChart.data = filteredByBarchartsData;
+
+    habitsBubblePlot.updateVis();
     liquidBeefChart.updateVis();
     liquidPorkChart.updateVis();
     liquidPoultryChart.updateVis();
@@ -143,8 +152,18 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
   dispatcherFoodSafetyImportance.on(
     'filterFoodSafetyImportance',
     (foodSafetyImportanceFilter) => {
-      filterMeatTypeData();
+      const filteredByBarchartsData = filterByBarchartsData();
+      const filteredData = filterBubbleData(filteredByBarchartsData);
 
+      habitsBubblePlot.data = filteredData;
+      liquidBeefChart.data = filteredByBarchartsData;
+      liquidPorkChart.data = filteredByBarchartsData;
+      liquidPoultryChart.data = filteredByBarchartsData;
+      liquidSheepGoatChart.data = filteredByBarchartsData;
+      liquidFishChart.data = filteredByBarchartsData;
+      liquidWashAnyChart.data = filteredByBarchartsData;
+
+      habitsBubblePlot.updateVis();
       liquidBeefChart.updateVis();
       liquidPorkChart.updateVis();
       liquidPoultryChart.updateVis();
@@ -155,33 +174,24 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
   );
 
   dispatcherMeatType.on('filterMeatType', (meatTypeFilter) => {
+    const filteredByBarchartsData = filterByBarchartsData();
+    const filteredData = filterBubbleData(filteredByBarchartsData);
+
+    habitsBubblePlot.data = filteredData;
+
+    //filter data for barcharts are in the barcharts
+    habitsBubblePlot.updateVis();
     householdSizeBarChart.updateVis();
     foodSafetyBarChart.updateVis();
   });
 });
 
 // Event listener
-d3.selectAll("input[name='washHabit']").on('change', function () {
-  console.log(this.value);
-  let originalData = mainData;
-  let filteredData = [];
-  console.log(originalData);
+d3.selectAll("input[name='washHabit']").on('change', function (e) {
+  habitsBubbleRadioFilter = this.value;
 
-  if (this.value === 'wash') {
-    if (meatTypeFilter !== '') {
-      filteredData = originalData.filter((d) => d[meatTypeFilter] === '1');
-    } else {
-      filteredData = originalData.filter((d) => d['Wash_Any'] === '1');
-    }
-  } else if (this.value === 'noWash') {
-    if (meatTypeFilter !== '') {
-      filteredData = originalData.filter((d) => d[meatTypeFilter] === '0');
-    } else {
-      filteredData = originalData.filter((d) => d['Wash_Any'] === '0');
-    }
-  } else if (this.value === 'all') {
-    filteredData = originalData;
-  }
+  const filteredByBarchartsData = filterByBarchartsData();
+  const filteredData = filterBubbleData(filteredByBarchartsData);
 
   habitsBubblePlot.data = filteredData;
   habitsBubblePlot.updateVis();
@@ -202,9 +212,32 @@ d3.csv('data/reasons_for_washing_data.csv').then((reasonsWashingData) => {
   );
 });
 
+// filter by meat types and radio buttons
+function filterBubbleData(originalData) {
+  let filteredData = [];
+
+  if (habitsBubbleRadioFilter === 'wash') {
+    if (meatTypeFilter !== '') {
+      filteredData = originalData.filter((d) => d[meatTypeFilter] === '1');
+    } else {
+      filteredData = originalData.filter((d) => d['Wash_Any'] === '1');
+    }
+  } else if (habitsBubbleRadioFilter === 'noWash') {
+    if (meatTypeFilter !== '') {
+      filteredData = originalData.filter((d) => d[meatTypeFilter] === '0');
+    } else {
+      filteredData = originalData.filter((d) => d['Wash_Any'] === '0');
+    }
+  } else if (habitsBubbleRadioFilter === 'all') {
+    filteredData = originalData;
+  }
+
+  return filteredData;
+}
+
 // Apply all active filters to data
-function filterMeatTypeData() {
-  currentData = mainData;
+function filterByBarchartsData() {
+  let currentData = mainData;
   if (householdSizeFilter != 0) {
     currentData = currentData.filter(
       (d) => d.Houshold_size == householdSizeFilter
@@ -217,14 +250,7 @@ function filterMeatTypeData() {
     );
   }
 
-  filteredMeatTypeData = currentData;
-
-  liquidBeefChart.data = filteredMeatTypeData;
-  liquidPorkChart.data = filteredMeatTypeData;
-  liquidPoultryChart.data = filteredMeatTypeData;
-  liquidSheepGoatChart.data = filteredMeatTypeData;
-  liquidFishChart.data = filteredMeatTypeData;
-  liquidWashAnyChart.data = filteredMeatTypeData;
+  return currentData;
 }
 
 // clear all filters button
@@ -236,12 +262,25 @@ function clearFilters() {
   meatTypeFilter = '';
   householdSizeFilter = 0;
   foodSafetyImportanceFilter = 0;
+  habitsBubbleRadioFilter = 'all';
 
+  //change UI for radio button
+  d3.selectAll("input[name='washHabit'][value='all']")
+      .property('checked', 'true');
+
+  // bar charts data is filtered in the barchart code
   householdSizeBarChart.updateVis();
   foodSafetyBarChart.updateVis();
 
-  filterMeatTypeData();
+  habitsBubblePlot.data = mainData;
+  liquidBeefChart.data = mainData;
+  liquidPorkChart.data = mainData;
+  liquidPoultryChart.data = mainData;
+  liquidSheepGoatChart.data = mainData;
+  liquidFishChart.data = mainData;
+  liquidWashAnyChart.data = mainData;
 
+  habitsBubblePlot.updateVis();
   liquidBeefChart.updateVis();
   liquidPorkChart.updateVis();
   liquidPoultryChart.updateVis();
