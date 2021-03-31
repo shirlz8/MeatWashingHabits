@@ -343,23 +343,6 @@ class LiquidFillGauge {
 
     d3.selectAll(`text.percent${vis.meatType}`).text(`${vis.percent}%`);
 
-    // The inner circle with the clipping wave attached.
-    vis.fillCircleGroup = vis.gaugeGroup
-      .append('g')
-      .attr(
-        'transform',
-        `translate(${vis.config.margin.x},${vis.config.margin.y})`,
-      ) // applying adjustment again
-      .attr('clip-path', `url(#clipWave${vis.meatType})`);
-
-    vis.fillCircleGroup
-      .append('path')
-      .attr('transform', `translate(${-vis.locationX},${-vis.locationY})`)
-      .attr('d', vis.svgString)
-      .style('fill', vis.settings.waveColor)
-      .style('stroke', 'black')
-      .style('stroke-width', '5px');
-
     vis.waveHeight = vis.fillCircleRadius * vis.waveHeightScale(vis.fillPercent * 100);
 
     vis.waveRiseScale = d3
