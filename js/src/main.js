@@ -173,7 +173,16 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     }
   );
 
-  dispatcherMeatType.on('filterMeatType', (meatTypeFilter) => {
+  dispatcherMeatType.on('filterMeatType', (selectedChart) => {
+    liquidBeefChart.active = false;
+    liquidPorkChart.active = false;
+    liquidPoultryChart.active = false;
+    liquidSheepGoatChart.active = false;
+    liquidFishChart.active = false;
+    liquidWashAnyChart.active = false;
+
+    selectedChart.active = true;
+    
     const filteredByBarchartsData = filterByBarchartsData();
     const filteredData = filterBubbleData(filteredByBarchartsData);
 
