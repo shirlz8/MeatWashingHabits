@@ -13,6 +13,7 @@ We used the Airbnb style guide and added eslint to our project to improve code r
 **data** - contains all the CSVs with the data
 
 -   There are 4 CSV files (reference our M2 write up to understand how the CSVs will be used)
+-   There is also a jupyter notebook file that contains the R code we used for data preprocessing
 
 **js** - contains all the JavaScript code for our visualizations, we put all the visualization files into a subfolder called src to run the linter easily.
 
