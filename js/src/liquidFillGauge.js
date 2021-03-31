@@ -27,7 +27,7 @@ class LiquidFillGauge {
 
     const color = d3
       .scaleOrdinal()
-      .domain(['Beef', 'Pork', 'Poultry', 'Sheep_Goat', 'Ground_Meat', 'Fish'])
+      .domain(['Beef', 'Pork', 'Poultry', 'Sheep_Goat', 'Wash_Any', 'Fish'])
       .range([
         '#C1504F',
         '#FF9797',
@@ -55,6 +55,7 @@ class LiquidFillGauge {
       waveOffset: 0.25, // The amount to initially offset the wave. 0 = no offset. 1 = offset of one full wave.
       inactiveWaveColor: 'lightgrey',
       active: false,
+      selected: false,
     };
   }
 
@@ -100,16 +101,23 @@ class LiquidFillGauge {
       .attr('width', vis.config.containerWidth)
       .attr('height', vis.config.containerHeight)
       .on('click', function (event, d) {
-        if (meatTypeFilter === vis.meatType) {
-          console.log('off');
+        let selected = vis.meatType;
+        if (meatTypeFilter === selected) {
+          // turn off highlight for selected chart
           meatTypeFilter = '';
+          d3.selectAll(`path.highlight${vis.meatType}`).attr('opacity', 0);
         } else {
-          console.log('on');
+          // turning off highlight for all charts
+          d3.selectAll(`path.highlight${meatTypeFilter}`).attr('opacity', 0);
+
+          // turning on highlight for selected chart
+          d3.selectAll(`path.highlight${vis.meatType}`).attr('opacity', 100);
           meatTypeFilter = vis.meatType;
         }
-        vis.dispatcher.call('filterMeatType', event, meatTypeFilter);
+        vis.dispatcher.call('filterMeatType', event, vis);
       });
 
+    // this path is the grey highlight of the svg shape
     vis.gauge
       .append('path')
       .attr('class', `highlight${vis.meatType}`)
@@ -123,6 +131,7 @@ class LiquidFillGauge {
       .style('stroke', 'grey')
       .style('stroke-width', '20px');
 
+    // this path is the outline of the svg shape
     vis.gauge
       .append('path')
       .attr(
@@ -135,18 +144,19 @@ class LiquidFillGauge {
       .style('stroke', 'black')
       .style('stroke-width', '5px');
 
+    // this path is the white fill that shows the non filled area
     vis.gauge
       .append('path')
       .attr(
         'transform',
         'translate(' + vis.config.margin.x + ',' + vis.config.margin.y + ')'
       )
-      .attr('id', 'outline')
       .attr('d', vis.svgString)
       .style('fill', 'white')
       .style('stroke', 'black')
       .style('stroke-width', '5px');
 
+    // this text is the meat name
     vis.gauge
       .append('text')
       .attr('class', 'title')
@@ -272,6 +282,7 @@ class LiquidFillGauge {
       ) // applying adjustment again
       .attr('clip-path', 'url(#clipWave' + vis.meatType + ')');
 
+    // this path is the wave fill coloring of the svg
     vis.fillCircleGroup
       .append('path')
       .attr(
@@ -308,7 +319,7 @@ class LiquidFillGauge {
       }); // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
 
     vis.animateWave = () => {
-      if (vis.waveActive) {
+      if (vis.active) {
         vis.wave.attr(
           'transform',
           'translate(' + vis.waveAnimateScale(vis.wave.attr('T')) + ',0)'
@@ -330,13 +341,18 @@ class LiquidFillGauge {
 
     vis.gauge
       .on('mouseover', (event, d) => {
-        vis.waveActive = true;
+        vis.active = true;
         vis.animateWave();
         d3.selectAll(`path.highlight${vis.meatType}`).attr('opacity', 100);
       })
       .on('mouseleave', (event, d) => {
-        vis.waveActive = false;
-        d3.selectAll(`path.highlight${vis.meatType}`).attr('opacity', 0);
+        if (meatTypeFilter !== vis.meatType) {
+          vis.active = false;
+        }
+        let selected = vis.meatType;
+        if (meatTypeFilter !== selected) {
+          d3.selectAll(`path.highlight${vis.meatType}`).attr('opacity', 0);
+        }
       });
   }
 
@@ -362,7 +378,6 @@ class LiquidFillGauge {
         'transform',
         'translate(' + -vis.locationX + ',' + -vis.locationY + ')'
       )
-      .attr('id', 'outline')
       .attr('d', vis.svgString)
       .style('fill', vis.settings.waveColor)
       .style('stroke', 'black')
