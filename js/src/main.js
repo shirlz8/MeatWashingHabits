@@ -222,7 +222,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
 
 // Event listener for radio buttons
 d3.selectAll("input[name='washHabit']").on('change', () => {
-  habitsBubbleRadioFilter = this.value;
+  habitsBubbleRadioFilter = d3.selectAll("input[name='washHabit']:checked").property("value");
 
   const filteredByBarchartsData = filterByBarchartsData();
   const filteredData = filterBubbleData(filteredByBarchartsData);
