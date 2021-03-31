@@ -148,7 +148,7 @@ class FoodSafetyBarChart {
       .attr('class', 'axis-label')
       .attr('text-anchor', 'middle')
       .attr('transform', 'rotate(-90)')
-      .text('# of repondants');
+      .text('# of respondants');
 
     vis.chart
       .append('g')
@@ -157,7 +157,7 @@ class FoodSafetyBarChart {
         'translate(' +
           vis.width / 2 +
           ', ' +
-          (vis.config.containerHeight - 40) +
+          (vis.config.containerHeight - 80) +
           ')'
       )
       .append('text')

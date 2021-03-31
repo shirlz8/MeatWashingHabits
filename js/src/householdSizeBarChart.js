@@ -145,7 +145,7 @@ class HouseholdSizeBarChart {
         'translate(' +
           vis.width / 2 +
           ', ' +
-          (vis.config.containerHeight - 30) +
+          (vis.config.containerHeight - 60) +
           ')'
       )
       .append('text')
