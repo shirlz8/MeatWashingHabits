@@ -30,14 +30,12 @@ class HouseholdSizeBarChart {
     vis.tooltipPadding = 10;
 
     // Calculate inner chart size. Margin specifies the space around the actual chart.
-    vis.width =
-      vis.config.containerWidth -
-      vis.config.margin.left -
-      vis.config.margin.right;
-    vis.height =
-      vis.config.containerHeight -
-      vis.config.margin.top -
-      vis.config.margin.bottom;
+    vis.width = vis.config.containerWidth
+      - vis.config.margin.left
+      - vis.config.margin.right;
+    vis.height = vis.config.containerHeight
+      - vis.config.margin.top
+      - vis.config.margin.bottom;
 
     // Define size of SVG drawing area
     vis.svg = d3
@@ -48,10 +46,7 @@ class HouseholdSizeBarChart {
 
     vis.title = vis.svg // Add chart title
       .append('text')
-      .attr(
-        'transform',
-        'translate(' + vis.config.containerWidth / 2 + ',' + 30 + ')'
-      )
+      .attr('transform', `translate(${vis.config.containerWidth / 2},${30})`)
       .attr('class', 'chart-title')
       .attr('text-anchor', 'middle')
       .text('Household Size Washing Trend');
@@ -61,11 +56,7 @@ class HouseholdSizeBarChart {
       .append('g')
       .attr(
         'transform',
-        'translate(' +
-          vis.config.legendPosition +
-          ', ' +
-          vis.config.legendPosition +
-          ')'
+        `translate(${vis.config.legendPosition}, ${vis.config.legendPosition})`,
       );
 
     vis.legend
@@ -104,7 +95,7 @@ class HouseholdSizeBarChart {
       .append('g')
       .attr(
         'transform',
-        `translate(${vis.config.margin.left},${vis.config.margin.top})`
+        `translate(${vis.config.margin.left},${vis.config.margin.top})`,
       );
 
     vis.chart = vis.chartArea.append('g');
@@ -131,7 +122,7 @@ class HouseholdSizeBarChart {
     // Add axis titles
     vis.chart
       .append('g')
-      .attr('transform', 'translate(' + -34 + ', ' + vis.height / 2 + ')')
+      .attr('transform', `translate(${-34}, ${vis.height / 2})`)
       .append('text')
       .attr('class', 'axis-label')
       .attr('text-anchor', 'middle')
@@ -142,11 +133,7 @@ class HouseholdSizeBarChart {
       .append('g')
       .attr(
         'transform',
-        'translate(' +
-          vis.width / 2 +
-          ', ' +
-          (vis.config.containerHeight - 60) +
-          ')'
+        `translate(${vis.width / 2}, ${vis.config.containerHeight - 60})`,
       )
       .append('text')
       .attr('class', 'axis-label')
@@ -170,23 +157,21 @@ class HouseholdSizeBarChart {
   updateVis() {
     const vis = this;
 
-    if (meatTypeFilter !== '')
-      vis.filteredData = vis.data.filter((d) => d[meatTypeFilter] !== 'NA');
+    if (meatTypeFilter !== '') vis.filteredData = vis.data.filter((d) => d[meatTypeFilter] !== 'NA');
     else vis.filteredData = vis.data;
 
     vis.washCount = d3.rollup(
       vis.filteredData,
-      (v) =>
-        d3.sum(v, (d) => {
-          if (meatTypeFilter !== '') return d[meatTypeFilter];
-          return d.Wash_Any;
-        }),
-      (d) => d.Houshold_size
+      (v) => d3.sum(v, (d) => {
+        if (meatTypeFilter !== '') return d[meatTypeFilter];
+        return d.Wash_Any;
+      }),
+      (d) => d.Houshold_size,
     );
     vis.totalCount = d3.rollup(
       vis.filteredData,
       (v) => v.length,
-      (d) => d.Houshold_size
+      (d) => d.Houshold_size,
     );
 
     vis.washCountData = [];
@@ -202,7 +187,7 @@ class HouseholdSizeBarChart {
     vis.subgroups = ['dontWash', 'wash'];
 
     vis.stackedWashCountData = d3.stack().keys(vis.subgroups)(
-      vis.washCountData
+      vis.washCountData,
     );
 
     vis.yScale.domain([0, d3.max(vis.totalCount.values()) + 200]);
@@ -243,12 +228,12 @@ class HouseholdSizeBarChart {
       .attr('y', (d) => vis.yScale(d[1]))
       .attr('x', (d) => vis.xScale(d.data.householdSize))
       .style('stroke', (d) => {
-        if (householdSizeFilter == d.data.householdSize) return 'black';
-        else return 'none';
+        if (householdSizeFilter === d.data.householdSize) return 'black';
+        return 'none';
       })
       .attr('stroke-width', (d) => {
-        if (householdSizeFilter == d.data.householdSize) return '2';
-        else return '0';
+        if (householdSizeFilter === d.data.householdSize) return '2';
+        return '0';
       });
 
     bars
@@ -263,7 +248,8 @@ class HouseholdSizeBarChart {
           .select('#tooltip')
           .style('display', 'block')
           .style('left', `${event.pageX + vis.tooltipPadding}px`)
-          .style('top', `${event.pageY + vis.tooltipPadding}px`).html(`
+          .style('top', `${event.pageY + vis.tooltipPadding}px`)
+          .html(`
                     <div>Do not wash : ${d.data.dontWash}</div>
                     <div>Wash : ${d.data.wash}</div>
                 `);
@@ -271,30 +257,30 @@ class HouseholdSizeBarChart {
       .on('mouseleave', (event, d) => {
         // Remove hover shading if not selected
         d3.selectAll('bars').attr('stroke-width', '0');
-        let selected = d.data.householdSize;
+        const selected = d.data.householdSize;
 
-        if (householdSizeFilter != selected) {
+        if (householdSizeFilter !== selected) {
           d3.selectAll(`rect.household${d.data.householdSize}`).attr(
             'stroke-width',
-            '0'
+            '0',
           );
         }
         // Remove tooltip
         d3.select('#tooltip').style('display', 'none');
       })
-      .on('click', function (event, d) {
-        let selected = d.data.householdSize;
+      .on('click', (event, d) => {
+        const selected = d.data.householdSize;
         // If the clicked on is already clicked
         if (householdSizeFilter === selected) {
           householdSizeFilter = 0;
           d3.selectAll(`rect.household${d.data.householdSize}`).attr(
             'stroke-width',
-            '0'
+            '0',
           );
         } else {
           d3.selectAll(`rect.household${householdSizeFilter}`).attr(
             'stroke-width',
-            '0'
+            '0',
           );
           householdSizeFilter = selected;
           d3.selectAll(`rect.household${d.data.householdSize}`)
@@ -303,31 +289,6 @@ class HouseholdSizeBarChart {
         }
         vis.dispatcher.call('filterHouseholdSize', event, householdSizeFilter);
       });
-
-    // Add axis titles
-    vis.chart
-      .append('g')
-      .attr('transform', 'translate(' + -34 + ', ' + vis.height / 2 + ')')
-      .append('text')
-      .attr('class', 'axis-label')
-      .attr('text-anchor', 'middle')
-      .attr('transform', 'rotate(-90)')
-      .text('# of repondants');
-
-    vis.chart
-      .append('g')
-      .attr(
-        'transform',
-        'translate(' +
-          vis.width / 2 +
-          ', ' +
-          (vis.config.containerHeight - 30) +
-          ')'
-      )
-      .append('text')
-      .attr('class', 'axis-label')
-      .attr('text-anchor', 'middle')
-      .text('Household size');
 
     // render axis
     vis.xAxisG.call(vis.xAxis).call((g) => g.select('.domain').remove());

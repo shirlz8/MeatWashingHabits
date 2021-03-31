@@ -23,8 +23,6 @@ class LiquidFillGauge {
   }
 
   waveColor(meatType) {
-    const vis = this;
-
     const color = d3
       .scaleOrdinal()
       .domain(['Beef', 'Pork', 'Poultry', 'Sheep_Goat', 'Wash_Any', 'Fish'])
@@ -62,17 +60,16 @@ class LiquidFillGauge {
   calculatePercentage() {
     // Using vis.meatType do roll up and return percentage as number
     const vis = this;
-    let sum = d3.sum(vis.data, (d) => d[vis.meatType]);
+    const sum = d3.sum(vis.data, (d) => d[vis.meatType]);
 
-    let count = d3.count(vis.data, (d) => d[vis.meatType]);
+    const count = d3.count(vis.data, (d) => d[vis.meatType]);
 
     vis.percent = Math.round((sum / count) * 100);
 
-    vis.fillPercent =
-      Math.max(
-        vis.settings.minValue,
-        Math.min(vis.settings.maxValue, vis.percent)
-      ) / vis.settings.maxValue;
+    vis.fillPercent = Math.max(
+      vis.settings.minValue,
+      Math.min(vis.settings.maxValue, vis.percent),
+    ) / vis.settings.maxValue;
   }
 
   /**
@@ -82,7 +79,7 @@ class LiquidFillGauge {
     const vis = this;
     vis.settings = this.liquidFillGaugeDefaultSettings();
 
-    vis.meatName;
+    vis.meatName = '';
     switch (vis.meatType) {
       case 'Sheep_Goat':
         vis.meatName = 'Sheep';
@@ -100,8 +97,8 @@ class LiquidFillGauge {
       .attr('class', 'liquid-container')
       .attr('width', vis.config.containerWidth)
       .attr('height', vis.config.containerHeight)
-      .on('click', function (event, d) {
-        let selected = vis.meatType;
+      .on('click', (event) => {
+        const selected = vis.meatType;
         if (meatTypeFilter === selected) {
           // turn off highlight for selected chart
           meatTypeFilter = '';
@@ -123,7 +120,7 @@ class LiquidFillGauge {
       .attr('class', `highlight${vis.meatType}`)
       .attr(
         'transform',
-        'translate(' + vis.config.margin.x + ',' + vis.config.margin.y + ')'
+        `translate(${vis.config.margin.x},${vis.config.margin.y})`,
       )
       .attr('d', vis.svgString)
       .attr('opacity', 0)
@@ -136,7 +133,7 @@ class LiquidFillGauge {
       .append('path')
       .attr(
         'transform',
-        'translate(' + vis.config.margin.x + ',' + vis.config.margin.y + ')'
+        `translate(${vis.config.margin.x},${vis.config.margin.y})`,
       )
       .attr('id', 'outline')
       .attr('d', vis.svgString)
@@ -149,7 +146,7 @@ class LiquidFillGauge {
       .append('path')
       .attr(
         'transform',
-        'translate(' + vis.config.margin.x + ',' + vis.config.margin.y + ')'
+        `translate(${vis.config.margin.x},${vis.config.margin.y})`,
       )
       .attr('d', vis.svgString)
       .style('fill', 'white')
@@ -171,13 +168,12 @@ class LiquidFillGauge {
     vis.BBox = d3.select('#outline').node().getBBox();
 
     // Get radius = half of the width
-    vis.radius =
-      Math.max(parseInt(vis.BBox.width), parseInt(vis.BBox.height)) / 2;
+    vis.radius = Math.max(parseInt(vis.BBox.width, 10), parseInt(vis.BBox.height, 10)) / 2;
 
     // This is basically vis.BBox.x, top left x of bound box
-    vis.locationX = parseInt(vis.BBox.width) / 2 - vis.radius + vis.BBox.x;
+    vis.locationX = parseInt(vis.BBox.width, 10) / 2 - vis.radius + vis.BBox.x;
     // This is top left y of bounding box, plus height/2 - width/2
-    vis.locationY = parseInt(vis.BBox.height) / 2 - vis.radius + vis.BBox.y;
+    vis.locationY = parseInt(vis.BBox.height, 10) / 2 - vis.radius + vis.BBox.y;
 
     vis.calculatePercentage();
 
@@ -188,7 +184,7 @@ class LiquidFillGauge {
       .attr('text-anchor', 'middle')
       .attr('fill', 'black')
       .style('font-size', '16px')
-      .text(vis.percent + '%')
+      .text(`${vis.percent}%`)
       .attr('transform', 'translate(100,180)');
 
     vis.waveHeightScale = d3
@@ -200,8 +196,7 @@ class LiquidFillGauge {
     vis.circleFillGap = vis.settings.circleFillGap * vis.radius;
     vis.fillCircleMargin = vis.circleThickness + vis.circleFillGap;
     vis.fillCircleRadius = vis.radius - vis.fillCircleMargin;
-    vis.waveHeight =
-      vis.fillCircleRadius * vis.waveHeightScale(vis.fillPercent * 100);
+    vis.waveHeight = vis.fillCircleRadius * vis.waveHeightScale(vis.fillPercent * 100);
 
     vis.waveLength = (vis.fillCircleRadius * 2) / vis.settings.waveCount;
     vis.waveClipCount = 1 + vis.settings.waveCount;
@@ -240,33 +235,24 @@ class LiquidFillGauge {
     // Center the gauge within the parent SVG.
     vis.gaugeGroup = vis.gauge
       .append('g')
-      .attr(
-        'transform',
-        'translate(' + vis.locationX + ',' + vis.locationY + ')'
-      );
+      .attr('transform', `translate(${vis.locationX},${vis.locationY})`);
 
     // The clipping wave area.
     vis.clipArea = d3
       .area()
-      .x(function (d) {
-        return vis.waveScaleX(d.x);
-      })
-      .y0(function (d) {
-        return vis.waveScaleY(
-          Math.sin(
-            Math.PI * 2 * vis.settings.waveOffset * -1 +
-              Math.PI * 2 * (1 - vis.settings.waveCount) +
-              d.y * 2 * Math.PI
-          )
-        );
-      })
-      .y1(function (d) {
-        return vis.fillCircleRadius * 2 + vis.waveHeight;
-      });
+      .x((d) => vis.waveScaleX(d.x))
+      .y0((d) => vis.waveScaleY(
+        Math.sin(
+          Math.PI * 2 * vis.settings.waveOffset * -1
+              + Math.PI * 2 * (1 - vis.settings.waveCount)
+              + d.y * 2 * Math.PI,
+        ),
+      ))
+      .y1(() => vis.fillCircleRadius * 2 + vis.waveHeight);
     vis.waveGroup = vis.gaugeGroup
       .append('defs')
       .append('clipPath')
-      .attr('id', 'clipWave' + vis.meatType);
+      .attr('id', `clipWave${vis.meatType}`);
     vis.wave = vis.waveGroup
       .append('path')
       .datum(vis.clipWaveData)
@@ -278,17 +264,14 @@ class LiquidFillGauge {
       .append('g')
       .attr(
         'transform',
-        'translate(' + vis.config.margin.x + ',' + vis.config.margin.y + ')'
+        `translate(${vis.config.margin.x},${vis.config.margin.y})`,
       ) // applying adjustment again
-      .attr('clip-path', 'url(#clipWave' + vis.meatType + ')');
+      .attr('clip-path', `url(#clipWave${vis.meatType})`);
 
     // this path is the wave fill coloring of the svg
     vis.fillCircleGroup
       .append('path')
-      .attr(
-        'transform',
-        'translate(' + -vis.locationX + ',' + -vis.locationY + ')'
-      )
+      .attr('transform', `translate(${-vis.locationX},${-vis.locationY})`)
       .attr('class', `outline${vis.meatType}`)
       .attr('d', vis.svgString)
       .style('fill', vis.settings.waveColor)
@@ -296,25 +279,22 @@ class LiquidFillGauge {
       .style('stroke-width', '5px');
 
     // Make the wave rise. wave and waveGroup are separate so that horizontal and vertical movement can be controlled independently.
-    vis.waveGroupXPosition =
-      vis.fillCircleMargin + vis.fillCircleRadius * 2 - vis.waveClipWidth;
+    vis.waveGroupXPosition = vis.fillCircleMargin + vis.fillCircleRadius * 2 - vis.waveClipWidth;
 
     vis.waveGroup
       .attr(
         'transform',
-        'translate(' + vis.waveGroupXPosition + ',' + vis.waveRiseScale(0) + ')'
+        `translate(${vis.waveGroupXPosition},${vis.waveRiseScale(0)})`,
       )
       .transition()
       .duration(vis.settings.waveRiseTime)
       .attr(
         'transform',
-        'translate(' +
-          vis.waveGroupXPosition +
-          ',' +
-          vis.waveRiseScale(vis.fillPercent) +
-          ')'
+        `translate(${vis.waveGroupXPosition},${vis.waveRiseScale(
+          vis.fillPercent,
+        )})`,
       )
-      .on('start', function () {
+      .on('start', () => {
         vis.wave.attr('transform', 'translate(1,0)');
       }); // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
 
@@ -322,15 +302,15 @@ class LiquidFillGauge {
       if (vis.active) {
         vis.wave.attr(
           'transform',
-          'translate(' + vis.waveAnimateScale(vis.wave.attr('T')) + ',0)'
+          `translate(${vis.waveAnimateScale(vis.wave.attr('T'))},0)`,
         );
         vis.wave
           .transition()
           .duration(vis.settings.waveAnimateTime * (1 - vis.wave.attr('T')))
           .ease(d3.easeLinear)
-          .attr('transform', 'translate(' + vis.waveAnimateScale(1) + ',0)')
+          .attr('transform', `translate(${vis.waveAnimateScale(1)},0)`)
           .attr('T', 1)
-          .on('end', function () {
+          .on('end', () => {
             vis.wave.attr('T', 0);
             vis.animateWave(vis.settings.waveAnimateTime);
           });
@@ -340,16 +320,16 @@ class LiquidFillGauge {
     vis.animateWave();
 
     vis.gauge
-      .on('mouseover', (event, d) => {
+      .on('mouseover', () => {
         vis.active = true;
         vis.animateWave();
         d3.selectAll(`path.highlight${vis.meatType}`).attr('opacity', 100);
       })
-      .on('mouseleave', (event, d) => {
+      .on('mouseleave', () => {
         if (meatTypeFilter !== vis.meatType) {
           vis.active = false;
         }
-        let selected = vis.meatType;
+        const selected = vis.meatType;
         if (meatTypeFilter !== selected) {
           d3.selectAll(`path.highlight${vis.meatType}`).attr('opacity', 0);
         }
@@ -361,30 +341,26 @@ class LiquidFillGauge {
 
     vis.calculatePercentage();
 
-    d3.selectAll(`text.percent${vis.meatType}`).text(vis.percent + '%');
+    d3.selectAll(`text.percent${vis.meatType}`).text(`${vis.percent}%`);
 
     // The inner circle with the clipping wave attached.
     vis.fillCircleGroup = vis.gaugeGroup
       .append('g')
       .attr(
         'transform',
-        'translate(' + vis.config.margin.x + ',' + vis.config.margin.y + ')'
+        `translate(${vis.config.margin.x},${vis.config.margin.y})`,
       ) // applying adjustment again
-      .attr('clip-path', 'url(#clipWave' + vis.meatType + ')');
+      .attr('clip-path', `url(#clipWave${vis.meatType})`);
 
     vis.fillCircleGroup
       .append('path')
-      .attr(
-        'transform',
-        'translate(' + -vis.locationX + ',' + -vis.locationY + ')'
-      )
+      .attr('transform', `translate(${-vis.locationX},${-vis.locationY})`)
       .attr('d', vis.svgString)
       .style('fill', vis.settings.waveColor)
       .style('stroke', 'black')
       .style('stroke-width', '5px');
 
-    vis.waveHeight =
-      vis.fillCircleRadius * vis.waveHeightScale(vis.fillPercent * 100);
+    vis.waveHeight = vis.fillCircleRadius * vis.waveHeightScale(vis.fillPercent * 100);
 
     vis.waveRiseScale = d3
       .scaleLinear()
@@ -409,21 +385,15 @@ class LiquidFillGauge {
 
     vis.newClipArea = d3
       .area()
-      .x(function (d) {
-        return vis.waveScaleX(d.x);
-      })
-      .y0(function (d) {
-        return vis.waveScaleY(
-          Math.sin(
-            Math.PI * 2 * vis.settings.waveOffset * -1 +
-              Math.PI * 2 * (1 - vis.settings.waveCount) +
-              d.y * 2 * Math.PI
-          )
-        );
-      })
-      .y1(function (d) {
-        return vis.fillCircleRadius * 2 + vis.waveHeight;
-      });
+      .x((d) => vis.waveScaleX(d.x))
+      .y0((d) => vis.waveScaleY(
+        Math.sin(
+          Math.PI * 2 * vis.settings.waveOffset * -1
+              + Math.PI * 2 * (1 - vis.settings.waveCount)
+              + d.y * 2 * Math.PI,
+        ),
+      ))
+      .y1(() => vis.fillCircleRadius * 2 + vis.waveHeight);
 
     vis.newWavePosition = vis.waveAnimateScale(1);
     vis.wave
@@ -433,13 +403,10 @@ class LiquidFillGauge {
       .duration(vis.settings.waveAnimateTime * (1 - vis.wave.attr('T')))
       .ease(d3.easeLinear)
       .attr('d', vis.newClipArea)
-      .attr('transform', 'translate(' + vis.newWavePosition + ',0)')
+      .attr('transform', `translate(${vis.newWavePosition},0)`)
       .attr('T', '1')
-      .on('end', function () {
-        vis.wave.attr(
-          'transform',
-          'translate(' + vis.waveAnimateScale(0) + ',0)'
-        );
+      .on('end', () => {
+        vis.wave.attr('transform', `translate(${vis.waveAnimateScale(0)},0)`);
         vis.animateWave(vis.settings.waveAnimateTime);
       });
     vis.waveGroup
@@ -447,7 +414,7 @@ class LiquidFillGauge {
       .duration(vis.settings.waveRiseTime)
       .attr(
         'transform',
-        'translate(' + vis.waveGroupXPosition + ',' + vis.newHeight + ')'
+        `translate(${vis.waveGroupXPosition},${vis.newHeight})`,
       );
 
     vis.animateWave();

@@ -13,6 +13,17 @@
     "rules": {
       "no-undef": "off",
       "max-len": "off",
-      "linebreak-style": "off"
+      "linebreak-style": "off",
+      
+      "class-methods-use-this": "off",
+      "func-names": "off",
+      "no-cond-assign": "off",
+      "no-plusplus": "off",
+      // disable this when testing
+      "no-unused-vars": "off",
+      "no-restricted-syntax": "off",
+      "no-loop-func": "off",
+      "no-unused-expressions": "off",
+      "no-param-reassign": "off"
     }
 }

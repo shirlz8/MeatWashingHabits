@@ -78,18 +78,16 @@ class HabitsBubblePlot {
     return yAxisName(d);
   }
 
-  //Todo: refactor and look into the margin/axis calculation
+  // Todo: refactor and look into the margin/axis calculation
   initVis() {
     const vis = this;
 
-    vis.width =
-      vis.config.containerWidth -
-      vis.config.margin.left -
-      vis.config.margin.right;
-    vis.height =
-      vis.config.containerHeight -
-      vis.config.margin.top -
-      vis.config.margin.bottom;
+    vis.width = vis.config.containerWidth
+      - vis.config.margin.left
+      - vis.config.margin.right;
+    vis.height = vis.config.containerHeight
+      - vis.config.margin.top
+      - vis.config.margin.bottom;
 
     vis.svg = d3
       .select(vis.config.parentElement)
@@ -105,7 +103,7 @@ class HabitsBubblePlot {
       .append('g')
       .attr(
         'transform',
-        `translate(${vis.config.margin.left},${vis.config.margin.top})`
+        `translate(${vis.config.margin.left},${vis.config.margin.top})`,
       );
 
     // Initialize clipping mask that covers the whole chart
@@ -166,7 +164,7 @@ class HabitsBubblePlot {
       .append('g')
       .attr(
         'transform',
-        `translate(${-vis.config.yLabelWidth}, ${vis.height / 2})`
+        `translate(${-vis.config.yLabelWidth}, ${vis.height / 2})`,
       )
       .append('text')
       .attr('class', 'axis-label')
@@ -178,7 +176,7 @@ class HabitsBubblePlot {
       .append('g')
       .attr(
         'transform',
-        `translate(${vis.width / 2}, ${vis.config.containerHeight - 55})`
+        `translate(${vis.width / 2}, ${vis.config.containerHeight - 55})`,
       )
       .append('text')
       .attr('class', 'axis-label')
@@ -200,7 +198,7 @@ class HabitsBubblePlot {
       const frequencyData = d3.rollups(
         noNAData,
         (v) => v.length,
-        (d) => d[habit]
+        (d) => d[habit],
       );
 
       let washPercentageMap = new Map();
@@ -208,13 +206,13 @@ class HabitsBubblePlot {
         washPercentageMap = d3.rollup(
           noNAData,
           (v) => d3.sum(v, (d) => d[meatTypeFilter]),
-          (d) => d[habit]
+          (d) => d[habit],
         );
       }
 
       for (const frequencyLevel of frequencyData) {
         const newRow = {
-          habit: habit,
+          habit,
           frequency: frequencyLevel[0],
           count: frequencyLevel[1],
           washPercentage:
@@ -224,15 +222,12 @@ class HabitsBubblePlot {
       }
     }
 
-    console.log(vis.aggregatedDataMap);
+    vis.yValue = (d) => d.habit;
+    vis.xValue = (d) => d.frequency;
+    vis.count = (d) => d.count;
 
-    vis.yValue = (d) => d['habit'];
-    vis.xValue = (d) => d['frequency'];
-    vis.count = (d) => d['count'];
-
-    const minCount = d3.least(vis.aggregatedDataMap, (d) => d['count']).count;
-    const maxCount = d3.greatest(vis.aggregatedDataMap, (d) => d['count'])
-      .count;
+    const minCount = d3.least(vis.aggregatedDataMap, (d) => d.count).count;
+    const maxCount = d3.greatest(vis.aggregatedDataMap, (d) => d.count).count;
 
     const countExtent = [minCount, maxCount];
     vis.radiusScale.domain(countExtent);
@@ -246,7 +241,7 @@ class HabitsBubblePlot {
   renderVis() {
     const vis = this;
 
-    //draw the circles
+    // draw the circles
     const circles = vis.chartClip
       .selectAll('circle')
       .data(vis.aggregatedDataMap, (d) => d)
@@ -257,27 +252,28 @@ class HabitsBubblePlot {
       .attr('cx', (d) => vis.xScale(vis.xValue(d)))
       .attr('opacity', 0.7)
       .style('stroke', 'black')
-      .attr('fill', (d) => vis.colour(d['habit']));
+      .attr('fill', (d) => vis.colour(d.habit));
 
     circles
       .on('mouseover', (event, d) => {
         d3
           .select('#tooltip')
           .style('display', 'block')
-          .style('left', event.pageX + 'px')
-          .style('top', event.pageY + 'px').html(`
-              <div class="tooltip-title">${d['count']} claims</div>
-              <div>${d['washPercentage'].toFixed(2)}% Wash Meats</div>
+          .style('left', `${event.pageX}px`)
+          .style('top', `${event.pageY}px`)
+          .html(`
+              <div class="tooltip-title">${d.count} claims</div>
+              <div>${d.washPercentage.toFixed(2)}% Wash Meats</div>
               <div><i>(${
-                100 - d['washPercentage'].toFixed(2)
-              }% Don't Wash Meats)</i></div>
+  100 - d.washPercentage.toFixed(2)
+}% Don't Wash Meats)</i></div>
             `);
       })
       .on('mouseleave', () => {
         d3.select('#tooltip').style('display', 'none');
       });
 
-    //draw the axis
+    // draw the axis
     vis.xAxisG.call(vis.xAxis);
     vis.yAxisG
       .call(vis.yAxis)
@@ -286,6 +282,7 @@ class HabitsBubblePlot {
         if (d !== 'Thermometer') {
           return 'translate(0,-20)';
         }
+        return 'translate(0,0)';
       })
       .call(vis.wrap, vis.config.yAxisLabelWidth);
   }
@@ -297,11 +294,11 @@ class HabitsBubblePlot {
       .selectAll('.legend-element')
       .data(vis.radiusLegendValues, (d) => d)
       .join('circle')
-      .attr('class', `legend legend-element`)
+      .attr('class', 'legend legend-element')
       .attr('r', (d) => vis.radiusScale(d))
       .attr('cy', 55)
       .attr('cx', (d, i) => {
-        let r = vis.radiusScale(d);
+        const r = vis.radiusScale(d);
         return vis.width / 2 + i * (30 + r);
       })
       .attr('transform', 'translate(80,0)')
@@ -312,10 +309,10 @@ class HabitsBubblePlot {
       .selectAll('text')
       .data(vis.radiusLegendValues, (d) => d)
       .join('text')
-      .attr('class', `legend legend-label`)
+      .attr('class', 'legend legend-label')
       .attr('y', (d) => 55 - vis.radiusScale(d) - 3)
       .attr('x', (d, i) => {
-        let r = vis.radiusScale(d);
+        const r = vis.radiusScale(d);
         return vis.width / 2 + i * (30 + r);
       })
       .style('text-align', 'center')
@@ -334,7 +331,7 @@ class HabitsBubblePlot {
     const min = rangeExtent[0];
     const max = rangeExtent[1];
     const range = max - min;
-    let radiusLegendValues = [];
+    const radiusLegendValues = [];
 
     radiusLegendValues.push(min);
     for (let i = 1; i < numOfCircles - 1; i++) {
@@ -342,8 +339,6 @@ class HabitsBubblePlot {
       radiusLegendValues.push(value);
     }
     radiusLegendValues.push(max);
-
-    console.log(radiusLegendValues);
     return radiusLegendValues;
   }
 
@@ -359,21 +354,19 @@ class HabitsBubblePlot {
     return colourScale(d);
   }
 
-  //TODO: consider refactoring and move to util
+  // TODO: consider refactoring and move to util
   // Function to wrap Y axis labs
   // Sampled from : bl.ocks.org/mbostock/7555321
   wrap(text, width) {
     text.each(function () {
-      const text = d3.select(this);
-      const words = text.text().split(/\s+/).reverse();
+      const text2 = d3.select(this);
+      const words = text2.text().split(/\s+/).reverse();
       let word;
       let line = [];
-      let lineNumber = 0;
-      const lineHeight = 1; // ems
-      const y = text.attr('y');
-      const dy = parseFloat(text.attr('dy'));
+      const y = text2.attr('y');
+      const dy = parseFloat(text2.attr('dy'));
 
-      let tspan = text
+      let tspan = text2
         .text(null)
         .append('tspan')
         .attr('x', -10)
@@ -388,7 +381,7 @@ class HabitsBubblePlot {
           line.pop();
           tspan.text(line.join(' '));
           line = [word];
-          tspan = text
+          tspan = text2
             .append('tspan')
             .attr('x', -10)
             .attr('y', y)
