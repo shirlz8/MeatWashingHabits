@@ -99,11 +99,7 @@ class LiquidFillGauge {
       .attr('height', vis.config.containerHeight)
       .on('click', (event) => {
         const selected = vis.meatType;
-        if (meatTypeFilter === selected) {
-          // turn off highlight for selected chart
-          meatTypeFilter = '';
-          d3.selectAll(`path.highlight${vis.meatType}`).attr('opacity', 0);
-        } else {
+        if (meatTypeFilter != selected) {
           // turning off highlight for all charts
           d3.selectAll(`path.highlight${meatTypeFilter}`).attr('opacity', 0);
 
@@ -123,7 +119,10 @@ class LiquidFillGauge {
         `translate(${vis.config.margin.x},${vis.config.margin.y})`,
       )
       .attr('d', vis.svgString)
-      .attr('opacity', 0)
+      .attr('opacity', () => {
+        if (vis.meatType === 'Wash_Any') return 100;
+        return 0;
+      })
       .style('fill', 'grey')
       .style('stroke', 'grey')
       .style('stroke-width', '20px');

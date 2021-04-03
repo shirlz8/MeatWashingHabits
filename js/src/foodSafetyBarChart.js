@@ -169,8 +169,7 @@ class FoodSafetyBarChart {
   updateVis() {
     const vis = this;
 
-    if (meatTypeFilter !== '') vis.filteredData = vis.data.filter((d) => d[meatTypeFilter] !== 'NA');
-    else vis.filteredData = vis.data;
+    vis.filteredData = vis.data.filter((d) => d[meatTypeFilter] !== 'NA');
 
     vis.washCount = d3.rollup(
       vis.filteredData,

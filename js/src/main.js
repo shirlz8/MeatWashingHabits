@@ -1,5 +1,5 @@
 // Variables to store selected filters
-let meatTypeFilter = '';
+let meatTypeFilter = 'Wash_Any';
 let householdSizeFilter = 0;
 let foodSafetyImportanceFilter = 0;
 let habitsBubbleRadioFilter = 'all';
@@ -60,17 +60,9 @@ function filterBubbleData(originalData) {
   let filteredData = [];
 
   if (habitsBubbleRadioFilter === 'wash') {
-    if (meatTypeFilter !== '') {
       filteredData = originalData.filter((d) => d[meatTypeFilter] === '1');
-    } else {
-      filteredData = originalData.filter((d) => d.Wash_Any === '1');
-    }
   } else if (habitsBubbleRadioFilter === 'noWash') {
-    if (meatTypeFilter !== '') {
       filteredData = originalData.filter((d) => d[meatTypeFilter] === '0');
-    } else {
-      filteredData = originalData.filter((d) => d.Wash_Any === '0');
-    }
   } else if (habitsBubbleRadioFilter === 'all') {
     filteredData = originalData;
   }
@@ -250,7 +242,7 @@ d3.csv('data/reasons_for_washing_data.csv').then((reasonsWashingData) => {
 
 // Clear all filters button
 function clearFilters() {
-  meatTypeFilter = '';
+  meatTypeFilter = 'Wash_Any';
   householdSizeFilter = 0;
   foodSafetyImportanceFilter = 0;
   habitsBubbleRadioFilter = 'all';
