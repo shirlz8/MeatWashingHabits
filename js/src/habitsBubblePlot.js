@@ -326,12 +326,12 @@ class HabitsBubblePlot {
         let r = vis.radiusScale(d);
         return vis.width / 2 + i * (30 + r);
       })
-      .style('text-align', 'center')
+      .style('text-anchor', 'middle')
       .attr('transform', (d) => {
         if (vis.dataRange < 5) {
           return 'translate(200,0)'
         } else {
-          return 'translate(70,0)'
+          return 'translate(80,0)'
         }
       })
       .text((d) => Math.round(d));
