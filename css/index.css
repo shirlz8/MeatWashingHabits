@@ -66,6 +66,16 @@ body {
   width: 125px;
 }
 
+.pieButton {
+  border-radius: 50%;
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+  height: 80px;
+  width: 80px;
+  background-color: lightblue;
+}
+
+.pieButton:focus {outline:0;}
+
 #pieChartIntroText {
   font-size: 30px;
   font-weight: 500;
