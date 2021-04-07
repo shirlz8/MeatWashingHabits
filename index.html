@@ -18,11 +18,12 @@
 
   <body>
     <div class="container">
-      <div id="test">
-        <p>Do you wash meat before cooking?</p>
-        <button class="button" type="button" onclick="clearFilters()">Yup!</button>
-        <button class="button" type="button" onclick="clearFilters()">Nope!</button>
+      <div id="hook">
+        <p id="pieChartIntroText">Do you wash meat before cooking?</p>
+        <button class="button" type="button" onclick="setTextWash()">Yup!</button>
+        <button class="button" type="button" onclick="setTextNoWash()">Nope!</button>
         <div id="pieChart"></div>
+        <p id="pieChartText"></p>
       </div>
 
       <div id="top">
