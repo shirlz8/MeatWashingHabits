@@ -195,15 +195,11 @@ class FoodSafetyBarChart {
       vis.washCountData.push(row);
     });
 
-    // console.log(vis.washCountData);
-
     vis.subgroups = ['dontWash', 'wash'];
 
     vis.stackedWashCountData = d3.stack().keys(vis.subgroups)(
       vis.washCountData,
     );
-
-    // console.log(vis.stackedWashCountData);
 
     vis.yValue = (d) => d.wash;
     vis.yScale.domain([0, d3.max(vis.totalCount.values()) + 200]);

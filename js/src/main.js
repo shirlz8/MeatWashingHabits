@@ -70,10 +70,18 @@ function filterBubbleData(originalData) {
   return filteredData;
 }
 
-// Exploratory view
+// Exploratory view & pie chart
 d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
   mainData = exploratoryData;
   // Initialize the views
+  // Pie chart
+  pieChart = new PieChart(
+    {
+      parentElement: '#pieChart',
+    },
+    exploratoryData
+  );
+
   // Bar charts
   householdSizeBarChart = new HouseholdSizeBarChart(
     {
