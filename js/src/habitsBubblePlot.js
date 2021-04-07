@@ -235,9 +235,11 @@ class HabitsBubblePlot {
       .count;
 
     const countExtent = [minCount, maxCount];
+    vis.dataRange = maxCount - minCount;
     vis.radiusScale.domain(countExtent);
 
-    vis.radiusLegendValues = vis.calculateRadiusLegendValues(countExtent, 4);
+    let numOfCircles = (vis.dataRange > 5) ? 4 : 2;
+    vis.radiusLegendValues = vis.calculateRadiusLegendValues(countExtent, numOfCircles);
 
     vis.renderLegend();
     vis.renderVis();
@@ -304,7 +306,13 @@ class HabitsBubblePlot {
         let r = vis.radiusScale(d);
         return vis.width / 2 + i * (30 + r);
       })
-      .attr('transform', 'translate(80,0)')
+      .attr('transform', (d) => {
+        if (vis.dataRange < 5) {
+          return 'translate(200,0)'
+        } else {
+          return 'translate(80,0)'
+        }
+      })
       .style('stroke', 'black')
       .style('fill', 'none');
 
@@ -319,7 +327,13 @@ class HabitsBubblePlot {
         return vis.width / 2 + i * (30 + r);
       })
       .style('text-align', 'center')
-      .attr('transform', 'translate(70,0)')
+      .attr('transform', (d) => {
+        if (vis.dataRange < 5) {
+          return 'translate(200,0)'
+        } else {
+          return 'translate(70,0)'
+        }
+      })
       .text((d) => Math.round(d));
 
     vis.legend
@@ -327,23 +341,35 @@ class HabitsBubblePlot {
       .attr('class', 'legend legend-label')
       .attr('x', vis.width / 2 - 30)
       .attr('y', 75)
+      .attr('transform', (d) => {
+        if (vis.dataRange < 5) {
+          return 'translate(80,0)'
+        } else {
+          return 'translate(0,0)'
+        }
+      })
       .text('Area = Total Counts');
   }
 
   calculateRadiusLegendValues(rangeExtent, numOfCircles) {
-    const min = rangeExtent[0];
-    const max = rangeExtent[1];
+    const vis = this;
+    let min = rangeExtent[0];
+    let max = rangeExtent[1];
     const range = max - min;
     let radiusLegendValues = [];
 
+    min = vis.roundToNearestTens(min);
+
     radiusLegendValues.push(min);
     for (let i = 1; i < numOfCircles - 1; i++) {
-      const value = (range / numOfCircles - 2) * i;
+      let  value = (range / numOfCircles) * i;
+      value = vis.roundToNearestTens(value);
       radiusLegendValues.push(value);
+
     }
+    max = vis.roundToNearestTens(max);
     radiusLegendValues.push(max);
 
-    console.log(radiusLegendValues);
     return radiusLegendValues;
   }
 
@@ -360,6 +386,16 @@ class HabitsBubblePlot {
   }
 
   //TODO: consider refactoring and move to util
+
+  roundToNearestTens(number) {
+    if (number > 10) {
+      return Math.ceil(number / 10) * 10;
+    } else {
+      return number;
+    }
+  }
+
+  // TODO: consider refactoring and move to util
   // Function to wrap Y axis labs
   // Sampled from : bl.ocks.org/mbostock/7555321
   wrap(text, width) {
