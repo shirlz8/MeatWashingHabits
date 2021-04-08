@@ -45,14 +45,12 @@ class FoodSafetyBarChart {
     const vis = this;
 
     // Calculate inner chart size. Margin specifies the space around the actual chart.
-    vis.width =
-      vis.config.containerWidth -
-      vis.config.margin.left -
-      vis.config.margin.right;
-    vis.height =
-      vis.config.containerHeight -
-      vis.config.margin.top -
-      vis.config.margin.bottom;
+    vis.width = vis.config.containerWidth
+      - vis.config.margin.left
+      - vis.config.margin.right;
+    vis.height = vis.config.containerHeight
+      - vis.config.margin.top
+      - vis.config.margin.bottom;
 
     // Define size of SVG drawing area
     vis.svg = d3
@@ -63,10 +61,7 @@ class FoodSafetyBarChart {
 
     vis.title = vis.svg // Add chart title
       .append('text')
-      .attr(
-        'transform',
-        'translate(' + vis.config.containerWidth / 2 + ',' + 30 + ')'
-      )
+      .attr('transform', `translate(${vis.config.containerWidth / 2},${30})`)
       .attr('class', 'chart-title')
       .attr('text-anchor', 'middle')
       .text('Food Safe Importance Washing Trend');
@@ -76,11 +71,7 @@ class FoodSafetyBarChart {
       .append('g')
       .attr(
         'transform',
-        'translate(' +
-          vis.config.legendPosition +
-          ', ' +
-          vis.config.legendPosition +
-          ')'
+        `translate(${vis.config.legendPosition}, ${vis.config.legendPosition})`,
       );
 
     vis.legend
@@ -119,7 +110,7 @@ class FoodSafetyBarChart {
       .append('g')
       .attr(
         'transform',
-        `translate(${vis.config.margin.left},${vis.config.margin.top})`
+        `translate(${vis.config.margin.left},${vis.config.margin.top})`,
       );
 
     vis.chart = vis.chartArea.append('g');
@@ -143,22 +134,18 @@ class FoodSafetyBarChart {
     // Add axis titles
     vis.chart
       .append('g')
-      .attr('transform', 'translate(' + -34 + ', ' + vis.height / 2 + ')')
+      .attr('transform', `translate(${-34}, ${vis.height / 2})`)
       .append('text')
       .attr('class', 'axis-label')
       .attr('text-anchor', 'middle')
       .attr('transform', 'rotate(-90)')
-      .text('# of repondants');
+      .text('# of respondents');
 
     vis.chart
       .append('g')
       .attr(
         'transform',
-        'translate(' +
-          vis.width / 2 +
-          ', ' +
-          (vis.config.containerHeight - 40) +
-          ')'
+        `translate(${vis.width / 2}, ${vis.config.containerHeight - 80})`,
       )
       .append('text')
       .attr('class', 'axis-label')
@@ -182,23 +169,20 @@ class FoodSafetyBarChart {
   updateVis() {
     const vis = this;
 
-    if (meatTypeFilter !== '')
-      vis.filteredData = vis.data.filter((d) => d[meatTypeFilter] !== 'NA');
-    else vis.filteredData = vis.data;
+    vis.filteredData = vis.data.filter((d) => d[meatTypeFilter] !== 'NA');
 
     vis.washCount = d3.rollup(
       vis.filteredData,
-      (v) =>
-        d3.sum(v, (d) => {
-          if (meatTypeFilter !== '') return d[meatTypeFilter];
-          return d.Wash_Any;
-        }),
-      (d) => d.Food_safety_importance
+      (v) => d3.sum(v, (d) => {
+        if (meatTypeFilter !== '') return d[meatTypeFilter];
+        return d.Wash_Any;
+      }),
+      (d) => d.Food_safety_importance,
     );
     vis.totalCount = d3.rollup(
       vis.filteredData,
       (v) => v.length,
-      (d) => d.Food_safety_importance
+      (d) => d.Food_safety_importance,
     );
 
     vis.washCountData = [];
@@ -211,15 +195,11 @@ class FoodSafetyBarChart {
       vis.washCountData.push(row);
     });
 
-    // console.log(vis.washCountData);
-
     vis.subgroups = ['dontWash', 'wash'];
 
     vis.stackedWashCountData = d3.stack().keys(vis.subgroups)(
-      vis.washCountData
+      vis.washCountData,
     );
-
-    // console.log(vis.stackedWashCountData);
 
     vis.yValue = (d) => d.wash;
     vis.yScale.domain([0, d3.max(vis.totalCount.values()) + 200]);
@@ -261,14 +241,12 @@ class FoodSafetyBarChart {
       .attr('y', (d) => vis.yScale(d[1]))
       .attr('x', (d) => vis.xScale(d.data.foodSafetyImportance))
       .style('stroke', (d) => {
-        if (foodSafetyImportanceFilter == d.data.foodSafetyImportance)
-          return 'black';
-        else return 'none';
+        if (foodSafetyImportanceFilter === d.data.foodSafetyImportance) return 'black';
+        return 'none';
       })
       .attr('stroke-width', (d) => {
-        if (foodSafetyImportanceFilter == d.data.foodSafetyImportance)
-          return '2';
-        else return '0';
+        if (foodSafetyImportanceFilter === d.data.foodSafetyImportance) return '2';
+        return '0';
       });
 
     bars
@@ -283,7 +261,8 @@ class FoodSafetyBarChart {
           .select('#tooltip')
           .style('display', 'block')
           .style('left', `${event.pageX + vis.tooltipPadding}px`)
-          .style('top', `${event.pageY + vis.tooltipPadding}px`).html(`
+          .style('top', `${event.pageY + vis.tooltipPadding}px`)
+          .html(`
                 <div>Do not wash : ${d.data.dontWash}</div>
                 <div>Wash : ${d.data.wash}</div>
             `);
@@ -291,30 +270,30 @@ class FoodSafetyBarChart {
       .on('mouseleave', (event, d) => {
         // Remove hover shading if not selected
         d3.selectAll('bars').attr('stroke-width', '0');
-        let selected = d.data.foodSafetyImportance;
+        const selected = d.data.foodSafetyImportance;
 
-        if (foodSafetyImportanceFilter != selected) {
+        if (foodSafetyImportanceFilter !== selected) {
           d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`).attr(
             'stroke-width',
-            '0'
+            '0',
           );
         }
         // Remove tooltip
         d3.select('#tooltip').style('display', 'none');
       })
-      .on('click', function (event, d) {
-        let selected = d.data.foodSafetyImportance;
+      .on('click', (event, d) => {
+        const selected = d.data.foodSafetyImportance;
         // If the clicked on is already clicked
         if (foodSafetyImportanceFilter === selected) {
           foodSafetyImportanceFilter = 0;
           d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`).attr(
             'stroke-width',
-            '0'
+            '0',
           );
         } else {
           d3.selectAll(`rect.foodSafety${foodSafetyImportanceFilter}`).attr(
             'stroke-width',
-            '0'
+            '0',
           );
           foodSafetyImportanceFilter = selected;
           d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`)
@@ -324,34 +303,9 @@ class FoodSafetyBarChart {
         vis.dispatcher.call(
           'filterFoodSafetyImportance',
           event,
-          foodSafetyImportanceFilter
+          foodSafetyImportanceFilter,
         );
       });
-
-    // Add axis titles
-    vis.chart
-      .append('g')
-      .attr('transform', 'translate(' + -34 + ', ' + vis.height / 2 + ')')
-      .append('text')
-      .attr('class', 'axis-label')
-      .attr('text-anchor', 'middle')
-      .attr('transform', 'rotate(-90)')
-      .text('# of repondants');
-
-    vis.chart
-      .append('g')
-      .attr(
-        'transform',
-        'translate(' +
-          vis.width / 2 +
-          ', ' +
-          (vis.config.containerHeight - 40) +
-          ')'
-      )
-      .append('text')
-      .attr('class', 'axis-label')
-      .attr('text-anchor', 'middle')
-      .text('Level of importance');
 
     // render axis
     vis.xAxisG
@@ -367,15 +321,15 @@ class FoodSafetyBarChart {
   // Sampled from : bl.ocks.org/mbostock/7555321
   wrap(text, width) {
     text.each(function () {
-      const text = d3.select(this);
-      const words = text.text().split(/\s+/).reverse();
+      const text2 = d3.select(this);
+      const words = text2.text().split(/\s+/).reverse();
       let word;
       let line = [];
       let lineNumber = 0;
       const lineHeight = 1.1; // ems
-      const y = text.attr('y');
-      const dy = parseFloat(text.attr('dy'));
-      let tspan = text
+      const y = text2.attr('y');
+      const dy = parseFloat(text2.attr('dy'));
+      let tspan = text2
         .text(null)
         .append('tspan')
         .attr('x', 0)
@@ -388,7 +342,7 @@ class FoodSafetyBarChart {
           line.pop();
           tspan.text(line.join(' '));
           line = [word];
-          tspan = text
+          tspan = text2
             .append('tspan')
             .attr('x', 0)
             .attr('y', y)

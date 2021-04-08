@@ -18,6 +18,14 @@
 
   <body>
     <div class="container">
+      <div id="hook">
+        <p id="pieChartIntroText">Do you wash meat before cooking?</p>
+        <button class="pieButton" type="button" onclick="setTextWash()">Yup!</button>
+        <button class="pieButton" type="button" onclick="setTextNoWash()">Nope!</button>
+        <div id="pieChart"></div>
+        <p id="pieChartText"></p>
+      </div>
+
       <div id="top">
         <p>Proportion of People that wash a Certain Meat Type</p>
         <div id="liquidFillGauges"></div>
@@ -75,6 +83,7 @@
     <script src="js/src/householdSizeBarChart.js"></script>
     <script src="js/src/foodSafetyBarChart.js"></script>
     <script src="js/src/habitsBubblePlot.js"></script>
+    <script src="js/src/pieChart.js"></script>
     <script src="js/src/main.js"></script>
     <script src="js/src/liquidFillGauge.js" language="JavaScript"></script>
   </body>
