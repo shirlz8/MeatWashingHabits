@@ -257,7 +257,7 @@ function setTextWash() {
 }
 
 function setTextNoWash() {
-  d3.selectAll('#pieChartText').text('You are one of the 3 in 10 people who don’t wash meat before cooking! Scroll down to view more details.');
+  d3.selectAll('#pieChartText').text('You are one of the 3 in 10 people who don\'t wash meat before cooking! Scroll down to view more details.');
   document.getElementById("pieChart").style.display = "block";
 }
 
