@@ -354,6 +354,9 @@ class HabitsBubblePlot {
           })
           .attr('transform', () => {
             if (vis.dataRange < vis.config.legendRangeThreshold) {
+                if (vis.dataRange === 0) {
+                    return 'translate(200,0)'
+                }
               return 'translate(150,0)'
             } else {
               return 'translate(80,0)'
@@ -390,6 +393,9 @@ class HabitsBubblePlot {
           .style('font-size', '12px')
           .attr('transform', () => {
             if (vis.dataRange < vis.config.legendRangeThreshold) {
+                if (vis.dataRange === 0) {
+                    return 'translate(200,0)'
+                }
               return 'translate(150,0)'
             } else {
               return 'translate(80,0)'
