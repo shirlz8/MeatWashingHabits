@@ -324,20 +324,6 @@ class HabitsBubblePlot {
   // Prepare and display the legend
   renderLegend() {
     const vis = this;
-    vis.legend
-      .selectAll('.legend-element')
-      .data(vis.radiusLegendValues, (d) => d)
-      .join('circle')
-      .attr('class', 'legend legend-element')
-      .attr('r', (d) => vis.radiusScale(d))
-      .attr('cy', 55)
-      .attr('cx', (d, i) => {
-        const r = vis.radiusScale(d);
-        return vis.width / 2 + i * (30 + r);
-      })
-      .attr('transform', 'translate(80,0)')
-      .style('stroke', 'black')
-      .style('fill', 'none');
 
     if (vis.aggregatedDataMap.length > 0) {
       // draw the circles for legend
@@ -364,7 +350,7 @@ class HabitsBubblePlot {
           })
           .style('stroke', 'black')
           .style('stroke-width', '1px')
-          .style('fill', 'black');
+          .style('fill', '#D9D9D9');
 
       vis.legend
           .selectAll('text')
@@ -399,17 +385,18 @@ class HabitsBubblePlot {
           .style('font-size', '14px')
           .text('Area = Total Counts');
 
+      // Todo: revisit the style for legend
       // draw an outline for the legend
-      vis.legend
-        .append('rect')
-        .attr('x', vis.width / 2 - 40)
-        .attr('y', 1)
-        .attr('width', 400)
-        .attr('height', 100)
-        .attr('stroke', 'black')
-        .attr('stroke-width', '1px')
-        .attr('opacity', 0.2)
-        .attr('fill', '#D9D9D9');
+      // vis.legend
+      //   .append('rect')
+      //   .attr('x', vis.width / 2 - 40)
+      //   .attr('y', 1)
+      //   .attr('width', 400)
+      //   .attr('height', 100)
+      //   .attr('stroke', 'black')
+      //   .attr('stroke-width', '1px')
+      //   .attr('opacity', 0.2)
+      //   .attr('fill', '#D9D9D9');
     } else {
       d3.selectAll('.legend').remove();
     }
