@@ -158,7 +158,8 @@ class HabitsBubblePlot {
     vis.legend = vis.svg
       .append('g')
       .attr('width', vis.config.legendWidth)
-      .attr('height', vis.config.legendHeight);
+      .attr('height', vis.config.legendHeight)
+      .attr('transform', 'translate(-175,0)');
 
     // Add axis titles
     vis.chartClip
