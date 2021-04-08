@@ -104,7 +104,7 @@ class HabitsBubblePlot {
       .attr('class', 'habitsBubblePlotChart')
       .attr(
         'transform',
-        `translate(${vis.config.margin.left},${vis.config.margin.top})`,
+        `translate(${vis.config.margin.left},${vis.config.margin.top})`
       );
 
     // Initialize clipping mask that covers the whole chart
@@ -177,7 +177,7 @@ class HabitsBubblePlot {
       .append('g')
       .attr(
         'transform',
-        `translate(${vis.width / 2}, ${vis.config.containerHeight - 55})`,
+        `translate(${vis.width / 2}, ${vis.config.containerHeight - 55})`
       )
       .append('text')
       .attr('class', 'axis-label')
@@ -234,8 +234,8 @@ class HabitsBubblePlot {
 
       vis.dataRange = vis.maxCount - vis.minCount;
 
-      let numOfCircles = (vis.dataRange > vis.config.legendRangeThreshold) ? 4 : 2;
-      vis.radiusLegendValues = vis.calculateRadiusLegendValues(numOfCircles);
+      // let numOfCircles = (vis.dataRange > vis.config.legendRangeThreshold) ? 4 : 2;
+      vis.radiusLegendValues = vis.calculateRadiusLegendValues();
 
       const countExtent = [vis.minCount, vis.maxCount];
       vis.radiusScale.domain(countExtent);
@@ -354,7 +354,7 @@ class HabitsBubblePlot {
           })
           .attr('transform', () => {
             if (vis.dataRange < vis.config.legendRangeThreshold) {
-              return 'translate(200,0)'
+              return 'translate(150,0)'
             } else {
               return 'translate(80,0)'
             }
@@ -390,7 +390,7 @@ class HabitsBubblePlot {
           .style('font-size', '12px')
           .attr('transform', () => {
             if (vis.dataRange < vis.config.legendRangeThreshold) {
-              return 'translate(200,0)'
+              return 'translate(150,0)'
             } else {
               return 'translate(80,0)'
             }
@@ -417,28 +417,45 @@ class HabitsBubblePlot {
     }
   }
 
-  calculateRadiusLegendValues(numOfCircles) {
+  calculateRadiusLegendValues() {
     const vis = this;
+
     let min = vis.minCount;
     let max =  vis.maxCount;
     const range = max - min;
     let radiusLegendValues = [];
 
-    // range = 2  1, 3 ==> 1,2,3
-    // range = 3  1, 4 ==> 1,2,4
-    // range = 4  1, 5 ==> 1,3,5
+    // default numOfCircles for legend
+    let numOfCircles = 4;
 
+    // range === 0
     min = vis.roundToNearestTens(min);
-
     radiusLegendValues.push(min);
-    for (let i = 1; i < numOfCircles - 1; i++) {
-      let  value = (range / numOfCircles) * i;
-      value = vis.roundToNearestTens(value);
-      radiusLegendValues.push(value);
 
+    if (range === 1) {
+        max = vis.roundToNearestTens(max);
+        radiusLegendValues.push(max);
+    } else if (range === 2) {
+        const value = min + 1;
+        radiusLegendValues.push(value);
+
+        max = vis.roundToNearestTens(max);
+        radiusLegendValues.push(max);
+    } else if (range > 2) {
+        if (range > 5) {
+            for (let i = 1; i < numOfCircles - 1; i++) {
+                let value = (range / numOfCircles) * i;
+                value = vis.roundToNearestTens(value);
+                radiusLegendValues.push(value);
+            }
+        } else { // range === 2, 3, 4
+            const value = Math.round(range / 2);
+            radiusLegendValues.push(value);
+        }
+        max = vis.roundToNearestTens(max);
+        radiusLegendValues.push(max);
     }
-    max = vis.roundToNearestTens(max);
-    radiusLegendValues.push(max);
+
 
     vis.minCount = min;
     vis.maxCount = max;
