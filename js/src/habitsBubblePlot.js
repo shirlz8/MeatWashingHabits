@@ -355,30 +355,17 @@ class HabitsBubblePlot {
           .attr('transform', () => {
             if (vis.dataRange < vis.config.legendRangeThreshold) {
                 if (vis.dataRange === 0) {
-                    return 'translate(200,0)'
+                    return 'translate(200,1)'
                 }
-              return 'translate(150,0)'
+              return 'translate(150,1)'
             } else {
-              return 'translate(80,0)'
+              return 'translate(80,1)'
             }
           })
           .style('stroke', 'black')
-          .style('fill', 'none');
+          .style('stroke-width', '1px')
+          .style('fill', 'black');
 
-    vis.legend
-      .selectAll('text')
-      .data(vis.radiusLegendValues, (d) => d)
-      .join('text')
-      .attr('class', 'legend legend-label')
-      .attr('y', (d) => 55 - vis.radiusScale(d) - 3)
-      .attr('x', (d, i) => {
-        const r = vis.radiusScale(d);
-        return vis.width / 2 + i * (30 + r);
-      })
-      .style('text-align', 'center')
-      .attr('transform', 'translate(70,0)')
-      .text((d) => Math.round(d));
-      // draw the text labels for each circle
       vis.legend
           .selectAll('text')
           .data(vis.radiusLegendValues, (d) => d)
@@ -394,11 +381,11 @@ class HabitsBubblePlot {
           .attr('transform', () => {
             if (vis.dataRange < vis.config.legendRangeThreshold) {
                 if (vis.dataRange === 0) {
-                    return 'translate(200,0)'
+                    return 'translate(200,1)'
                 }
-              return 'translate(150,0)'
+              return 'translate(150,1)'
             } else {
-              return 'translate(80,0)'
+              return 'translate(80,1)'
             }
           })
           .text((d) => Math.round(d));
@@ -409,15 +396,20 @@ class HabitsBubblePlot {
           .attr('class', 'legend legend-label')
           .attr('x', vis.width / 2 - 30)
           .attr('y', 25)
-          .attr('transform', () => {
-            if (vis.dataRange < vis.config.legendRangeThreshold) {
-              return 'translate(80,0)'
-            } else {
-              return 'translate(0,0)'
-            }
-          })
           .style('font-size', '14px')
           .text('Area = Total Counts');
+
+      // draw an outline for the legend
+      vis.legend
+        .append('rect')
+        .attr('x', vis.width / 2 - 40)
+        .attr('y', 1)
+        .attr('width', 400)
+        .attr('height', 100)
+        .attr('stroke', 'black')
+        .attr('stroke-width', '1px')
+        .attr('opacity', 0.2)
+        .attr('fill', '#D9D9D9');
     } else {
       d3.selectAll('.legend').remove();
     }
