@@ -62,6 +62,7 @@ body {
 .button {
   border-radius: 8px;
   box-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
   height: 20px;
   width: 125px;
 }
@@ -69,6 +70,7 @@ body {
 .pieButton {
   border-radius: 50%;
   box-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
   height: 80px;
   width: 80px;
   background-color: lightblue;

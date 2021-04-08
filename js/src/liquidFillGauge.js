@@ -102,6 +102,7 @@ class LiquidFillGauge {
       .attr('class', 'liquid-container')
       .attr('width', vis.config.containerWidth)
       .attr('height', vis.config.containerHeight)
+      .style('cursor', 'pointer')
       .on('click', (event) => {
         const selected = vis.meatType;
         if (meatTypeFilter != selected) {

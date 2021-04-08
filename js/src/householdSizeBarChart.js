@@ -241,6 +241,7 @@ class HouseholdSizeBarChart {
         // Add hover shading
         d3.selectAll(`rect.household${d.data.householdSize}`)
           .style('stroke', 'black')
+          .style('cursor', 'pointer')
           .attr('stroke-width', '2');
 
         // Add Tooltip

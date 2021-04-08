@@ -9,6 +9,18 @@
   position: absolute;
 }
 
+#washHabitAll {
+  cursor: pointer;
+}
+
+#washHabitWash {
+  cursor: pointer;
+}
+
+#washHabitNoWash {
+  cursor: pointer;
+}
+
 .warning-label {
   fill: red;
   text-anchor: middle;

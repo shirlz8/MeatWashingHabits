@@ -254,6 +254,7 @@ class FoodSafetyBarChart {
         // Add hover shading
         d3.selectAll(`rect.foodSafety${d.data.foodSafetyImportance}`)
           .style('stroke', 'black')
+          .style('cursor', 'pointer')
           .attr('stroke-width', '2');
 
         // Add Tooltip
