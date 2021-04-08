@@ -12,8 +12,9 @@ class HabitsBubblePlot {
       },
       legendWidth: 170,
       legendHeight: 57,
+      legendRangeThreshold: 5,
       yAxisLabelWidth: 80,
-      yLabelWidth: 90,
+      yLabelWidth: 90
     };
     this.data = _data;
 
@@ -94,17 +95,17 @@ class HabitsBubblePlot {
     vis.svg = d3
       .select(vis.config.parentElement)
       .append('svg')
-      // .attr('transform', `translate(0,${vis.config.margin.top + vis.config.margin.bottom})`)
+      .attr('class', 'habitsBubblePlotSvg')
       .attr('width', vis.config.containerWidth)
       .attr('height', vis.config.containerHeight);
 
     vis.chartArea = vis.svg.append('g');
-    // .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
 
     vis.chart = vis.chartArea
       .append('g')
+      .attr('class', 'habitsBubblePlotChart')
       .attr(
-        'transform',
+      'transform',
         `translate(${vis.config.margin.left},${vis.config.margin.top})`
       );
 
@@ -190,94 +191,123 @@ class HabitsBubblePlot {
 
   updateVis() {
     const vis = this;
-
-    // Count the number of each frequency lvl for each habit
-    // ie: {habit: "Different_plates", frequency: "Always", count: 5281},
-    //     {habit: "Different_plates", frequency: "Always", count: 5281}
     vis.aggregatedDataMap = [];
-    for (const habit of vis.listOfHabits) {
-      const noNAData = vis.data.filter((d) => d[habit] !== 'NA');
-      const frequencyData = d3.rollups(
-        noNAData,
-        (v) => v.length,
-        (d) => d[habit]
-      );
 
-      let washPercentageMap = new Map();
-      if (meatTypeFilter !== '') {
-        washPercentageMap = d3.rollup(
-          noNAData,
-          (v) => d3.sum(v, (d) => d[meatTypeFilter]),
-          (d) => d[habit]
+    if (vis.data.length > 0) {
+      // Count the number of each frequency lvl for each habit
+      // ie: {habit: "Different_plates", frequency: "Always", count: 5281},
+      //     {habit: "Different_plates", frequency: "Always", count: 5281}
+      for (const habit of vis.listOfHabits) {
+        const noNAData = vis.data.filter((d) => d[habit] !== 'NA');
+        const frequencyData = d3.rollups(
+            noNAData,
+            (v) => v.length,
+            (d) => d[habit]
         );
+
+        let washPercentageMap = new Map();
+        if (meatTypeFilter !== '') {
+          washPercentageMap = d3.rollup(
+              noNAData,
+              (v) => d3.sum(v, (d) => d[meatTypeFilter]),
+              (d) => d[habit]
+          );
+        }
+
+        for (const frequencyLevel of frequencyData) {
+          const newRow = {
+            habit: habit,
+            frequency: frequencyLevel[0],
+            count: frequencyLevel[1],
+            washPercentage:
+                washPercentageMap.get(frequencyLevel[0]) / frequencyLevel[1],
+          };
+          vis.aggregatedDataMap.push(newRow);
+        }
       }
 
-      for (const frequencyLevel of frequencyData) {
-        const newRow = {
-          habit: habit,
-          frequency: frequencyLevel[0],
-          count: frequencyLevel[1],
-          washPercentage:
-            washPercentageMap.get(frequencyLevel[0]) / frequencyLevel[1],
-        };
-        vis.aggregatedDataMap.push(newRow);
-      }
+      vis.yValue = (d) => d['habit'];
+      vis.xValue = (d) => d['frequency'];
+      vis.count = (d) => d['count'];
+
+      vis.minCount = d3.least(vis.aggregatedDataMap, (d) => d['count']).count;
+      vis.maxCount = d3.greatest(vis.aggregatedDataMap, (d) => d['count'])
+          .count;
+
+      vis.dataRange = vis.maxCount - vis.minCount;
+
+      let numOfCircles = (vis.dataRange > vis.config.legendRangeThreshold) ? 4 : 2;
+      vis.radiusLegendValues = vis.calculateRadiusLegendValues(numOfCircles);
+
+      const countExtent = [vis.minCount, vis.maxCount];
+      vis.radiusScale.domain(countExtent);
     }
-
-    console.log(vis.aggregatedDataMap);
-
-    vis.yValue = (d) => d['habit'];
-    vis.xValue = (d) => d['frequency'];
-    vis.count = (d) => d['count'];
-
-    const minCount = d3.least(vis.aggregatedDataMap, (d) => d['count']).count;
-    const maxCount = d3.greatest(vis.aggregatedDataMap, (d) => d['count'])
-      .count;
-
-    const countExtent = [minCount, maxCount];
-    vis.dataRange = maxCount - minCount;
-    vis.radiusScale.domain(countExtent);
-
-    let numOfCircles = (vis.dataRange > 5) ? 4 : 2;
-    vis.radiusLegendValues = vis.calculateRadiusLegendValues(countExtent, numOfCircles);
 
     vis.renderLegend();
     vis.renderVis();
+
   }
 
   renderVis() {
     const vis = this;
 
-    //draw the circles
-    const circles = vis.chartClip
-      .selectAll('circle')
-      .data(vis.aggregatedDataMap, (d) => d)
-      .join('circle')
-      .attr('class', 'circle_data')
-      .attr('r', (d) => vis.radiusScale(vis.count(d)))
-      .attr('cy', (d) => vis.yScale(vis.yValue(d)))
-      .attr('cx', (d) => vis.xScale(vis.xValue(d)))
-      .attr('opacity', 0.7)
-      .style('stroke', 'black')
-      .attr('fill', (d) => vis.colour(d['habit']));
+    if (vis.aggregatedDataMap.length > 0) {
+      // remove the warning label of no data
+      d3.selectAll('.warning-label').remove()
 
-    circles
-      .on('mouseover', (event, d) => {
-        d3
-          .select('#tooltip')
-          .style('display', 'block')
-          .style('left', event.pageX + 'px')
-          .style('top', event.pageY + 'px').html(`
+      // unhide the radio filter
+      d3.selectAll('#habitsBubbleRadioFilter')
+          .style('display', '');
+
+      // unhide the chart
+      vis.svg.selectAll('.habitsBubblePlotChart')
+          .style('display', '');
+
+      //draw the circles
+      const circles = vis.chartClip
+          .selectAll('circle')
+          .data(vis.aggregatedDataMap, (d) => d)
+          .join('circle')
+          .attr('class', 'circle_data')
+          .attr('r', (d) => vis.radiusScale(vis.count(d)))
+          .attr('cy', (d) => vis.yScale(vis.yValue(d)))
+          .attr('cx', (d) => vis.xScale(vis.xValue(d)))
+          .attr('opacity', 0.7)
+          .style('stroke', 'black')
+          .attr('fill', (d) => vis.colour(d['habit']));
+
+      circles
+          .on('mouseover', (event, d) => {
+            d3
+                .select('#tooltip')
+                .style('display', 'block')
+                .style('left', event.pageX + 'px')
+                .style('top', event.pageY + 'px').html(`
               <div class="tooltip-title">${d['count']} claims</div>
               <div>${d['washPercentage'].toFixed(2)}% Wash Meats</div>
               <div><i>(${
                 100 - d['washPercentage'].toFixed(2)
-              }% Don't Wash Meats)</i></div>
+            }% Don't Wash Meats)</i></div>
             `);
-      })
-      .on('mouseleave', () => {
-        d3.select('#tooltip').style('display', 'none');
-      });
+          })
+          .on('mouseleave', () => {
+            d3.select('#tooltip').style('display', 'none');
+          });
+    } else {
+      // hide the radio filter and chart when there's no data to display
+      d3.selectAll('#habitsBubbleRadioFilter')
+          .style('display', 'none');
+      vis.svg.selectAll('.habitsBubblePlotChart')
+          .style('display', 'none');
+
+      // show a warning tetx with there's no data to display
+      d3.selectAll('.habitsBubblePlotSvg')
+          .append('text')
+          .attr('class', 'warning-label')
+          .attr('x', vis.config.containerWidth / 2)
+          .attr('y', vis.config.margin.top)
+          .text('No data is displayed for this filter group, please select another filter.')
+    }
 
     //draw the axis
     vis.xAxisG.call(vis.xAxis);
@@ -295,68 +325,82 @@ class HabitsBubblePlot {
   // Prepare and display the legend
   renderLegend() {
     const vis = this;
-    vis.legend
-      .selectAll('.legend-element')
-      .data(vis.radiusLegendValues, (d) => d)
-      .join('circle')
-      .attr('class', `legend legend-element`)
-      .attr('r', (d) => vis.radiusScale(d))
-      .attr('cy', 55)
-      .attr('cx', (d, i) => {
-        let r = vis.radiusScale(d);
-        return vis.width / 2 + i * (30 + r);
-      })
-      .attr('transform', (d) => {
-        if (vis.dataRange < 5) {
-          return 'translate(200,0)'
-        } else {
-          return 'translate(80,0)'
-        }
-      })
-      .style('stroke', 'black')
-      .style('fill', 'none');
 
-    vis.legend
-      .selectAll('text')
-      .data(vis.radiusLegendValues, (d) => d)
-      .join('text')
-      .attr('class', `legend legend-label`)
-      .attr('y', (d) => 55 - vis.radiusScale(d) - 3)
-      .attr('x', (d, i) => {
-        let r = vis.radiusScale(d);
-        return vis.width / 2 + i * (30 + r);
-      })
-      .style('text-anchor', 'middle')
-      .attr('transform', (d) => {
-        if (vis.dataRange < 5) {
-          return 'translate(200,0)'
-        } else {
-          return 'translate(80,0)'
-        }
-      })
-      .text((d) => Math.round(d));
+    if (vis.aggregatedDataMap.length > 0) {
+      // draw the circles for legend
+      vis.legend
+          .selectAll('.legend-element')
+          .data(vis.radiusLegendValues, (d) => d)
+          .join('circle')
+          .attr('class', `legend legend-element`)
+          .attr('r', (d) => vis.radiusScale(d))
+          .attr('cy', 55)
+          .attr('cx', (d, i) => {
+            let r = vis.radiusScale(d);
+            return vis.width / 2 + i * (30 + r);
+          })
+          .attr('transform', () => {
+            if (vis.dataRange < vis.config.legendRangeThreshold) {
+              return 'translate(200,0)'
+            } else {
+              return 'translate(80,0)'
+            }
+          })
+          .style('stroke', 'black')
+          .style('fill', 'none');
 
-    vis.legend
-      .append('text')
-      .attr('class', 'legend legend-label')
-      .attr('x', vis.width / 2 - 30)
-      .attr('y', 75)
-      .attr('transform', (d) => {
-        if (vis.dataRange < 5) {
-          return 'translate(80,0)'
-        } else {
-          return 'translate(0,0)'
-        }
-      })
-      .text('Area = Total Counts');
+      // draw the text labels for each circle
+      vis.legend
+          .selectAll('text')
+          .data(vis.radiusLegendValues, (d) => d)
+          .join('text')
+          .attr('class', `legend legend-label`)
+          .attr('y', (d) => 55 - vis.radiusScale(d) - 2)
+          .attr('x', (d, i) => {
+            let r = vis.radiusScale(d);
+            return vis.width / 2 + i * (30 + r);
+          })
+          .style('text-anchor', 'middle')
+          .style('font-size', '12px')
+          .attr('transform', () => {
+            if (vis.dataRange < vis.config.legendRangeThreshold) {
+              return 'translate(200,0)'
+            } else {
+              return 'translate(80,0)'
+            }
+          })
+          .text((d) => Math.round(d));
+
+      // draw the text label for legend
+      vis.legend
+          .append('text')
+          .attr('class', 'legend legend-label')
+          .attr('x', vis.width / 2 - 30)
+          .attr('y', 25)
+          .attr('transform', () => {
+            if (vis.dataRange < vis.config.legendRangeThreshold) {
+              return 'translate(80,0)'
+            } else {
+              return 'translate(0,0)'
+            }
+          })
+          .style('font-size', '14px')
+          .text('Area = Total Counts');
+    } else {
+      d3.selectAll('.legend').remove();
+    }
   }
 
-  calculateRadiusLegendValues(rangeExtent, numOfCircles) {
+  calculateRadiusLegendValues(numOfCircles) {
     const vis = this;
-    let min = rangeExtent[0];
-    let max = rangeExtent[1];
+    let min = vis.minCount;
+    let max =  vis.maxCount;
     const range = max - min;
     let radiusLegendValues = [];
+
+    // range = 2  1, 3 ==> 1,2,3
+    // range = 3  1, 4 ==> 1,2,4
+    // range = 4  1, 5 ==> 1,3,5
 
     min = vis.roundToNearestTens(min);
 
@@ -369,6 +413,9 @@ class HabitsBubblePlot {
     }
     max = vis.roundToNearestTens(max);
     radiusLegendValues.push(max);
+
+    vis.minCount = min;
+    vis.maxCount = max;
 
     return radiusLegendValues;
   }

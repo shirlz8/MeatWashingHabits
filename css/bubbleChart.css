@@ -9,6 +9,11 @@
   position: absolute;
 }
 
+.warning-label {
+  fill: red;
+  text-anchor: middle;
+}
+
 .bubble-y-axis path {
   stroke: none;
 }
