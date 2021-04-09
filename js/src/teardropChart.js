@@ -4,8 +4,8 @@ class TeardropChart {
       parentElement: _config.parentElement,
       containerWidth: 1000,
       containerHeight: 900,
-      legendPositionX: 820,
-      legendPositionY: 50,
+      legendPositionX: 780,
+      legendPositionY: 25,
       margin: {
         top: 400,
         right: 25,
@@ -138,7 +138,6 @@ class TeardropChart {
       );
 
     const root = bubble(data);
-    const tooltip = d3.select('.tooltip');
 
     const node = vis.chart
       .selectAll()
@@ -152,21 +151,31 @@ class TeardropChart {
       .style('stroke', 'white')
       .style('stroke-width', '5px')
       .style('fill', (d) => vis.colorScale(d.data.removeObject))
-      .on('mouseover', function (e, d) {
+      .on('mouseover', function (event, d) {
         d3.select(this).style('stroke', '#222');
+
+        d3
+          .select('#tooltip')
+          .style('display', 'block')
+          .style('left', `${event.pageX}px`)
+          .style('top', `${event.pageY}px`).html(`
+              <div class="tooltip-title">${vis.properNaming(
+                d.data.removeObject
+              )}</div>
+              <div id='teardrop-tooltip-count'>${d.data.count} Claims</div>
+            `);
       })
-      .on('mousemove', (e) =>
-        tooltip.style('top', `${e.pageY}px`).style('left', `${e.pageX + 10}px`)
-      )
       .on('mouseout', function () {
         d3.select(this).style('stroke', 'white');
-        return tooltip.style('visibility', 'hidden');
+        d3.select('#tooltip').style('display', 'none');
       });
 
-    // const label = node
-    //   .append('text')
-    //   .attr('dy', 2)
-    //   .text((d) => d.data.removeObject.substring(0, d.r / 3));
+    const label = node
+      .append('text')
+      .attr('dy', '0.5em')
+      .attr('font-size', '18px')
+      .style('text-anchor', 'middle')
+      .text((d) => d.data.count);
 
     node
       .transition()
@@ -180,12 +189,12 @@ class TeardropChart {
       .duration(1000)
       .attr('r', (d) => d.r);
 
-    // label
-    //   .transition()
-    //   .delay(700)
-    //   .ease(d3.easeExpInOut)
-    //   .duration(1000)
-    //   .style('opacity', 1);
+    label
+      .transition()
+      .delay(700)
+      .ease(d3.easeExpInOut)
+      .duration(1000)
+      .style('opacity', 1);
 
     vis.legend
       .selectAll('.legenditems')
@@ -204,6 +213,7 @@ class TeardropChart {
       .text((d) => vis.properNaming(d))
       .attr('dy', '1em')
       .attr('x', '2em')
-      .attr('y', (d, i) => 50 * i - 10);
+      .attr('font-size', '20px')
+      .attr('y', (d, i) => 50 * i - 12);
   };
 }
