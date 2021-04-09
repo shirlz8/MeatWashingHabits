@@ -4,6 +4,8 @@ class TeardropChart {
       parentElement: _config.parentElement,
       containerWidth: 1000,
       containerHeight: 900,
+      legendPositionX: 820,
+      legendPositionY: 50,
       margin: {
         top: 400,
         right: 25,
@@ -53,6 +55,14 @@ class TeardropChart {
 
     vis.meatWashReasons = Object.keys(vis.data[0]);
 
+    // add legend
+    vis.legend = vis.svg
+      .append('g')
+      .attr(
+        'transform',
+        `translate(${vis.config.legendPositionX}, ${vis.config.legendPositionY})`
+      );
+
     vis.colorScale = d3
       .scaleOrdinal()
       .range([
@@ -66,6 +76,27 @@ class TeardropChart {
         '#666666',
       ])
       .domain(vis.meatWashReasons);
+
+    vis.properNaming = (name) => {
+      switch (name) {
+        case 'Remove_pathogens':
+          return 'Pathogens';
+        case 'Remove_artificial_chemicals':
+          return 'Artificial Chemicals';
+        case 'Remove_debris':
+          return 'Debris';
+        case 'Remove_undesirable_flavors_or_odors':
+          return 'Bad Flavours/Odors';
+        case 'Remove_blood':
+          return 'Blood';
+        case 'Remove_slime':
+          return 'Slime';
+        case 'Remove_fat':
+          return 'Fat';
+        case 'Remove_meat_juice':
+          return 'Meat Juices';
+      }
+    };
 
     vis.meatWashCount = {};
 
@@ -120,10 +151,7 @@ class TeardropChart {
       .append('circle')
       .style('stroke', 'white')
       .style('stroke-width', '5px')
-      .style('fill', (d) => {
-        console.log(d.data.removeObject);
-        return vis.colorScale(d.data.removeObject);
-      })
+      .style('fill', (d) => vis.colorScale(d.data.removeObject))
       .on('mouseover', function (e, d) {
         d3.select(this).style('stroke', '#222');
       })
@@ -158,5 +186,24 @@ class TeardropChart {
     //   .ease(d3.easeExpInOut)
     //   .duration(1000)
     //   .style('opacity', 1);
+
+    vis.legend
+      .selectAll('.legenditems')
+      .data(vis.meatWashReasons)
+      .join('circle')
+      .attr('r', 20)
+      .attr('cy', (d, i) => 50 * i)
+      .style('stroke', 'white')
+      .style('stroke-width', '2px')
+      .style('fill', (d) => vis.colorScale(d));
+
+    vis.legend
+      .selectAll('.legenditems')
+      .data(vis.meatWashReasons)
+      .join('text')
+      .text((d) => vis.properNaming(d))
+      .attr('dy', '1em')
+      .attr('x', '2em')
+      .attr('y', (d, i) => 50 * i - 10);
   };
 }
