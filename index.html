@@ -22,83 +22,94 @@
 
   <body>
     <div class="container">
-      <div id="hook">
-        <p id="pieChartIntroText">Do you wash meat before cooking?</p>
-        <button class="pieButton" type="button" onclick="setTextWash()">
-          Yup!
-        </button>
-        <button class="pieButton" type="button" onclick="setTextNoWash()">
-          Nope!
-        </button>
-        <div id="pieChart"></div>
-        <p id="pieChartText"></p>
-      </div>
-
-      <div id="teardropChart">
-        <h1>What People Want to Remove When They Wash Meats</h1>
-      </div>
-
-      <div id="top">
-        <p>Proportion of People that wash a Certain Meat Type</p>
-        <div id="liquidFillGauges"></div>
-      </div>
-
-      <div id="bottom">
-        <div id="left" class="bottom-box">
-          <div id="intro">
-            <h2>Explore the American Meat Washing Habits</h2>
-            <p>
-              Do people wash meat before cooking? What do they think they are
-              trying to accomplish by washing their meat? What are some of the
-              main factors behind why people wash or don't wash their meat?
-              <br />
-              <br />
-              Our visualization aims to serve as an exploratory experience for
-              both food safety experts and curious individuals who want to learn
-              about the different meat washing habits of American citizens.
-              <br />
-              <br />
-              Start by interacting with various visualizations in order to see
-              for yourself the relationships between various factors such as
-              cooking habits, meat type, and demographics on higher or lower
-              meat washing tendencies!
-            </p>
+      <div id="story">
+        <h1 id="title">
+          The Diversity of American Meat Washing Habits before Cooking.
+        </h1>
+        <div id="hook">
+          <p id="pieChartIntroText">Do you wash meat before cooking?</p>
+          <div id="buttons">
+            <button class="pieButton" type="button" onclick="setTextWash()">
+              Yup!
+            </button>
+            <button class="pieButton" type="button" onclick="setTextNoWash()">
+              Nope!
+            </button>
           </div>
-          <button class="button" type="button" onclick="clearFilters()">
-            Clear all filters
-          </button>
+
+          <div id="pieChart"></div>
+          <p id="pieChartText"></p>
         </div>
-        <div id="middle" class="bottom-box">
-          <h3 id="habitsBubblePlotTitle">Food Safety Habits</h3>
-          <div id="habitsBubbleRadioFilter">
-            <input
-              type="radio"
-              id="washHabitAll"
-              name="washHabit"
-              value="all"
-              checked
-            />
-            Show all data<br />
-            <input
-              type="radio"
-              id="washHabitWash"
-              name="washHabit"
-              value="wash"
-            />
-            Show only wash<br />
-            <input
-              type="radio"
-              id="washHabitNoWash"
-              name="washHabit"
-              value="noWash"
-            />
-            Show only don't wash<br />
+
+        <div id="teardropChart">
+          <h1>What People Want to Remove When They Wash Meats</h1>
+        </div>
+      </div>
+
+      <div id="explore">
+        <div id="top">
+          <p>Proportion of People that wash a Certain Meat Type</p>
+          <div id="liquidFillGauges"></div>
+        </div>
+
+        <div id="bottom">
+          <div id="left" class="bottom-box">
+            <div id="intro">
+              <h2>Explore the American Meat Washing Habits</h2>
+              <p>
+                Do people wash meat before cooking? What do they think they are
+                trying to accomplish by washing their meat? What are some of the
+                main factors behind why people wash or don't wash their meat?
+                <br />
+                <br />
+                Our visualization aims to serve as an exploratory experience for
+                both food safety experts and curious individuals who want to
+                learn about the different meat washing habits of American
+                citizens.
+                <br />
+                <br />
+                Start by interacting with various visualizations in order to see
+                for yourself the relationships between various factors such as
+                cooking habits, meat type, and demographics on higher or lower
+                meat washing tendencies!
+              </p>
+            </div>
+            <button class="button" type="button" onclick="clearFilters()">
+              Clear all filters
+            </button>
           </div>
-          <div id="habitsBubblePlot"></div>
-        </div>
-        <div id="right" class="bottom-box">
-          <div id="householdSizeBarChart"></div>
-          <div id="foodSafetyBarChart"></div>
+          <div id="middle" class="bottom-box">
+            <h3 id="habitsBubblePlotTitle">Food Safety Habits</h3>
+            <div id="habitsBubbleRadioFilter">
+              <input
+                type="radio"
+                id="washHabitAll"
+                name="washHabit"
+                value="all"
+                checked
+              />
+              Show all data<br />
+              <input
+                type="radio"
+                id="washHabitWash"
+                name="washHabit"
+                value="wash"
+              />
+              Show only wash<br />
+              <input
+                type="radio"
+                id="washHabitNoWash"
+                name="washHabit"
+                value="noWash"
+              />
+              Show only don't wash<br />
+            </div>
+            <div id="habitsBubblePlot"></div>
+          </div>
+          <div id="right" class="bottom-box">
+            <div id="householdSizeBarChart"></div>
+            <div id="foodSafetyBarChart"></div>
+          </div>
         </div>
       </div>
     </div>

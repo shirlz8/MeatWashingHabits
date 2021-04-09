@@ -12,6 +12,28 @@ body {
   height: 100%;
 }
 
+#title {
+  font-size: 50px;
+  font-weight: 700;
+}
+
+#story {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#hook {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#buttons {
+  display: flex;
+}
+
 #top {
   display: flex;
   flex-direction: column;
@@ -71,15 +93,19 @@ body {
   border-radius: 50%;
   box-shadow: 1px 1px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  height: 80px;
-  width: 80px;
+  height: 100px;
+  width: 100px;
   background-color: lightblue;
+  margin: 50px;
+  margin-top: 0;
 }
 
-.pieButton:focus {outline:0;}
+.pieButton:focus {
+  outline: 0;
+}
 
 #pieChartIntroText {
-  font-size: 30px;
+  font-size: 40px;
   font-weight: 500;
 }
 
