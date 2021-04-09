@@ -8,7 +8,7 @@ class HabitsBubblePlot {
         top: 50,
         right: 25,
         bottom: 30,
-        left: 110,
+        left: 110
       },
       legendWidth: 170,
       legendHeight: 57,

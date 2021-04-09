@@ -244,8 +244,14 @@ d3.csv('data/wash_to_remove_data.csv').then((removeData) => {
 d3.csv('data/reasons_for_washing_data.csv').then((reasonsWashingData) => {
   d3.csv('data/reasons_for_not_washing_data.csv').then(
     (reasonsNotWashingData) => {
-      // console.log(reasonsWashingData);
-      // console.log(reasonsNotWashingData);
+
+      // Reasons bubble plot
+      NotWashReasonsBubblePlot = new NotWashReasonsBubblePlot(
+          {
+            parentElement: '#notWashReasonsBubblePlot',
+          },
+          reasonsNotWashingData
+      );
     }
   );
 });
