@@ -1,0 +1,19 @@
+#teardropChart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d4f0ff;
+  height: 100vh;
+  flex-direction: column;
+}
+
+#teardropsvg {
+  background-image: url('../waterdroplet.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+#teardrop-tooltip-count {
+  font-size: 20px;
+}
