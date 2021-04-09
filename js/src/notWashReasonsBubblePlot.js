@@ -8,7 +8,7 @@ class NotWashReasonsBubblePlot {
                 top: 25,
                 right: 25,
                 bottom: 25,
-                left: 25
+                left: 225
             }
         };
             this.data = _data;
@@ -34,14 +34,14 @@ class NotWashReasonsBubblePlot {
 
         vis.chart = vis.svg
             .append('g')
-            .attr('class', 'habitsBubblePlotChart')
-            .attr(
-                'transform',
-                `translate(${vis.config.margin.left},${vis.config.margin.top})`
-            );
+            .attr('class', 'reasonsBubblePlotChart')
+            // .attr(
+            //     'transform',
+            //     `translate(${vis.config.margin.left},${vis.config.margin.top})`
+            // );
 
         // Initialize main scales
-        vis.radiusScale = d3.scaleSqrt().range([40, 200]);
+        vis.radiusScale = d3.scaleSqrt().range([4, 40]);
 
         vis.updateVis();
     }
@@ -67,17 +67,20 @@ class NotWashReasonsBubblePlot {
             }
         }
 
+        for (const row of reasonsScoresDict) {
+            let avgScore = row[1] / this.data.length;
+            reasonsScoresDict.set(row[0], parseFloat(avgScore.toFixed(2)));
+        }
+
         // sort the Reason Score Dictionary in terms of scores
         // in decreasing order of importance (ie: stronger reasons to weaker reasons)
         const sortedReasonsScoresDict = new Map([...reasonsScoresDict.entries()].sort((a, b) => b[1] - a[1]));
 
-        for (const row of sortedReasonsScoresDict) {
-            let avgScore = row[1] / this.data.length;
-            sortedReasonsScoresDict.set(row[0], avgScore.toFixed(2));
-        }
+
         console.log(sortedReasonsScoresDict)
 
-        // todo: sum counts of 5 or 6
+        vis.reasonsData = sortedReasonsScoresDict;
+        // todo: sum counts of 5 or 6?
 
 
         vis.renderVis();
@@ -85,7 +88,34 @@ class NotWashReasonsBubblePlot {
 
     renderVis() {
         const vis = this;
+        vis.chart
+            .selectAll('.circle-element')
+            .data(vis.reasonsData, (d) => d)
+            .join('circle')
+            .attr('class', 'reason-circle')
+            .attr('r', (d) => vis.radiusScale(d[1]))
+            .attr('cy', vis.height / 2)
+            .attr('cx', (d, i) => {
+                let r = vis.radiusScale(d[1]);
+                return vis.config.margin.left + i * (120 + r);
+            })
+            .style('fill', '#C1504F');
 
+
+        vis.chart
+            .selectAll('text')
+            .data(vis.reasonsData, (d) => d)
+            .join('text')
+            .attr('class', 'reason-num-label')
+            .attr('y', vis.height / 2)
+            .attr('x', (d, i) => {
+                let r = vis.radiusScale(d[1]);
+                return vis.config.margin.left + i * (120 + r);
+            })
+            .style('text-anchor', 'middle')
+            .style('font-size', '12px')
+            .style('fill', 'white')
+            .text((d) => d[1]);
     }
 
 }
