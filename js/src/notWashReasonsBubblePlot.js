@@ -64,15 +64,36 @@ class NotWashReasonsBubblePlot {
             .append('g')
             .attr('class', 'reasonsBubblePlotChart')
 
+        // Add chart title
+        vis.svg
+            .append('text')
+            .attr('class', 'chart-title')
+            .attr('transform', `translate(${vis.width / 2},${vis.config.margin.top + 40})`)
+            .attr('text-anchor', 'middle')
+            .style('font-size', '32px')
+            .text('Reasons for Not Washing Meats');
+
+        // Add chart outline
+        vis.title = vis.svg
+            .append('rect')
+            .attr('class', 'chart-outline')
+            .attr('x', 100)
+            .attr('y', vis.config.margin.top)
+            .attr('width', vis.width - 255)
+            .attr('height', vis.height - 10)
+            .attr('stroke', 'black')
+            .attr('stroke-width', '1px')
+            .attr('fill', 'none');
+
+
         // Initialize main scales
-        vis.radiusScale = d3.scaleSqrt().range([4, 40]);
+        vis.radiusScale = d3.scaleSqrt().range([80, 25]);
 
         vis.updateVis();
     }
 
     updateVis() {
         const vis = this;
-        console.log(this.data)
 
         // Initialize a Dictionary to store each reason and it's total ranking score
         // higher ranking = stronger reasons
@@ -81,7 +102,6 @@ class NotWashReasonsBubblePlot {
         for (const property in firstRow) {
             reasonsScoresDict.set(property, parseInt(firstRow[property]))
         }
-        console.log(reasonsScoresDict)
 
         // sum up all the scores for all respondents for each reason
         for (const row of this.data) {
@@ -100,7 +120,10 @@ class NotWashReasonsBubblePlot {
         // in decreasing order of importance (ie: stronger reasons to weaker reasons)
         const sortedReasonsScoresDict = new Map([...reasonsScoresDict.entries()].sort((a, b) => b[1] - a[1]));
 
+        const countExtent = [ Array.from(sortedReasonsScoresDict.values())[0], Array.from(sortedReasonsScoresDict.values()).pop()];
         vis.reasonsData = sortedReasonsScoresDict;
+
+        vis.radiusScale.domain(countExtent);
 
 
         vis.renderVis();
@@ -120,7 +143,7 @@ class NotWashReasonsBubblePlot {
             .attr('cy', vis.height)
             .attr('cx', (d, i) => {
                 let r = vis.radiusScale(d[1]);
-                return vis.config.margin.left + i * (110 + r);
+                return vis.config.margin.left + i * (135 + r);
             })
             .attr('transform', (d) => `translate(0, ${-vis.radiusScale(d[1])})`)
             .style('fill', '#C1504F');
@@ -134,7 +157,7 @@ class NotWashReasonsBubblePlot {
             .attr('y', vis.height)
             .attr('x', (d, i) => {
                 let r = vis.radiusScale(d[1]);
-                return vis.config.margin.left + i * (110 + r);
+                return vis.config.margin.left + i * (135 + r);
             })
             .attr('transform', (d) => `translate(0, ${-vis.radiusScale(d[1])})`)
             .style('text-anchor', 'middle')
@@ -150,11 +173,11 @@ class NotWashReasonsBubblePlot {
             .join('line')
             .attr('x1', (d, i) => {
                 let r = vis.radiusScale(d[1]);
-                return vis.config.margin.left + i * (110 + r);
+                return vis.config.margin.left + i * (135 + r);
             })
             .attr('x2', (d, i) => {
                 let r = vis.radiusScale(d[1]);
-                return vis.config.margin.left + i * (110 + r);
+                return vis.config.margin.left + i * (135 + r);
             })
             .attr('y1', vis.height)
             .attr('y2',  (d) => vis.height + 2*vis.radiusScale(d[1]))
@@ -172,7 +195,7 @@ class NotWashReasonsBubblePlot {
             .attr('y', (d) => vis.height + 2*vis.radiusScale(d[1]))
             .attr('x', (d, i) => {
                 let r = vis.radiusScale(d[1]);
-                return vis.config.margin.left + i * (110 + r);
+                return vis.config.margin.left + i * (135 + r);
             })
             .attr('transform', (d) => `translate(0, ${6.5*-vis.radiusScale(d[1])})`)
             .style('text-anchor', 'middle')
