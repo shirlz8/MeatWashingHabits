@@ -3,19 +3,22 @@
   justify-content: center;
   align-items: center;
   background-color: #d4f0ff;
-  height: 100vh;
+  /* height: 100vh; */
   flex-direction: column;
 }
 
 #teardropsvg {
-  background-image: url('../waterdroplet.png');
+  /* background-image: url('../waterdroplet.png');
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+  margin: 25px; */
+  display: flex;
+  justify-content: center;
 }
 
 #tear-group {
-  transform: translate(25px, 375px);
+  /* transform: translate(10%, 40%); */
 }
 
 #teardrop-tooltip-count {

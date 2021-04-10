@@ -2,9 +2,9 @@ class TeardropChart {
   constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: 1000,
+      containerWidth: 800,
       containerHeight: 900,
-      legendPositionX: 780,
+      legendPositionX: 600,
       legendPositionY: 25,
       margin: {
         top: 400,
@@ -22,14 +22,8 @@ class TeardropChart {
   initVis() {
     const vis = this;
 
-    vis.width =
-      vis.config.containerWidth -
-      vis.config.margin.left -
-      vis.config.margin.right;
-    vis.height =
-      vis.config.containerHeight -
-      vis.config.margin.top -
-      vis.config.margin.bottom;
+    vis.width = window.innerWidth;
+    vis.height = window.innerHeight;
 
     vis.svg = d3
       .select(vis.config.parentElement)
@@ -38,7 +32,15 @@ class TeardropChart {
       .attr('width', vis.config.containerWidth)
       .attr('height', vis.config.containerHeight);
 
-    vis.chart = vis.svg.append('g').attr('id', 'tear-group');
+    vis.svg
+      .append('image')
+      .attr('href', '../../waterdroplet.png')
+      .attr('width', vis.width / 3.0);
+
+    vis.chart = vis.svg
+      .append('g')
+      .attr('id', 'tear-group')
+      .attr('transform', `translate(-50, ${vis.height / 3})`);
 
     vis.updateVis();
   }
@@ -122,17 +124,15 @@ class TeardropChart {
   renderVis() {
     const vis = this;
 
-    vis.width = window.innerWidth / 2.2;
-    vis.height = window.innerHeight / 2.2;
-
     vis.generateChart(vis.array, vis);
   }
 
   generateChart(data, vis) {
     const bubble = (data2) =>
-      d3.pack().size([vis.width, vis.height]).padding(2)(
-        d3.hierarchy({ children: data2 }).sum((d) => d.count)
-      );
+      d3
+        .pack()
+        .size([vis.width / 2.5, vis.height / 2.5])
+        .padding(2)(d3.hierarchy({ children: data2 }).sum((d) => d.count));
 
     const root = bubble(data);
 
