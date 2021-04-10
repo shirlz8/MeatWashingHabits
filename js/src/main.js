@@ -20,6 +20,8 @@ let liquidPoultryChart;
 let liquidSheepGoatChart;
 let liquidFishChart;
 let liquidWashAnyChart;
+let reasonsNoWashBubblePlot;
+let reasonsWashBubblePlot;
 let mainData;
 
 const svgs = {
@@ -244,13 +246,65 @@ d3.csv('data/wash_to_remove_data.csv').then((removeData) => {
 d3.csv('data/reasons_for_washing_data.csv').then((reasonsWashingData) => {
   d3.csv('data/reasons_for_not_washing_data.csv').then(
     (reasonsNotWashingData) => {
+      const noWashListOfReasons = [
+        'Feel like I should, but I don\'t',
+        'Meat is clean enough',
+        'Follow expert\'s advice',
+        'Preserve texture, smell, taste, etc',
+        'Not cultural or religious custom',
+        'Others'
+      ];
 
-      // Reasons bubble plot
-      NotWashReasonsBubblePlot = new NotWashReasonsBubblePlot(
+      const noWashDataLabels = [
+        'Feel_I_should_but_dont',
+        'Meat_is_clean_enough',
+        'Exprts_advise_against',
+        'Preserve_texture_etc',
+        'Not_cultural_or_religious_custom',
+        'Other'
+      ]
+
+      const washListOfReasons = [
+        'Health and Safety Concerns',
+        'Religious Practice',
+        'Non-Religious Practice',
+        'Improve Taste or Smell',
+        'Improve Texture',
+        'Improve Appearance',
+        'Others'
+      ];
+
+      const washDataLabels = [
+        'Health_and_safety_of_meat',
+        'Religious_practice',
+        'Non_religious_practice',
+        'Improve_taste/smell',
+        'Improve_texture',
+        'Improve_appearance',
+        'Other'
+      ]
+
+      // Reasons no wash bubble plot
+      reasonsNoWashBubblePlot = new ReasonsBubblePlot(
           {
-            parentElement: '#notWashReasonsBubblePlot',
+            parentElement: '#reasonsNoWashBubblePlot',
           },
-          reasonsNotWashingData
+          reasonsNotWashingData,
+          'noWash',
+          noWashDataLabels,
+          noWashListOfReasons
+
+      );
+
+      // Reasons wash bubble plot
+      reasonsWashBubblePlot = new ReasonsBubblePlot(
+          {
+            parentElement: '#reasonsWashBubblePlot',
+          },
+          reasonsWashingData,
+          'wash',
+          washDataLabels,
+          washListOfReasons
       );
     }
   );

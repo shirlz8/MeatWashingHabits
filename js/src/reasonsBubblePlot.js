@@ -1,5 +1,5 @@
-class NotWashReasonsBubblePlot {
-    constructor(_config, _data) {
+class ReasonsBubblePlot {
+    constructor(_config, _data, type, dataLabels, listOfReasons) {
         this.config = {
             parentElement: _config.parentElement,
             containerWidth: 1500,
@@ -8,27 +8,13 @@ class NotWashReasonsBubblePlot {
                 top: 25,
                 right: 25,
                 bottom: 25,
-                left: 170
+                left: 150
             }
         };
             this.data = _data;
-            this.textLabelData = [
-                'Feel like I should, but I don\'t',
-                'Meat is clean enough',
-                'Follow expert\'s advice',
-                'Preserve texture, smell, taste, etc',
-                'Not cultural or religious custom',
-                'Others'
-            ];
-
-            this.listOfReasons = [
-                'Feel_I_should_but_dont',
-                'Meat_is_clean_enough',
-                'Exprts_advise_against',
-                'Preserve_texture_etc',
-                'Not_cultural_or_religious_custom',
-                'Other'
-            ]
+            this.type = type;
+            this.dataLabels = dataLabels;
+            this.listOfReasons = listOfReasons;
 
         this.initVis();
     }
@@ -38,10 +24,29 @@ class NotWashReasonsBubblePlot {
 
         const textLabel = d3
             .scaleOrdinal()
-            .domain(vis.listOfReasons)
-            .range(vis.textLabelData);
+            .domain(vis.dataLabels)
+            .range(vis.listOfReasons);
 
         return textLabel(d);
+    }
+
+    circleColor(type) {
+        const colourScale = d3
+            .scaleOrdinal()
+            .domain(['noWash', 'wash'])
+            .range(['#C1504F', '#4E81BE']);
+
+        console.log(colourScale(type))
+        return colourScale(type);
+    }
+
+    title(type) {
+        const titleScale = d3
+            .scaleOrdinal()
+            .domain(['noWash', 'wash'])
+            .range(['Reasons for Not Washing Meats', 'Reasons for Washing Meats']);
+
+        return titleScale(type);
     }
 
     initVis() {
@@ -71,7 +76,7 @@ class NotWashReasonsBubblePlot {
             .attr('transform', `translate(${vis.width / 2},${vis.config.margin.top + 40})`)
             .attr('text-anchor', 'middle')
             .style('font-size', '28px')
-            .text('Reasons for Not Washing Meats');
+            .text(vis.title(this.type));
 
         // Add chart outline
         vis.title = vis.svg
@@ -79,8 +84,8 @@ class NotWashReasonsBubblePlot {
             .attr('class', 'chart-outline')
             .attr('x', 100)
             .attr('y', vis.config.margin.top)
-            .attr('width', vis.width - 255)
-            .attr('height', vis.height - 10)
+            .attr('width', vis.width - 175)
+            .attr('height', vis.height)
             .attr('stroke', 'black')
             .attr('stroke-width', '1px')
             .attr('fill', 'none');
@@ -146,7 +151,7 @@ class NotWashReasonsBubblePlot {
                 return vis.config.margin.left + pos;
             })
             .attr('transform', (d) => `translate(0, ${-vis.radiusScale(d[1])})`)
-            .style('fill', '#C1504F');
+            .style('fill', vis.circleColor(vis.type));
 
         // avg score label on the circles
         vis.chart
