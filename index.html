@@ -23,18 +23,19 @@
       <div class="scrolleyContainer">
         <div id="hook">
           <p id="pieChartIntroText">Do you wash meat before cooking?</p>
-          <button class="pieButton" type="button" onclick="setTextWash()">Yup!</button>
-          <button class="pieButton" type="button" onclick="setTextNoWash()">Nope!</button>
+          <button class="pieButton" type="button" onclick="showWashContent()">Yup!</button>
+          <button class="pieButton" type="button" onclick="showNoWashContent()">Nope!</button>
           <div id="pieChart"></div>
           <p id="pieChartText"></p>
         </div>
         <div class="reasonsBubblePlot">
           <label class="switch">
-            <input type="checkbox">
+            <input type="checkbox"
+                   id="reasonToggle">
             <span class="slider round"></span>
           </label>
-          <div id="reasonsNoWashBubblePlot"/>
-          <div id="reasonsWashBubblePlot"/>
+          <div id="reasonsNoWashBubblePlot"></div>
+          <div id="reasonsWashBubblePlot"></div>
         </div>
       </div>
 

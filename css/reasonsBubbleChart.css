@@ -2,7 +2,7 @@
 /* The switch - the box around the slider */
 .switch {
     position: absolute;
-    display: inline-block;
+    display: none;
     width: 200px;
     height: 34px;
 }

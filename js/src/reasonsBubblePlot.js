@@ -8,7 +8,7 @@ class ReasonsBubblePlot {
                 top: 25,
                 right: 25,
                 bottom: 25,
-                left: 150
+                left: 25
             }
         };
             this.data = _data;
@@ -63,11 +63,13 @@ class ReasonsBubblePlot {
             .select(vis.config.parentElement)
             .append('svg')
             .attr('width', vis.config.containerWidth)
-            .attr('height', vis.config.containerHeight);
+            .attr('height', vis.config.containerHeight)
+            .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
 
         vis.chart = vis.svg
             .append('g')
             .attr('class', 'reasonsBubblePlotChart')
+            .attr('transform', `translate(200,0)`);
 
         // Add chart title
         vis.svg
@@ -228,13 +230,9 @@ class ReasonsBubblePlot {
             positionValues.push(currNum);
             prevNum = currNum;
         }
-        console.log(positionValues)
         return positionValues;
     }
 
-    // getCirclePosition(index) {
-    //     return vis.circlePositions[index];
-    // }
 
     //todo move to util maybe
     // Function to wrap X axis labs
