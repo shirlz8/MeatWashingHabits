@@ -22,14 +22,12 @@ class TeardropChart {
   initVis() {
     const vis = this;
 
-    vis.width =
-      vis.config.containerWidth -
-      vis.config.margin.left -
-      vis.config.margin.right;
-    vis.height =
-      vis.config.containerHeight -
-      vis.config.margin.top -
-      vis.config.margin.bottom;
+    vis.width = vis.config.containerWidth
+      - vis.config.margin.left
+      - vis.config.margin.right;
+    vis.height = vis.config.containerHeight
+      - vis.config.margin.top
+      - vis.config.margin.bottom;
 
     vis.svg = d3
       .select(vis.config.parentElement)
@@ -42,7 +40,7 @@ class TeardropChart {
       .append('g')
       .attr(
         'transform',
-        `translate(${vis.config.margin.left},${vis.config.margin.top})`
+        `translate(${vis.config.margin.left},${vis.config.margin.top})`,
       );
 
     vis.updateVis();
@@ -60,7 +58,7 @@ class TeardropChart {
       .append('g')
       .attr(
         'transform',
-        `translate(${vis.config.legendPositionX}, ${vis.config.legendPositionY})`
+        `translate(${vis.config.legendPositionX}, ${vis.config.legendPositionY})`,
       );
 
     vis.colorScale = d3
@@ -95,13 +93,15 @@ class TeardropChart {
           return 'Fat';
         case 'Remove_meat_juice':
           return 'Meat Juices';
+        default:
+          return 'Name was mispelled';
       }
     };
 
     vis.meatWashCount = {};
 
     vis.data.forEach((item) => {
-      for (let [key, value] of Object.entries(item)) {
+      for (const [key, value] of Object.entries(item)) {
         if (vis.meatWashCount[key]) {
           vis.meatWashCount[key] += value;
         } else {
@@ -112,10 +112,10 @@ class TeardropChart {
 
     vis.array = [];
 
-    for (let [key, value] of Object.entries(vis.meatWashCount)) {
-      let obj = {};
-      obj['removeObject'] = key;
-      obj['count'] = value;
+    for (const [key, value] of Object.entries(vis.meatWashCount)) {
+      const obj = {};
+      obj.removeObject = key;
+      obj.count = value;
       vis.array.push(obj);
     }
 
@@ -131,11 +131,10 @@ class TeardropChart {
     vis.generateChart(vis.array, vis);
   }
 
-  generateChart = (data, vis) => {
-    const bubble = (data) =>
-      d3.pack().size([vis.width, vis.height]).padding(2)(
-        d3.hierarchy({ children: data }).sum((d) => d.count)
-      );
+  generateChart(data, vis) {
+    const bubble = (data2) => d3.pack().size([vis.width, vis.height]).padding(2)(
+      d3.hierarchy({ children: data2 }).sum((d) => d.count),
+    );
 
     const root = bubble(data);
 
@@ -158,10 +157,11 @@ class TeardropChart {
           .select('#tooltip')
           .style('display', 'block')
           .style('left', `${event.pageX}px`)
-          .style('top', `${event.pageY}px`).html(`
+          .style('top', `${event.pageY}px`)
+          .html(`
               <div class="tooltip-title">${vis.properNaming(
-                d.data.removeObject
-              )}</div>
+    d.data.removeObject,
+  )}</div>
               <div id='teardrop-tooltip-count'>${d.data.count} Claims</div>
             `);
       })
@@ -215,5 +215,5 @@ class TeardropChart {
       .attr('x', '2em')
       .attr('font-size', '20px')
       .attr('y', (d, i) => 50 * i - 12);
-  };
+  }
 }

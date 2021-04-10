@@ -7,7 +7,7 @@ let habitsBubbleRadioFilter = 'all';
 // Initialize Dispatchers
 const dispatcherHouseholdSize = d3.dispatch('filterHouseholdSize');
 const dispatcherFoodSafetyImportance = d3.dispatch(
-  'filterFoodSafetyImportance'
+  'filterFoodSafetyImportance',
 );
 const dispatcherMeatType = d3.dispatch('filterMeatType');
 
@@ -44,13 +44,13 @@ function filterByBarchartsData() {
   let currentData = mainData;
   if (householdSizeFilter !== 0) {
     currentData = currentData.filter(
-      (d) => d.Houshold_size === householdSizeFilter
+      (d) => d.Houshold_size === householdSizeFilter,
     );
   }
 
   if (foodSafetyImportanceFilter !== 0) {
     currentData = currentData.filter(
-      (d) => d.Food_safety_importance === foodSafetyImportanceFilter
+      (d) => d.Food_safety_importance === foodSafetyImportanceFilter,
     );
   }
 
@@ -88,7 +88,7 @@ d3.csv('data/wash_to_remove_data.csv').then((data) => {
     {
       parentElement: '#teardropChart',
     },
-    data
+    data,
   );
 });
 
@@ -101,7 +101,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#pieChart',
     },
-    exploratoryData
+    exploratoryData,
   );
 
   // Bar charts
@@ -110,7 +110,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
       parentElement: '#householdSizeBarChart',
     },
     dispatcherHouseholdSize,
-    exploratoryData
+    exploratoryData,
   );
 
   foodSafetyBarChart = new FoodSafetyBarChart(
@@ -118,7 +118,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
       parentElement: '#foodSafetyBarChart',
     },
     dispatcherFoodSafetyImportance,
-    exploratoryData
+    exploratoryData,
   );
 
   // Habits bubble plot
@@ -126,7 +126,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#habitsBubblePlot',
     },
-    exploratoryData
+    exploratoryData,
   );
 
   // Liquid gauges
@@ -137,7 +137,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Beef',
-    svgs.Beef
+    svgs.Beef,
   );
 
   liquidPorkChart = new LiquidFillGauge(
@@ -147,7 +147,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Pork',
-    svgs.Pork
+    svgs.Pork,
   );
 
   liquidPoultryChart = new LiquidFillGauge(
@@ -157,7 +157,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Poultry',
-    svgs.Poultry
+    svgs.Poultry,
   );
 
   liquidSheepGoatChart = new LiquidFillGauge(
@@ -167,7 +167,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Sheep_Goat',
-    svgs.Sheep_Goat
+    svgs.Sheep_Goat,
   );
 
   liquidFishChart = new LiquidFillGauge(
@@ -177,7 +177,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Fish',
-    svgs.Fish
+    svgs.Fish,
   );
 
   liquidWashAnyChart = new LiquidFillGauge(
@@ -187,7 +187,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Wash_Any',
-    svgs.Wash_Any
+    svgs.Wash_Any,
   );
 
   // Dispatchers for linkage
@@ -268,21 +268,21 @@ d3.csv('data/reasons_for_washing_data.csv').then((reasonsWashingData) => {
     (reasonsNotWashingData) => {
       // console.log(reasonsWashingData);
       // console.log(reasonsNotWashingData);
-    }
+    },
   );
 });
 
 // Dynamically set text on button click
 function setTextWash() {
   d3.selectAll('#pieChartText').text(
-    'You are one of the 7 in 10 people who wash meat before cooking! Scroll down to view more details.'
+    'You are one of the 7 in 10 people who wash meat before cooking! Scroll down to view more details.',
   );
   document.getElementById('pieChart').style.display = 'block';
 }
 
 function setTextNoWash() {
   d3.selectAll('#pieChartText').text(
-    "You are one of the 3 in 10 people who don't wash meat before cooking! Scroll down to view more details."
+    "You are one of the 3 in 10 people who don't wash meat before cooking! Scroll down to view more details.",
   );
   document.getElementById('pieChart').style.display = 'block';
 }
@@ -297,7 +297,7 @@ function clearFilters() {
   // Change UI for radio button
   d3.selectAll("input[name='washHabit'][value='all']").property(
     'checked',
-    'true'
+    'true',
   );
 
   // Data is filtered in the bar chart classes
