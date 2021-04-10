@@ -12,6 +12,10 @@ body {
   height: 100%;
 }
 
+#reasonsBubblePlot {
+  position: relative;
+}
+
 #top {
   display: flex;
   flex-direction: column;
