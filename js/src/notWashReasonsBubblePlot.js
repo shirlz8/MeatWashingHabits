@@ -8,7 +8,7 @@ class NotWashReasonsBubblePlot {
                 top: 25,
                 right: 25,
                 bottom: 25,
-                left: 225
+                left: 170
             }
         };
             this.data = _data;
@@ -70,7 +70,7 @@ class NotWashReasonsBubblePlot {
             .attr('class', 'chart-title')
             .attr('transform', `translate(${vis.width / 2},${vis.config.margin.top + 40})`)
             .attr('text-anchor', 'middle')
-            .style('font-size', '32px')
+            .style('font-size', '28px')
             .text('Reasons for Not Washing Meats');
 
         // Add chart outline
@@ -120,12 +120,12 @@ class NotWashReasonsBubblePlot {
         // in decreasing order of importance (ie: stronger reasons to weaker reasons)
         const sortedReasonsScoresDict = new Map([...reasonsScoresDict.entries()].sort((a, b) => b[1] - a[1]));
 
-        const countExtent = [ Array.from(sortedReasonsScoresDict.values())[0], Array.from(sortedReasonsScoresDict.values()).pop()];
+        const countExtent = [Array.from(sortedReasonsScoresDict.values())[0], Array.from(sortedReasonsScoresDict.values()).pop()];
         vis.reasonsData = sortedReasonsScoresDict;
 
         vis.radiusScale.domain(countExtent);
 
-
+        vis.circlePositions = vis.calculateCirclePosition(vis.reasonsData, 50);
         vis.renderVis();
     }
 
@@ -142,8 +142,8 @@ class NotWashReasonsBubblePlot {
             .attr('r', (d) => vis.radiusScale(d[1]))
             .attr('cy', vis.height)
             .attr('cx', (d, i) => {
-                let r = vis.radiusScale(d[1]);
-                return vis.config.margin.left + i * (135 + r);
+                let pos = vis.circlePositions[i];
+                return vis.config.margin.left + pos;
             })
             .attr('transform', (d) => `translate(0, ${-vis.radiusScale(d[1])})`)
             .style('fill', '#C1504F');
@@ -151,13 +151,13 @@ class NotWashReasonsBubblePlot {
         // avg score label on the circles
         vis.chart
             .selectAll('text')
-            .data(vis.reasonsData, (d) => d)
+            .data(vis.reasonsData)
             .join('text')
             .attr('class', 'reason-num-label')
             .attr('y', vis.height)
             .attr('x', (d, i) => {
-                let r = vis.radiusScale(d[1]);
-                return vis.config.margin.left + i * (135 + r);
+                let pos = vis.circlePositions[i];
+                return vis.config.margin.left + pos;
             })
             .attr('transform', (d) => `translate(0, ${-vis.radiusScale(d[1])})`)
             .style('text-anchor', 'middle')
@@ -172,12 +172,12 @@ class NotWashReasonsBubblePlot {
             .data(vis.reasonsData, (d) => d)
             .join('line')
             .attr('x1', (d, i) => {
-                let r = vis.radiusScale(d[1]);
-                return vis.config.margin.left + i * (135 + r);
+                let pos = vis.circlePositions[i];
+                return vis.config.margin.left + pos;
             })
             .attr('x2', (d, i) => {
-                let r = vis.radiusScale(d[1]);
-                return vis.config.margin.left + i * (135 + r);
+                let pos = vis.circlePositions[i];
+                return vis.config.margin.left + pos;
             })
             .attr('y1', vis.height)
             .attr('y2',  (d) => vis.height + 2*vis.radiusScale(d[1]))
@@ -194,8 +194,8 @@ class NotWashReasonsBubblePlot {
             .attr('dy', 0)
             .attr('y', (d) => vis.height + 2*vis.radiusScale(d[1]))
             .attr('x', (d, i) => {
-                let r = vis.radiusScale(d[1]);
-                return vis.config.margin.left + i * (135 + r);
+                let pos = vis.circlePositions[i];
+                return vis.config.margin.left + pos;
             })
             .attr('transform', (d) => `translate(0, ${6.5*-vis.radiusScale(d[1])})`)
             .style('text-anchor', 'middle')
@@ -206,6 +206,32 @@ class NotWashReasonsBubblePlot {
 
     }
 
+    calculateCirclePosition(dataDict, distBetweenCircles) {
+        const vis = this;
+        const positionValues = [];
+        const scoreValues = Array.from(dataDict.values());
+        const radiusValues = scoreValues.map(d => vis.radiusScale(d));
+        let prevNum = 0;
+        let currNum = 0;
+
+        for (let i = 0; i < radiusValues.length; i++) {
+            if (i > 0) {
+                currNum = prevNum + radiusValues[i-1] + radiusValues[i] + distBetweenCircles;
+            } else {
+                currNum = radiusValues[0];
+            }
+            positionValues.push(currNum);
+            prevNum = currNum;
+        }
+        console.log(positionValues)
+        return positionValues;
+    }
+
+    // getCirclePosition(index) {
+    //     return vis.circlePositions[index];
+    // }
+
+    //todo move to util maybe
     // Function to wrap X axis labs
     // Sampled from : bl.ocks.org/mbostock/7555321
     wrap(text, width) {
@@ -218,7 +244,6 @@ class NotWashReasonsBubblePlot {
             const lineHeight = 1.1; // ems
             const y = text2.attr('y');
             const dy = parseFloat(text2.attr('dy'));
-            console.log(dy)
             const x = text2.attr('x')
 
             let tspan = text2
