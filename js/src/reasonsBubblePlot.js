@@ -36,7 +36,6 @@ class ReasonsBubblePlot {
             .domain(['noWash', 'wash'])
             .range(['#C1504F', '#4E81BE']);
 
-        console.log(colourScale(type))
         return colourScale(type);
     }
 
@@ -132,7 +131,8 @@ class ReasonsBubblePlot {
 
         vis.radiusScale.domain(countExtent);
 
-        vis.circlePositions = vis.calculateCirclePosition(vis.reasonsData, 50);
+        const scoreValues = Array.from(vis.reasonsData.values());
+        vis.circlePositions = vis.calculateCirclePosition(scoreValues, 50);
         vis.renderVis();
     }
 
@@ -213,10 +213,9 @@ class ReasonsBubblePlot {
 
     }
 
-    calculateCirclePosition(dataDict, distBetweenCircles) {
+    calculateCirclePosition(scoreValues, distBetweenCircles) {
         const vis = this;
         const positionValues = [];
-        const scoreValues = Array.from(dataDict.values());
         const radiusValues = scoreValues.map(d => vis.radiusScale(d));
         let prevNum = 0;
         let currNum = 0;

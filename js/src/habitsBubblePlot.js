@@ -382,20 +382,8 @@ class HabitsBubblePlot {
         .attr('x', vis.width / 2 - 30)
         .attr('y', 25)
         .style('font-size', '14px')
-        .text('Area = Total Counts');
+        .text('Counts Scale');
 
-      // Todo: revisit the style for legend
-      // draw an outline for the legend
-      // vis.legend
-      //   .append('rect')
-      //   .attr('x', vis.width / 2 - 40)
-      //   .attr('y', 1)
-      //   .attr('width', 400)
-      //   .attr('height', 100)
-      //   .attr('stroke', 'black')
-      //   .attr('stroke-width', '1px')
-      //   .attr('opacity', 0.2)
-      //   .attr('fill', '#D9D9D9');
     } else {
       d3.selectAll('.legend').remove();
     }
