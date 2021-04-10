@@ -12,6 +12,13 @@ body {
   height: 100%;
 }
 
+#title-box {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin: 10%;
+}
+
 #title {
   font-size: 50px;
   font-weight: 700;
@@ -50,6 +57,8 @@ body {
 #intro {
   display: flex;
   justify-content: center;
+  max-width: 500px;
+  min-width: 400px;
 }
 
 #intro-box {
@@ -71,7 +80,7 @@ body {
   flex-direction: column;
 }
 
-#reasonsNoWashBubblePlot  {
+#reasonsNoWashBubblePlot {
   display: none;
   margin-top: 20px;
   margin-bottom: 50px;

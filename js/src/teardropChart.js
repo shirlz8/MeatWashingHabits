@@ -22,12 +22,14 @@ class TeardropChart {
   initVis() {
     const vis = this;
 
-    vis.width = vis.config.containerWidth
-      - vis.config.margin.left
-      - vis.config.margin.right;
-    vis.height = vis.config.containerHeight
-      - vis.config.margin.top
-      - vis.config.margin.bottom;
+    vis.width =
+      vis.config.containerWidth -
+      vis.config.margin.left -
+      vis.config.margin.right;
+    vis.height =
+      vis.config.containerHeight -
+      vis.config.margin.top -
+      vis.config.margin.bottom;
 
     vis.svg = d3
       .select(vis.config.parentElement)
@@ -36,12 +38,7 @@ class TeardropChart {
       .attr('width', vis.config.containerWidth)
       .attr('height', vis.config.containerHeight);
 
-    vis.chart = vis.svg
-      .append('g')
-      .attr(
-        'transform',
-        `translate(${vis.config.margin.left},${vis.config.margin.top})`,
-      );
+    vis.chart = vis.svg.append('g').attr('id', 'tear-group');
 
     vis.updateVis();
   }
@@ -58,7 +55,7 @@ class TeardropChart {
       .append('g')
       .attr(
         'transform',
-        `translate(${vis.config.legendPositionX}, ${vis.config.legendPositionY})`,
+        `translate(${vis.config.legendPositionX}, ${vis.config.legendPositionY})`
       );
 
     vis.colorScale = d3
@@ -125,25 +122,21 @@ class TeardropChart {
   renderVis() {
     const vis = this;
 
-    vis.width = window.innerWidth / 2.5;
-    vis.height = window.innerHeight / 2.5;
+    vis.width = window.innerWidth / 2.2;
+    vis.height = window.innerHeight / 2.2;
 
     vis.generateChart(vis.array, vis);
   }
 
   generateChart(data, vis) {
-    const bubble = (data2) => d3.pack().size([vis.width, vis.height]).padding(2)(
-      d3.hierarchy({ children: data2 }).sum((d) => d.count),
-    );
+    const bubble = (data2) =>
+      d3.pack().size([vis.width, vis.height]).padding(2)(
+        d3.hierarchy({ children: data2 }).sum((d) => d.count)
+      );
 
     const root = bubble(data);
 
-    const node = vis.chart
-      .selectAll()
-      .data(root.children)
-      .enter()
-      .append('g')
-      .attr('transform', `translate(${vis.width / 2}, ${vis.height / 2})`);
+    const node = vis.chart.selectAll().data(root.children).enter().append('g');
 
     const circle = node
       .append('circle')
@@ -157,11 +150,10 @@ class TeardropChart {
           .select('#tooltip')
           .style('display', 'block')
           .style('left', `${event.pageX}px`)
-          .style('top', `${event.pageY}px`)
-          .html(`
+          .style('top', `${event.pageY}px`).html(`
               <div class="tooltip-title">${vis.properNaming(
-    d.data.removeObject,
-  )}</div>
+                d.data.removeObject
+              )}</div>
               <div id='teardrop-tooltip-count'>${d.data.count} Claims</div>
             `);
       })
