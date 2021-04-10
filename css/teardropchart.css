@@ -17,3 +17,7 @@
 #teardrop-tooltip-count {
   font-size: 20px;
 }
+
+#teardrop-group {
+  transform: translate(20%, 45%);
+}
