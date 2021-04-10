@@ -20,6 +20,8 @@ let liquidPoultryChart;
 let liquidSheepGoatChart;
 let liquidFishChart;
 let liquidWashAnyChart;
+let pieChart;
+let teardropChart;
 let reasonsNoWashBubblePlot;
 let reasonsWashBubblePlot;
 let mainData;
@@ -34,7 +36,7 @@ const svgs = {
   Wash_Any:
     'M83.41,32c-31.17,1.81-57,27.71-58.63,58.93-1.85,34.66,26.58,66,62.41,66,34.15,0,62.51-28.41,62.5-62.5C149.68,58.41,118.16,29.92,83.41,32Z',
   Sheep_Goat:
-  'M149.08,93.37c-2.14-10.69-14.25-19.58-22.46-24.48v-.8a18.83,18.83,0,0,0-7.82-15.6,20.23,20.23,0,0,0,.33-3.65c0-9.94-7-18-15.66-18a14,14,0,0,0-7.23,2,14.35,14.35,0,0,0-20.1-4.11,14.76,14.76,0,0,0-3.9,3.9,13.37,13.37,0,0,0-3.61-.49C60,32.16,53,40.29,53,50.19v.33c-6.92,1.86-12.09,9-12.09,17.56a20.17,20.17,0,0,0,.56,4.51c-7.25,5.08-15,12.36-16.73,20.74a17.19,17.19,0,0,0,3.59,14.24c2.59,3.31,5.43,5,8.42,5,3.4,0,8.85-5.83,11.53-9.37.15-.2.42-.07.44.18,2.93,29,14.58,47.74,38.2,47.9,26.57.19,37.72-8.94,40-47.28-1-2.07,5,8.6,10.25,8.6,3,0,5.82-1.68,8.41-5A17.16,17.16,0,0,0,149.08,93.37Z',
+    'M149.08,93.37c-2.14-10.69-14.25-19.58-22.46-24.48v-.8a18.83,18.83,0,0,0-7.82-15.6,20.23,20.23,0,0,0,.33-3.65c0-9.94-7-18-15.66-18a14,14,0,0,0-7.23,2,14.35,14.35,0,0,0-20.1-4.11,14.76,14.76,0,0,0-3.9,3.9,13.37,13.37,0,0,0-3.61-.49C60,32.16,53,40.29,53,50.19v.33c-6.92,1.86-12.09,9-12.09,17.56a20.17,20.17,0,0,0,.56,4.51c-7.25,5.08-15,12.36-16.73,20.74a17.19,17.19,0,0,0,3.59,14.24c2.59,3.31,5.43,5,8.42,5,3.4,0,8.85-5.83,11.53-9.37.15-.2.42-.07.44.18,2.93,29,14.58,47.74,38.2,47.9,26.57.19,37.72-8.94,40-47.28-1-2.07,5,8.6,10.25,8.6,3,0,5.82-1.68,8.41-5A17.16,17.16,0,0,0,149.08,93.37Z',
   Beef:
     'M144.48,69.78c-.39-.59-7.85-12.66-25.6-12.66a26.3,26.3,0,0,0-5.67.58l-.2-.39-.39-.59a28.49,28.49,0,0,0,6.65-18.31V28.67a6.36,6.36,0,0,0-.79-3.31,6.47,6.47,0,0,0-8.78-2.54h0a6.29,6.29,0,0,0-3.12,3.9l-1,3.69a24.56,24.56,0,0,1-6.26,10.7l-1.95,2a35,35,0,0,0-30.5,0l-2-1.93a24.72,24.72,0,0,1-6.26-10.7l-1-3.71A6.33,6.33,0,0,0,53,22.05a6.79,6.79,0,0,0-5.47,1.16A7.17,7.17,0,0,0,45,28.48v9.93a28.49,28.49,0,0,0,6.65,18.31l-.2.4-.2.38a28.34,28.34,0,0,0-5.67-.58C27.78,56.92,20.34,69,20,69.59a1.72,1.72,0,0,0,0,1.94c.38.59,7.85,12.67,25.6,12.67.78,0,1.76-.2,2.55-.2l1.52,21.37c-7.5,3-18.67,14.45-13.82,30.28,5.25,11.64,20.1,11.07,28.71,11.09h7.86a15.12,15.12,0,0,0,9.78-3.51,16.22,16.22,0,0,0,9.77,3.51h7.86c4.57,0,10.2,1.13,20.06-2.5,13-7.14,15.48-30.21-3.77-38.87l.3-21.17a10.88,10.88,0,0,0,2.55.19c17.78,0,25.21-12.08,25.6-12.66A3.17,3.17,0,0,0,144.48,69.78Z',
 };
@@ -44,13 +46,13 @@ function filterByBarchartsData() {
   let currentData = mainData;
   if (householdSizeFilter !== 0) {
     currentData = currentData.filter(
-      (d) => d.Houshold_size === householdSizeFilter
+      (d) => d.Houshold_size === householdSizeFilter,
     );
   }
 
   if (foodSafetyImportanceFilter !== 0) {
     currentData = currentData.filter(
-      (d) => d.Food_safety_importance === foodSafetyImportanceFilter
+      (d) => d.Food_safety_importance === foodSafetyImportanceFilter,
     );
   }
 
@@ -72,6 +74,26 @@ function filterBubbleData(originalData) {
   return filteredData;
 }
 
+d3.csv('data/wash_to_remove_data.csv').then((data) => {
+  data.forEach((d) => {
+    d.Remove_artificial_chemicals = +d.Remove_artificial_chemicals;
+    d.Remove_blood = +d.Remove_blood;
+    d.Remove_debris = +d.Remove_debris;
+    d.Remove_fat = +d.Remove_fat;
+    d.Remove_meat_juice = +d.Remove_meat_juice;
+    d.Remove_pathogens = +d.Remove_pathogens;
+    d.Remove_slime = +d.Remove_slime;
+    d.Remove_undesirable_flavors_or_odors = +d.Remove_undesirable_flavors_or_odors;
+  });
+
+  teardropChart = new TeardropChart(
+    {
+      parentElement: '#teardropChart',
+    },
+    data,
+  );
+});
+
 // Exploratory view & pie chart
 d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
   mainData = exploratoryData;
@@ -81,7 +103,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#pieChart',
     },
-    exploratoryData
+    exploratoryData,
   );
 
   // Bar charts
@@ -90,7 +112,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
       parentElement: '#householdSizeBarChart',
     },
     dispatcherHouseholdSize,
-    exploratoryData
+    exploratoryData,
   );
 
   foodSafetyBarChart = new FoodSafetyBarChart(
@@ -98,7 +120,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
       parentElement: '#foodSafetyBarChart',
     },
     dispatcherFoodSafetyImportance,
-    exploratoryData
+    exploratoryData,
   );
 
   // Habits bubble plot
@@ -106,7 +128,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#habitsBubblePlot',
     },
-    exploratoryData
+    exploratoryData,
   );
 
   // Liquid gauges
@@ -117,7 +139,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Beef',
-    svgs.Beef
+    svgs.Beef,
   );
 
   liquidPorkChart = new LiquidFillGauge(
@@ -127,7 +149,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Pork',
-    svgs.Pork
+    svgs.Pork,
   );
 
   liquidPoultryChart = new LiquidFillGauge(
@@ -137,7 +159,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Poultry',
-    svgs.Poultry
+    svgs.Poultry,
   );
 
   liquidSheepGoatChart = new LiquidFillGauge(
@@ -147,7 +169,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Sheep_Goat',
-    svgs.Sheep_Goat
+    svgs.Sheep_Goat,
   );
 
   liquidFishChart = new LiquidFillGauge(
@@ -157,7 +179,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Fish',
-    svgs.Fish
+    svgs.Fish,
   );
 
   liquidWashAnyChart = new LiquidFillGauge(
@@ -167,7 +189,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Wash_Any',
-    svgs.Wash_Any
+    svgs.Wash_Any,
   );
 
   // Dispatchers for linkage
@@ -241,7 +263,6 @@ d3.csv('data/wash_to_remove_data.csv').then((removeData) => {
   // console.log(removeData);
 });
 
-// TODO: M3
 // Reasons view
 d3.csv('data/reasons_for_washing_data.csv').then((reasonsWashingData) => {
   const washListOfReasons = [
@@ -356,12 +377,12 @@ function showNoWashContent() {
 // Dynamically set text on button click
 function setTextWash() {
   d3.selectAll('#pieChartText').text('You are one of the 7 in 10 people who wash meat before cooking! Scroll down to view more details.');
-  document.getElementById("pieChart").style.display = "block";
+  document.getElementById('pieChart').style.display = "block";
 }
 
 function setTextNoWash() {
   d3.selectAll('#pieChartText').text('You are one of the 3 in 10 people who don\'t wash meat before cooking! Scroll down to view more details.');
-  document.getElementById("pieChart").style.display = "block";
+  document.getElementById('pieChart').style.display = "block";
 }
 
 // Clear all filters button
@@ -374,7 +395,7 @@ function clearFilters() {
   // Change UI for radio button
   d3.selectAll("input[name='washHabit'][value='all']").property(
     'checked',
-    'true'
+    'true',
   );
 
   // Data is filtered in the bar chart classes

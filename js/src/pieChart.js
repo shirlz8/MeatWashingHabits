@@ -28,15 +28,13 @@ class PieChart {
     const vis = this;
 
     // Calculate inner chart size. Margin specifies the space around the actual chart.
-    vis.width =
-      vis.config.containerWidth -
-      vis.config.margin.left -
-      vis.config.margin.right;
+    vis.width = vis.config.containerWidth
+      - vis.config.margin.left
+      - vis.config.margin.right;
 
-    vis.height =
-      vis.config.containerHeight -
-      vis.config.margin.top -
-      vis.config.margin.bottom;
+    vis.height = vis.config.containerHeight
+      - vis.config.margin.top
+      - vis.config.margin.bottom;
 
     // Define size of SVG drawing area
     vis.svg = d3
@@ -50,7 +48,7 @@ class PieChart {
       .append('g')
       .attr(
         'transform',
-        `translate(${vis.width - vis.config.legendPosition}, 50)`
+        `translate(${vis.width - vis.config.legendPosition}, 50)`,
       );
 
     vis.legend
@@ -94,7 +92,7 @@ class PieChart {
     vis.counts = d3.rollup(
       vis.data,
       (v) => v.length,
-      (d) => d.Wash_Any
+      (d) => d.Wash_Any,
     );
 
     vis.totalCount = d3.count(vis.data, (d) => d.Wash_Any);
@@ -104,8 +102,6 @@ class PieChart {
       vis.percentages.set(key, Math.round((value / vis.totalCount) * 100));
     });
     vis.data = vis.counts;
-
-    console.log(vis.percentages);
 
     // Compute the position of each group on the pie:
     vis.pieChart = d3.pie().value((d) => d[1]);
@@ -126,10 +122,7 @@ class PieChart {
       .enter()
       .append('path')
       .attr('d', vis.arcGenerator)
-      .attr('fill', function (d) {
-        console.log(d.data[0]);
-        return vis.color(d.data[0]);
-      })
+      .attr('fill', (d) => vis.color(d.data[0]))
       .attr('stroke', 'white')
       .style('stroke-width', '3px');
 
@@ -138,12 +131,8 @@ class PieChart {
       .data(vis.pieData)
       .enter()
       .append('text')
-      .text((d) => {
-        return vis.percentages.get(d.data[0]) + '%';
-      })
-      .attr('transform', function (d) {
-        return 'translate(' + vis.arcGenerator.centroid(d) + ')';
-      })
+      .text((d) => `${vis.percentages.get(d.data[0])}%`)
+      .attr('transform', (d) => `translate(${vis.arcGenerator.centroid(d)})`)
       .style('text-anchor', 'middle')
       .attr('fill', 'white')
       .style('font-size', 20);
