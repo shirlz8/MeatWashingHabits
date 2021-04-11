@@ -12,6 +12,7 @@
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+  margin: 25px;
 }
 
 #teardrop-tooltip-count {
