@@ -24,16 +24,23 @@
   <body>
     <div class="container">
       <div id="story">
-        <h1 id="title">
-          The Diversity of American Meat Washing Habits before Cooking.
-        </h1>
+        <div id="title-box">
+          <h1 id="title">
+            The Diversity of American Meat Washing Habits before Cooking.
+          </h1>
+        </div>
+
         <div id="hook">
           <p id="pieChartIntroText">Do you wash meat before cooking?</p>
           <div id="buttons">
             <button class="pieButton" type="button" onclick="showWashContent()">
               Yup!
             </button>
-            <button class="pieButton" type="button" onclick="showNoWashContent()">
+            <button
+              class="pieButton"
+              type="button"
+              onclick="showNoWashContent()"
+            >
               Nope!
             </button>
           </div>
@@ -44,8 +51,7 @@
 
         <div class="reasonsBubblePlot">
           <label class="switch">
-            <input type="checkbox"
-                   id="reasonToggle">
+            <input type="checkbox" id="reasonToggle" />
             <span class="slider round"></span>
           </label>
           <div id="reasonsNoWashBubblePlot"></div>
