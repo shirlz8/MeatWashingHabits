@@ -385,6 +385,11 @@ function setTextNoWash() {
   document.getElementById('pieChart').style.display = "block";
 }
 
+function navigateDiv(chart){
+  console.log("navigate")
+  window.location.hash = "#hook";
+}
+
 // Clear all filters button
 function clearFilters() {
   meatTypeFilter = 'Wash_Any';
