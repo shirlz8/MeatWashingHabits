@@ -25,7 +25,7 @@
     <div class="container">
       <div id="story">
         <div id="intro">
-          <p class="arrow-element"><i class="arrow up" id = "arrow-up" onclick="navigateUp()"></i></p>
+          <p class="arrow-element"><i class="arrow up" id="arrow-up" onclick="navigateUp()"></i></p>
           <div id="title-box">
             <h1 id="title">
               The Diversity of American Meat Washing Habits before Cooking.
@@ -59,29 +59,45 @@
           <div class="description">
             71% of Americans wash at least one type of meat before cooking it.
           </div>
-          <div id="pieChart">
+          <div id="pie-chart">
             <h1>Proportion of People Who Wash Meats</h1>
           </div>
         </div>
 
-<!--        <div id="story2" class="reasonsBubblePlot">-->
-<!--          <p class="arrowP"><i class="arrow up" onclick="navigatePieChart()"></i></p>-->
-<!--          <label class="switch">-->
-<!--            <input type="checkbox" id="reasonToggle" />-->
-<!--            <span class="slider round"></span>-->
-<!--          </label>-->
-<!--          <div id="reasonsNoWashBubblePlot"></div>-->
-<!--          <div id="reasonsWashBubblePlot"></div>-->
-<!--          <p class="arrowP"><i class="arrow down" onclick="navigateRemoveChart()"></i></p>-->
+        <div id="reasons" class="reasons-bubble-plot">
+          <div class="description">
+            <p>What are some of the main factors behind why people wash or don't wash their meat?
+              Each bubble represents a reason and its average rank out of all the reasons. The higher the ranking is, the more important the reason is among everyone who wash and don't wash their meats.
+            </p>
+            <p>
+              Click the slider to toggle between the reasons for washing meat and the reasons for not washing meat.
+            </p>
+          </div>
+          <div id="bubble-plot-container">
+            <label class="switch">
+              <input type="checkbox" id="reasonToggle" />
+              <span class="slider round"></span>
+            </label>
+            <div id="reasons-no-wash-bubble-plot"></div>
+            <div id="reasons-wash-bubble-plot"></div>
+          </div>
+        </div>
 
-<!--        </div>-->
+        <div id="remove">
+          <div class="description">
+            <p>
+              What are people trying to remove when they wash meat?
+            </p>
+            <p>
+              Each bubble represents something people may be trying to remove. The numbers and size of the bubbles indicate how many respondents claim that they are trying to remove this when washing.
+            </p>
+          </div>
+          <div id="teardrop-chart">
+            <h1>What People Want to Remove When They Wash Meats</h1>
+          </div>
+        </div>
 
-<!--        <p class="arrowP"><i class="arrow up" onclick="navigateReasonsBubbleChart()"></i></p>-->
-<!--        <div id="teardropChart">-->
-<!--          <h1>What People Want to Remove When They Wash Meats</h1>-->
-<!--        </div>-->
-<!--        <p class="arrowP"><i class="arrow down" onclick="navigateExploreChart()"></i></p>-->
-<!--      </div>-->
+      </div>
 
 <!--      <p class="arrowP"><i class="arrow up" onclick="navigateRemoveChart()"></i></p>-->
 <!--      <div id="explore">-->

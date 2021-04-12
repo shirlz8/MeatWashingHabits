@@ -89,7 +89,7 @@ d3.csv('data/wash_to_remove_data.csv').then((data) => {
 
   teardropChart = new TeardropChart(
     {
-      parentElement: '#teardropChart',
+      parentElement: '#teardrop-chart',
     },
     data
   );
@@ -102,7 +102,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
   // Pie chart
   pieChart = new PieChart(
     {
-      parentElement: '#pieChart',
+      parentElement: '#pie-chart',
     },
     exploratoryData
   );
@@ -289,7 +289,7 @@ d3.csv('data/reasons_for_washing_data.csv').then((reasonsWashingData) => {
   // Reasons wash bubble plot
   reasonsWashBubblePlot = new ReasonsBubblePlot(
     {
-      parentElement: '#reasonsWashBubblePlot',
+      parentElement: '#reasons-wash-bubble-plot',
     },
     reasonsWashingData,
     'wash',
@@ -321,7 +321,7 @@ d3.csv('data/reasons_for_not_washing_data.csv').then(
     // Reasons no wash bubble plot
     reasonsNoWashBubblePlot = new ReasonsBubblePlot(
       {
-        parentElement: '#reasonsNoWashBubblePlot',
+        parentElement: '#reasons-no-wash-bubble-plot',
       },
       reasonsNotWashingData,
       'noWash',

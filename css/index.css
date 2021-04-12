@@ -118,13 +118,63 @@ body {
   max-width: 350px;
 }
 
-#pieChart {
+#pie-chart {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
+/* page 3 - reasons chart */
+
+#reasons {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  max-width: 350px;
+}
+
+#bubble-plot-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#reasons-no-wash-bubble-plot {
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 50px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#reasons-wash-bubble-plot {
+  display: none;
+  margin-top: 20px;
+  margin-bottom: 50px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* page 4 - remove chart */
+#remove {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  max-width: 350px;
+}
+
+#teardrop-chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 
 #explore {
   display: flex;
@@ -156,31 +206,6 @@ body {
 
 #para {
   font-size: 24px;
-}
-
-.reasonsBubblePlot {
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-#reasonsNoWashBubblePlot {
-  display: flex;
-  margin-top: 20px;
-  margin-bottom: 50px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-#reasonsWashBubblePlot {
-  display: none;
-  margin-top: 20px;
-  margin-bottom: 50px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 #top {
