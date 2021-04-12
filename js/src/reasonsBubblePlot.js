@@ -3,7 +3,7 @@ class ReasonsBubblePlot {
         this.config = {
             parentElement: _config.parentElement,
             containerWidth: 1500,
-            containerHeight: 500,
+            containerHeight: 800,
             margin: {
                 top: 25,
                 right: 25,
@@ -64,12 +64,12 @@ class ReasonsBubblePlot {
             .append('svg')
             .attr('width', vis.config.containerWidth)
             .attr('height', vis.config.containerHeight)
-            .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
+            .attr('transform', `translate(0,${vis.config.margin.top})`);
 
         vis.chart = vis.svg
             .append('g')
             .attr('class', 'reasonsBubblePlotChart')
-            .attr('transform', `translate(200,0)`);
+            .attr('transform', `translate(${2*vis.config.margin.left},0)`);
 
         // Add chart title
         vis.svg
@@ -84,9 +84,9 @@ class ReasonsBubblePlot {
         vis.title = vis.svg
             .append('rect')
             .attr('class', 'chart-outline')
-            .attr('x', 100)
+            .attr('x', vis.config.margin.left)
             .attr('y', vis.config.margin.top)
-            .attr('width', vis.width - 175)
+            .attr('width', vis.width)
             .attr('height', vis.height)
             .attr('stroke', 'black')
             .attr('stroke-width', '1px')
@@ -94,7 +94,7 @@ class ReasonsBubblePlot {
 
 
         // Initialize main scales
-        vis.radiusScale = d3.scaleSqrt().range([80, 25]);
+        vis.radiusScale = d3.scaleSqrt().range([120, 25]);
 
         vis.updateVis();
     }
@@ -132,7 +132,8 @@ class ReasonsBubblePlot {
 
         vis.radiusScale.domain(countExtent);
 
-        vis.circlePositions = vis.calculateCirclePosition(vis.reasonsData, 50);
+        const distance = vis.type == 'noWash' ? 70 : 50;
+        vis.circlePositions = vis.calculateCirclePosition(vis.reasonsData, distance);
         vis.renderVis();
     }
 
@@ -190,7 +191,7 @@ class ReasonsBubblePlot {
             .attr('y2',  (d) => vis.height + 2*vis.radiusScale(d[1]))
             .attr('transform', (d) => `translate(0, ${4*-vis.radiusScale(d[1])})`)
             .style('stroke', 'black')
-            .style('stroke-width', '2px')
+            .style('stroke-width', '3px')
 
         // text labels of different reasons
         vis.chart

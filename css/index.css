@@ -71,8 +71,8 @@ body {
   flex-direction: column;
 }
 
-#reasonsNoWashBubblePlot  {
-  display: none;
+#reasonsNoWashBubblePlot {
+  display: flex;
   margin-top: 20px;
   margin-bottom: 50px;
   flex-direction: column;
