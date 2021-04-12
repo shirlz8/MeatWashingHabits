@@ -348,14 +348,14 @@ function showNoWashContent() {
 // Dynamically set text on button click
 function setTextWash() {
   d3.selectAll('#user-text').text(
-    'You are one of the 7 in 10 people who wash meat before cooking! Scroll down to view more details.'
+    'You are one of the 3 in 10 people who wash meat before cooking! Scroll down to view more details.'
   );
   d3.selectAll('#user-text').style('visibility', 'visible');
 }
 
 function setTextNoWash() {
   d3.selectAll('#user-text').text(
-    "You are one of the 3 in 10 people who don't wash meat before cooking! Scroll down to view more details."
+    "You are one of the 7 in 10 people who don't wash meat before cooking! Scroll down to view more details."
   );
   d3.selectAll('#user-text').style('visibility', 'visible');
 }
@@ -383,6 +383,9 @@ function navigateDown() {
       window.location.hash = '#explore';
       break;
     default:
+      d3.selectAll('#arrow-up').style('visibility', 'visible');
+      currentPage = '#proportion';
+      window.location.hash = '#proportion';
       break;
   }
 }

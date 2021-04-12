@@ -110,7 +110,7 @@ class PieChart {
     vis.color = d3
       .scaleOrdinal()
       .domain(vis.data.keys())
-      .range(['#C1504F', '#4E81BE']);
+      .range(['#4E81BE', '#C1504F']);
 
     // shape helper to build arcs:
     vis.arcGenerator = d3.arc().innerRadius(0).outerRadius(vis.radius);
