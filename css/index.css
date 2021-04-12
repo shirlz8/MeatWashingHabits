@@ -81,7 +81,7 @@ body {
 }
 
 #reasonsNoWashBubblePlot {
-  display: none;
+  display: flex;
   margin-top: 20px;
   margin-bottom: 50px;
   flex-direction: column;
