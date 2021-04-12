@@ -5,12 +5,18 @@ body {
   padding: 0;
   border: 0;
   font-family: 'Roboto', sans-serif;
-  overflow: hidden;
+  /* overflow: hidden; */
   scroll-behavior: smooth;
+  background-color: #edf7ff;
 }
 
 h3 {
   margin: 0;
+}
+
+.screen {
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
 }
 
 .container {
@@ -19,7 +25,6 @@ h3 {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  background-color: #edf7ff;
 }
 
 /* story vis */
@@ -31,8 +36,11 @@ h3 {
 }
 
 #intro {
+  display: flex;
   flex-direction: column;
   text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .arrow-element {
@@ -123,7 +131,7 @@ h3 {
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  min-height: 720px;
+  /* min-height: 720px; */
 }
 
 .description {
@@ -146,7 +154,6 @@ h3 {
   display: flex;
   align-items: center;
   flex-direction: row;
-  min-height: 720px;
 }
 
 #bubble-plot-container {
@@ -194,6 +201,7 @@ h3 {
 #explore {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 #explore-vis {
