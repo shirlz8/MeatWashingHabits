@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Do You Wash Your Meat?</title>
+    <title>Do You Wash Meat?</title>
     <link rel="icon" href="data:;base64,iVBORwOKGO=" />
     <link rel="stylesheet" href="css/reasonsBubbleChart.css" />
     <link rel="stylesheet" href="css/barCharts.css" />
@@ -30,7 +30,7 @@
           </h1>
         </div>
 
-        <div id="hook">
+        <div id="pieChartDiv">
           <p id="pieChartIntroText">Do you wash meat before cooking?</p>
           <div id="buttons">
             <button class="pieButton" type="button" onclick="showWashContent()">
@@ -43,30 +43,33 @@
             >
               Nope!
             </button>
+            <p class="arrowP"><i class="arrow down" onclick="navigateReasonsBubbleChart()"></i></p>
           </div>
 
           <div id="pieChart"></div>
           <p id="pieChartText"></p>
         </div>
 
-        <div class="reasonsBubblePlot">
+        <div id="reasonsBubblePlot" class="reasonsBubblePlot">
+          <p class="arrowP"><i class="arrow up" onclick="navigatePieChart()"></i></p>
           <label class="switch">
             <input type="checkbox" id="reasonToggle" />
             <span class="slider round"></span>
           </label>
           <div id="reasonsNoWashBubblePlot"></div>
           <div id="reasonsWashBubblePlot"></div>
+          <p class="arrowP"><i class="arrow down" onclick="navigateRemoveChart()"></i></p>
+
         </div>
 
+        <p class="arrowP"><i class="arrow up" onclick="navigateReasonsBubbleChart()"></i></p>
         <div id="teardropChart">
           <h1>What People Want to Remove When They Wash Meats</h1>
         </div>
-        <p id="arrowTop"><i class="arrow down" onclick="navigateDiv(1)"></i></p>
-
+        <p class="arrowP"><i class="arrow down" onclick="navigateExploreChart()"></i></p>
       </div>
 
-      <p id="arrowTop"><i class="arrow up" onclick="navigateDiv(1)"></i></p>
-
+      <p class="arrowP"><i class="arrow up" onclick="navigateRemoveChart()"></i></p>
       <div id="explore">
         <div id="intro">
           <div id="intro-box">

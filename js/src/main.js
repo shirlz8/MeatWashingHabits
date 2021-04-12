@@ -385,9 +385,25 @@ function setTextNoWash() {
   document.getElementById('pieChart').style.display = "block";
 }
 
-function navigateDiv(chart){
-  console.log("navigate")
-  window.location.hash = "#hook";
+// Functions for navigation
+function navigatePieChart(){
+  console.log("navigatePieChart")
+  window.location.hash = "#pieChartDiv";
+}
+
+function navigateReasonsBubbleChart(){
+  console.log("navigateReasonsBubbleChart")
+  window.location.hash = "#reasonsBubblePlot";
+}
+
+function navigateRemoveChart(){
+  console.log("navigateRemoveChart")
+  window.location.hash = "#teardropChart";
+}
+
+function navigateExploreChart(){
+  console.log("navigateExploreChart")
+  window.location.hash = "#explore";
 }
 
 // Clear all filters button
