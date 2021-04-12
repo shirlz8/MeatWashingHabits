@@ -258,12 +258,6 @@ d3.selectAll("input[name='washHabit']").on('change', () => {
   habitsBubblePlot.updateVis();
 });
 
-// TODO: M3
-// What are people trying to remove view
-d3.csv('data/wash_to_remove_data.csv').then((removeData) => {
-  // console.log(removeData);
-});
-
 // Reasons view
 d3.csv('data/reasons_for_washing_data.csv').then((reasonsWashingData) => {
   const washListOfReasons = [
