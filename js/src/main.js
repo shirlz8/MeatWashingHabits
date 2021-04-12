@@ -383,6 +383,9 @@ function navigateDown() {
       window.location.hash = '#explore';
       break;
     default:
+      d3.selectAll('#arrow-up').style('visibility', 'visible');
+      currentPage = '#proportion';
+      window.location.hash = '#proportion';
       break;
   }
 }
