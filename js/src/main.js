@@ -382,7 +382,8 @@ function setTextNoWash() {
 // Functions for navigation
 function navigateDown() {
   switch (currentPage) {
-    case 'intro':
+    case '#intro':
+      d3.selectAll('#arrow-up').style('visibility', 'visible');
       currentPage = '#proportion';
       window.location.hash = '#proportion';
       break;
@@ -395,6 +396,7 @@ function navigateDown() {
       window.location.hash = '#remove';
       break;
     case '#remove':
+      d3.selectAll('#arrow-down').style('visibility', 'hidden');
       currentPage = '#explore';
       window.location.hash = '#explore';
       break;
@@ -407,6 +409,7 @@ function navigateDown() {
 function navigateUp() {
   switch (currentPage) {
     case '#proportion':
+      d3.selectAll('#arrow-up').style('visibility', 'hidden');
       currentPage = '#intro';
       window.location.hash = '#intro';
       break;
@@ -419,6 +422,7 @@ function navigateUp() {
       window.location.hash = '#reasons';
       break;
     case '#explore':
+      d3.selectAll('#arrow-down').style('visibility', 'visible');
       currentPage = '#remove';
       window.location.hash = '#remove';
       break;
