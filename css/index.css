@@ -86,13 +86,18 @@ h3 {
   width: 125px;
 }
 
+.button-text {
+  color: white;
+  font-size: 18px;
+}
+
 .user-button {
   border-radius: 50%;
   box-shadow: 1px 1px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   height: 100px;
   width: 100px;
-  background-color: lightblue;
+  background-color: #008eff;
   margin: 0 50px;
 }
 
