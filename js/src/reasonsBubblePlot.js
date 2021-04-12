@@ -131,8 +131,8 @@ class ReasonsBubblePlot {
 
         vis.radiusScale.domain(countExtent);
 
-        const scoreValues = Array.from(vis.reasonsData.values());
         const distance = vis.type == 'noWash' ? 70 : 50;
+        const scoreValues = Array.from(vis.reasonsData.values());
         vis.circlePositions = vis.calculateCirclePosition(scoreValues, distance);
         vis.renderVis();
     }
