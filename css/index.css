@@ -7,13 +7,17 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+h3 {
+  margin: 0;
+}
+
 .container {
   width: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  background-color: #EDF7FF;
+  background-color: #edf7ff;
 }
 
 /* story vis */
@@ -178,52 +182,38 @@ body {
 
 #explore {
   display: flex;
-  flex-direction: row;
-}
-
-#explore-title {
-  font-size: 36px;
+  flex-direction: column;
 }
 
 #explore-vis {
   display: flex;
 }
 
-#text {
-  display: flex;
-  justify-content: center;
-  max-width: 500px;
-  min-width: 400px;
-}
-
-#intro-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: 25px;
-}
-
-#para {
-  font-size: 24px;
-}
-
 #top {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  margin: 15px;
   font-size: 20px;
+}
+
+#explore-text {
+  width: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-right: 25px;
+}
+
+#liquid-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
 }
 
 #bottom {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-}
-
-.bottom-box {
-  margin: 10px;
 }
 
 #left {
@@ -232,14 +222,8 @@ body {
   max-width: 500px;
 }
 
-#middle {
-}
-
-#right {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: column;
+#barchart-container {
+  margin-right: 25px;
 }
 
 #householdSizeBarChart {
