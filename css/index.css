@@ -30,7 +30,7 @@ body {
   flex-direction: column;
 }
 
-#pieChartDiv {
+#story1 {
   display: flex;
   justify-content: center;
   align-items: center;

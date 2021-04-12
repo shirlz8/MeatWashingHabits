@@ -388,12 +388,12 @@ function setTextNoWash() {
 // Functions for navigation
 function navigatePieChart(){
   console.log("navigatePieChart")
-  window.location.hash = "#pieChartDiv";
+  window.location.hash = "#story1";
 }
 
 function navigateReasonsBubbleChart(){
   console.log("navigateReasonsBubbleChart")
-  window.location.hash = "#reasonsBubblePlot";
+  window.location.hash = "#story2";
 }
 
 function navigateRemoveChart(){
