@@ -3,6 +3,7 @@ let meatTypeFilter = 'Wash_Any';
 let householdSizeFilter = 0;
 let foodSafetyImportanceFilter = 0;
 let habitsBubbleRadioFilter = 'all';
+let currentPage = '#intro';
 
 // Initialize Dispatchers
 const dispatcherHouseholdSize = d3.dispatch('filterHouseholdSize');
@@ -46,13 +47,13 @@ function filterByBarchartsData() {
   let currentData = mainData;
   if (householdSizeFilter !== 0) {
     currentData = currentData.filter(
-      (d) => d.Houshold_size === householdSizeFilter,
+      (d) => d.Houshold_size === householdSizeFilter
     );
   }
 
   if (foodSafetyImportanceFilter !== 0) {
     currentData = currentData.filter(
-      (d) => d.Food_safety_importance === foodSafetyImportanceFilter,
+      (d) => d.Food_safety_importance === foodSafetyImportanceFilter
     );
   }
 
@@ -90,7 +91,7 @@ d3.csv('data/wash_to_remove_data.csv').then((data) => {
     {
       parentElement: '#teardropChart',
     },
-    data,
+    data
   );
 });
 
@@ -103,7 +104,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#pieChart',
     },
-    exploratoryData,
+    exploratoryData
   );
 
   // Bar charts
@@ -112,7 +113,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
       parentElement: '#householdSizeBarChart',
     },
     dispatcherHouseholdSize,
-    exploratoryData,
+    exploratoryData
   );
 
   foodSafetyBarChart = new FoodSafetyBarChart(
@@ -120,7 +121,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
       parentElement: '#foodSafetyBarChart',
     },
     dispatcherFoodSafetyImportance,
-    exploratoryData,
+    exploratoryData
   );
 
   // Habits bubble plot
@@ -128,7 +129,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     {
       parentElement: '#habitsBubblePlot',
     },
-    exploratoryData,
+    exploratoryData
   );
 
   // Liquid gauges
@@ -139,7 +140,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Beef',
-    svgs.Beef,
+    svgs.Beef
   );
 
   liquidPorkChart = new LiquidFillGauge(
@@ -149,7 +150,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Pork',
-    svgs.Pork,
+    svgs.Pork
   );
 
   liquidPoultryChart = new LiquidFillGauge(
@@ -159,7 +160,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Poultry',
-    svgs.Poultry,
+    svgs.Poultry
   );
 
   liquidSheepGoatChart = new LiquidFillGauge(
@@ -169,7 +170,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Sheep_Goat',
-    svgs.Sheep_Goat,
+    svgs.Sheep_Goat
   );
 
   liquidFishChart = new LiquidFillGauge(
@@ -179,7 +180,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Fish',
-    svgs.Fish,
+    svgs.Fish
   );
 
   liquidWashAnyChart = new LiquidFillGauge(
@@ -189,7 +190,7 @@ d3.csv('data/exploratory_data.csv').then((exploratoryData) => {
     dispatcherMeatType,
     exploratoryData,
     'Wash_Any',
-    svgs.Wash_Any,
+    svgs.Wash_Any
   );
 
   // Dispatchers for linkage
@@ -272,7 +273,7 @@ d3.csv('data/reasons_for_washing_data.csv').then((reasonsWashingData) => {
     'Improve Taste or Smell',
     'Improve Texture',
     'Improve Appearance',
-    'Others'
+    'Others',
   ];
 
   const washDataLabels = [
@@ -282,135 +283,148 @@ d3.csv('data/reasons_for_washing_data.csv').then((reasonsWashingData) => {
     'Improve_taste/smell',
     'Improve_texture',
     'Improve_appearance',
-    'Other'
-  ]
+    'Other',
+  ];
 
   // Reasons wash bubble plot
   reasonsWashBubblePlot = new ReasonsBubblePlot(
-      {
-        parentElement: '#reasonsWashBubblePlot',
-      },
-      reasonsWashingData,
-      'wash',
-      washDataLabels,
-      washListOfReasons
+    {
+      parentElement: '#reasonsWashBubblePlot',
+    },
+    reasonsWashingData,
+    'wash',
+    washDataLabels,
+    washListOfReasons
   );
 });
 
 d3.csv('data/reasons_for_not_washing_data.csv').then(
-    (reasonsNotWashingData) => {
-      const noWashListOfReasons = [
-        'Feel like I should, but I don\'t',
-        'Meat is clean enough',
-        'Follow expert\'s advice',
-        'Preserve texture, smell, taste, etc',
-        'Not cultural or religious custom',
-        'Others'
-      ];
+  (reasonsNotWashingData) => {
+    const noWashListOfReasons = [
+      "Feel like I should, but I don't",
+      'Meat is clean enough',
+      "Follow expert's advice",
+      'Preserve texture, smell, taste, etc',
+      'Not cultural or religious custom',
+      'Others',
+    ];
 
-      const noWashDataLabels = [
-        'Feel_I_should_but_dont',
-        'Meat_is_clean_enough',
-        'Exprts_advise_against',
-        'Preserve_texture_etc',
-        'Not_cultural_or_religious_custom',
-        'Other'
-      ]
+    const noWashDataLabels = [
+      'Feel_I_should_but_dont',
+      'Meat_is_clean_enough',
+      'Exprts_advise_against',
+      'Preserve_texture_etc',
+      'Not_cultural_or_religious_custom',
+      'Other',
+    ];
 
-      // Reasons no wash bubble plot
-      reasonsNoWashBubblePlot = new ReasonsBubblePlot(
-          {
-            parentElement: '#reasonsNoWashBubblePlot',
-          },
-          reasonsNotWashingData,
-          'noWash',
-          noWashDataLabels,
-          noWashListOfReasons
-
-      );
-});
+    // Reasons no wash bubble plot
+    reasonsNoWashBubblePlot = new ReasonsBubblePlot(
+      {
+        parentElement: '#reasonsNoWashBubblePlot',
+      },
+      reasonsNotWashingData,
+      'noWash',
+      noWashDataLabels,
+      noWashListOfReasons
+    );
+  }
+);
 
 // Event listener for toggle switch
-d3.selectAll(".switch").on('change', () => {
-  if (document.getElementById('reasonToggle').checked) { // true = WASH
-    d3.selectAll('#reasonsWashBubblePlot')
-        .style('display', 'flex');
+d3.selectAll('.switch').on('change', () => {
+  if (document.getElementById('reasonToggle').checked) {
+    // true = WASH
+    d3.selectAll('#reasonsWashBubblePlot').style('display', 'flex');
 
-    d3.selectAll('#reasonsNoWashBubblePlot')
-        .style('display', 'none');
-
+    d3.selectAll('#reasonsNoWashBubblePlot').style('display', 'none');
   } else {
-    d3.selectAll('#reasonsNoWashBubblePlot')
-        .style('display', 'flex');
+    d3.selectAll('#reasonsNoWashBubblePlot').style('display', 'flex');
 
-    d3.selectAll('#reasonsWashBubblePlot')
-        .style('display', 'none');
+    d3.selectAll('#reasonsWashBubblePlot').style('display', 'none');
   }
-
 });
 
 function showWashContent() {
   setTextWash();
-  d3.selectAll('.switch')
-      .style('display', 'inline-flex');
+  d3.selectAll('.switch').style('display', 'inline-flex');
   document.getElementById('reasonToggle').checked = true;
 
-  d3.selectAll('#reasonsNoWashBubblePlot')
-      .style('display', 'none');
-  d3.selectAll('#reasonsWashBubblePlot')
-      .style('display', 'flex');
+  d3.selectAll('#reasonsNoWashBubblePlot').style('display', 'none');
+  d3.selectAll('#reasonsWashBubblePlot').style('display', 'flex');
 }
 
 function showNoWashContent() {
   setTextNoWash();
   // show reasons bubble plot according to user input
-  d3.selectAll('.switch')
-      .style('display', 'inline-flex');
+  d3.selectAll('.switch').style('display', 'inline-flex');
   document.getElementById('reasonToggle').checked = false;
 
-  d3.selectAll('#reasonsNoWashBubblePlot')
-      .style('display', 'flex');
-  d3.selectAll('#reasonsWashBubblePlot')
-      .style('display', 'none');
+  d3.selectAll('#reasonsNoWashBubblePlot').style('display', 'flex');
+  d3.selectAll('#reasonsWashBubblePlot').style('display', 'none');
 }
 
 // Dynamically set text on button click
 function setTextWash() {
-  d3.selectAll('#user-text').text('You are one of the 7 in 10 people who wash meat before cooking! Scroll down to view more details.');
-  d3.selectAll('#user-text')
-      .style('visibility', 'visible');
+  d3.selectAll('#user-text').text(
+    'You are one of the 7 in 10 people who wash meat before cooking! Scroll down to view more details.'
+  );
+  d3.selectAll('#user-text').style('visibility', 'visible');
 }
 
 function setTextNoWash() {
-  d3.selectAll('#user-text').text('You are one of the 3 in 10 people who don\'t wash meat before cooking! Scroll down to view more details.');
-  d3.selectAll('#user-text')
-      .style('visibility', 'visible');
+  d3.selectAll('#user-text').text(
+    "You are one of the 3 in 10 people who don't wash meat before cooking! Scroll down to view more details."
+  );
+  d3.selectAll('#user-text').style('visibility', 'visible');
 }
 
 // Functions for navigation
-function navigateIntro(){
-  console.log("navigatePieChart")
-  window.location.hash = "#intro";
+function navigateDown() {
+  switch (currentPage) {
+    case 'intro':
+      currentPage = '#proportion';
+      window.location.hash = '#proportion';
+      break;
+    case '#proportion':
+      currentPage = '#reasons';
+      window.location.hash = '#reasons';
+      break;
+    case '#reasons':
+      currentPage = '#remove';
+      window.location.hash = '#remove';
+      break;
+    case '#remove':
+      currentPage = '#explore';
+      window.location.hash = '#explore';
+      break;
+    default:
+      break;
+  }
 }
 
-function navigatePieChart(){
-  console.log("navigatePieChart")
-  window.location.hash = "#proportion";
-}
-
-function navigateReasonsBubbleChart(){
-  console.log("navigateReasonsBubbleChart")
-  window.location.hash = "#story2";
-}
-
-function navigateRemoveChart(){
-  console.log("navigateRemoveChart")
-  window.location.hash = "#teardropChart";
-}
-
-function navigateExploreChart(){
-  console.log("navigateExploreChart")
-  window.location.hash = "#explore";
+// Functions for navigation
+function navigateUp() {
+  switch (currentPage) {
+    case '#proportion':
+      currentPage = '#intro';
+      window.location.hash = '#intro';
+      break;
+    case '#reasons':
+      currentPage = '#proportion';
+      window.location.hash = '#proportion';
+      break;
+    case '#remove':
+      currentPage = '#reasons';
+      window.location.hash = '#reasons';
+      break;
+    case '#explore':
+      currentPage = '#remove';
+      window.location.hash = '#remove';
+      break;
+    default:
+      break;
+  }
 }
 
 // Clear all filters button
@@ -423,7 +437,7 @@ function clearFilters() {
   // Change UI for radio button
   d3.selectAll("input[name='washHabit'][value='all']").property(
     'checked',
-    'true',
+    'true'
   );
 
   // Data is filtered in the bar chart classes
