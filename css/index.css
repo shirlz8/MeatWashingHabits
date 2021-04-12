@@ -5,7 +5,7 @@ body {
   padding: 0;
   border: 0;
   font-family: 'Roboto', sans-serif;
-  /* overflow: hidden; */
+  overflow: hidden;
   scroll-behavior: smooth;
   background-color: #edf7ff;
 }
@@ -36,10 +36,10 @@ h3 {
 }
 
 #intro {
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   text-align: center;
-  /* justify-content: center; */
+  justify-content: center;
   align-items: center;
 }
 
