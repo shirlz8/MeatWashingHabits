@@ -7,8 +7,8 @@ class PieChart {
   constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: 450,
-      containerHeight: 300,
+      containerWidth: 475,
+      containerHeight: 325,
       legendPosition: 110,
       margin: {
         top: 25,

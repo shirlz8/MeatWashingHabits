@@ -8,7 +8,7 @@ class HouseholdSizeBarChart {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 350,
-      containerHeight: 350,
+      containerHeight: 240,
       legendPosition: 50,
       margin: {
         top: 60,
