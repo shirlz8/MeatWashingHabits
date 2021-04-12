@@ -2,9 +2,9 @@
 /* The switch - the box around the slider */
 .switch {
     position: absolute;
-    display: flex;
     width: 200px;
     height: 34px;
+    top: 30px;
 }
 
 /* Hide default HTML checkbox */
@@ -22,7 +22,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #C1504F;
+    background-color: #4E81BE;
     transition: .4s;
 }
 
@@ -38,11 +38,11 @@
 }
 
 input:checked + .slider {
-    background-color: #4E81BE;
+    background-color: #C1504F;
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px #4E81BE;
+    box-shadow: 0 0 1px #C1504F;
 }
 
 input:checked + .slider:before {
@@ -50,7 +50,7 @@ input:checked + .slider:before {
 }
 
 .slider:after {
-    content:'DON\'T WASH';
+    content:'WASH';
     color: white;
     display: block;
     position: absolute;
@@ -62,7 +62,7 @@ input:checked + .slider:before {
 }
 
 input:checked + .slider:after {
-    content:'WASH';
+    content:'DON\'T WASH';
 }
 
 /* Rounded sliders */

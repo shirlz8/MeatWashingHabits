@@ -156,7 +156,7 @@ h3 {
 }
 
 #reasons-wash-bubble-plot {
-  display: none;
+  display: flex;
   margin-top: 20px;
   margin-bottom: 50px;
   flex-direction: column;

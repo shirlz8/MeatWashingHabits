@@ -2,8 +2,8 @@ class ReasonsBubblePlot {
     constructor(_config, _data, type, dataLabels, listOfReasons) {
         this.config = {
             parentElement: _config.parentElement,
-            containerWidth: 1500,
-            containerHeight: 800,
+            containerWidth: 650,
+            containerHeight: 400,
             margin: {
                 top: 25,
                 right: 25,
@@ -76,7 +76,7 @@ class ReasonsBubblePlot {
             .attr('class', 'chart-title')
             .attr('transform', `translate(${vis.width / 2},${vis.config.margin.top + 40})`)
             .attr('text-anchor', 'middle')
-            .style('font-size', '28px')
+            .style('font-size', '12px')
             .text(vis.title(this.type));
 
         // Add chart outline
@@ -93,7 +93,7 @@ class ReasonsBubblePlot {
 
 
         // Initialize main scales
-        vis.radiusScale = d3.scaleSqrt().range([120, 25]);
+        vis.radiusScale = d3.scaleSqrt().range([50, 10]);
 
         vis.updateVis();
     }
@@ -131,13 +131,12 @@ class ReasonsBubblePlot {
 
         vis.radiusScale.domain(countExtent);
 
-        const distance = vis.type == 'noWash' ? 70 : 50;
+        const distance = vis.type == 'noWash' ? 30 : 20;
         const scoreValues = Array.from(vis.reasonsData.values());
         vis.circlePositions = vis.calculateCirclePosition(scoreValues, distance);
         vis.renderVis();
     }
 
-    // todo: fix spacing between circles
     renderVis() {
         const vis = this;
 
@@ -169,7 +168,7 @@ class ReasonsBubblePlot {
             })
             .attr('transform', (d) => `translate(0, ${-vis.radiusScale(d[1])})`)
             .style('text-anchor', 'middle')
-            .style('font-size', '16px')
+            .style('font-size', '11px')
             .style('fill', 'white')
             .text((d) => d[1]);
 
@@ -191,7 +190,7 @@ class ReasonsBubblePlot {
             .attr('y2',  (d) => vis.height + 2*vis.radiusScale(d[1]))
             .attr('transform', (d) => `translate(0, ${4*-vis.radiusScale(d[1])})`)
             .style('stroke', 'black')
-            .style('stroke-width', '3px')
+            .style('stroke-width', '2px')
 
         // text labels of different reasons
         vis.chart
@@ -200,17 +199,24 @@ class ReasonsBubblePlot {
             .data(vis.reasonsData, (d) => d)
             .join('text')
             .attr('dy', 0)
-            .attr('y', (d) => vis.height + 2*vis.radiusScale(d[1]))
+            .attr('y', (d) => vis.height + 1.5*vis.radiusScale(d[1]))
             .attr('x', (d, i) => {
                 let pos = vis.circlePositions[i];
                 return vis.config.margin.left + pos;
             })
-            .attr('transform', (d) => `translate(0, ${6.5*-vis.radiusScale(d[1])})`)
+            .attr('transform', (d,i) => {
+                if (i < 2) {
+                    return `translate(0, ${6*-vis.radiusScale(d[1])})`
+                } else if (i == 4) {
+                    return `translate(0, ${7.5*-vis.radiusScale(d[1])})`
+                }
+                return `translate(0, ${6.5*-vis.radiusScale(d[1])})`
+            })
             .style('text-anchor', 'middle')
-            .style('font-size', '16px')
+            .style('font-size', '14px')
             .style('fill', 'black')
             .text((d) => vis.textTranslateScale(d[0]))
-            .call(this.wrap, 150);
+            .call(this.wrap, 100);
 
     }
 

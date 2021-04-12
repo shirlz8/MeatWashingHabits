@@ -329,33 +329,20 @@ d3.csv('data/reasons_for_not_washing_data.csv').then(
 d3.selectAll('.switch').on('change', () => {
   if (document.getElementById('reasonToggle').checked) {
     // true = WASH
-    d3.selectAll('#reasonsWashBubblePlot').style('display', 'flex');
-
-    d3.selectAll('#reasonsNoWashBubblePlot').style('display', 'none');
+    d3.selectAll('#reasons-wash-bubble-plot').style('display', 'none');
+    d3.selectAll('#reasons-no-wash-bubble-plot').style('display', 'flex');
   } else {
-    d3.selectAll('#reasonsNoWashBubblePlot').style('display', 'flex');
-
-    d3.selectAll('#reasonsWashBubblePlot').style('display', 'none');
+    d3.selectAll('#reasons-no-wash-bubble-plot').style('display', 'none');
+    d3.selectAll('#reasons-wash-bubble-plot').style('display', 'flex');
   }
 });
 
 function showWashContent() {
   setTextWash();
-  d3.selectAll('.switch').style('display', 'inline-flex');
-  document.getElementById('reasonToggle').checked = true;
-
-  d3.selectAll('#reasonsNoWashBubblePlot').style('display', 'none');
-  d3.selectAll('#reasonsWashBubblePlot').style('display', 'flex');
 }
 
 function showNoWashContent() {
   setTextNoWash();
-  // show reasons bubble plot according to user input
-  d3.selectAll('.switch').style('display', 'inline-flex');
-  document.getElementById('reasonToggle').checked = false;
-
-  d3.selectAll('#reasonsNoWashBubblePlot').style('display', 'flex');
-  d3.selectAll('#reasonsWashBubblePlot').style('display', 'none');
 }
 
 // Dynamically set text on button click
@@ -384,6 +371,7 @@ function navigateDown() {
     case '#proportion':
       currentPage = '#reasons';
       window.location.hash = '#reasons';
+      d3.selectAll('#reasons-no-wash-bubble-plot').style('display', 'none');
       break;
     case '#reasons':
       currentPage = '#remove';
