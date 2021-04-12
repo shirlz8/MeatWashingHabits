@@ -377,15 +377,18 @@ function showNoWashContent() {
 // Dynamically set text on button click
 function setTextWash() {
   d3.selectAll('#pieChartText').text('You are one of the 7 in 10 people who wash meat before cooking! Scroll down to view more details.');
-  document.getElementById('pieChart').style.display = "block";
 }
 
 function setTextNoWash() {
   d3.selectAll('#pieChartText').text('You are one of the 3 in 10 people who don\'t wash meat before cooking! Scroll down to view more details.');
-  document.getElementById('pieChart').style.display = "block";
 }
 
 // Functions for navigation
+function navigateIntro(){
+  console.log("navigatePieChart")
+  window.location.hash = "#intro";
+}
+
 function navigatePieChart(){
   console.log("navigatePieChart")
   window.location.hash = "#story1";
