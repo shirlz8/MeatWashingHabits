@@ -2,15 +2,15 @@ class TeardropChart {
   constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: 1000,
-      containerHeight: 900,
-      legendPositionX: 780,
-      legendPositionY: 25,
+      containerWidth: 550,
+      containerHeight: 500,
+      legendPositionX: 410,
+      legendPositionY: 10,
       margin: {
-        top: 400,
+        top: 220,
         right: 25,
         bottom: 30,
-        left: 190,
+        left: 150,
       },
     };
     this.data = _data;
@@ -125,8 +125,8 @@ class TeardropChart {
   renderVis() {
     const vis = this;
 
-    vis.width = window.innerWidth / 2.5;
-    vis.height = window.innerHeight / 2.5;
+    vis.width = 240;
+    vis.height = 240;
 
     vis.generateChart(vis.array, vis);
   }
@@ -200,8 +200,8 @@ class TeardropChart {
       .selectAll('.legenditems')
       .data(vis.meatWashReasons)
       .join('circle')
-      .attr('r', 20)
-      .attr('cy', (d, i) => 50 * i)
+      .attr('r', 10)
+      .attr('cy', (d, i) => 30 * i)
       .style('stroke', 'white')
       .style('stroke-width', '2px')
       .style('fill', (d) => vis.colorScale(d));
@@ -212,8 +212,8 @@ class TeardropChart {
       .join('text')
       .text((d) => vis.properNaming(d))
       .attr('dy', '1em')
-      .attr('x', '2em')
-      .attr('font-size', '20px')
-      .attr('y', (d, i) => 50 * i - 12);
+      .attr('x', '1.5em')
+      .attr('font-size', '12px')
+      .attr('y', (d, i) => 30 * i - 7);
   }
 }
