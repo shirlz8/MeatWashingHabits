@@ -30,7 +30,7 @@ body {
   flex-direction: column;
 }
 
-#hook {
+#pieChartDiv {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -183,7 +183,7 @@ body {
   display: none;
 }
 
-#arrowTop{
+.arrowP{
   text-align: center;
 }
 
