@@ -3,12 +3,12 @@ class ReasonsBubblePlot {
         this.config = {
             parentElement: _config.parentElement,
             containerWidth: 650,
-            containerHeight: 400,
+            containerHeight: 320,
             margin: {
                 top: 25,
                 right: 25,
                 bottom: 25,
-                left: 25
+                left: 10
             }
         };
             this.data = _data;
@@ -71,29 +71,16 @@ class ReasonsBubblePlot {
             .attr('transform', `translate(${2*vis.config.margin.left},0)`);
 
         // Add chart title
-        vis.svg
-            .append('text')
-            .attr('class', 'chart-title')
-            .attr('transform', `translate(${vis.width / 2},${vis.config.margin.top + 40})`)
-            .attr('text-anchor', 'middle')
-            .style('font-size', '12px')
-            .text(vis.title(this.type));
-
-        // Add chart outline
-        vis.title = vis.svg
-            .append('rect')
-            .attr('class', 'chart-outline')
-            .attr('x', vis.config.margin.left)
-            .attr('y', vis.config.margin.top)
-            .attr('width', vis.width)
-            .attr('height', vis.height)
-            .attr('stroke', 'black')
-            .attr('stroke-width', '1px')
-            .attr('fill', 'none');
-
+        // vis.svg
+        //     .append('text')
+        //     .attr('class', 'chart-title')
+        //     .attr('transform', `translate(${vis.width / 2},${vis.config.margin.top + 40})`)
+        //     .attr('text-anchor', 'middle')
+        //     .style('font-size', '12px')
+        //     .text(vis.title(this.type));
 
         // Initialize main scales
-        vis.radiusScale = d3.scaleSqrt().range([50, 10]);
+        vis.radiusScale = d3.scaleSqrt().range([55, 18]);
 
         vis.updateVis();
     }
@@ -131,7 +118,7 @@ class ReasonsBubblePlot {
 
         vis.radiusScale.domain(countExtent);
 
-        const distance = vis.type == 'noWash' ? 30 : 20;
+        const distance = vis.type == 'noWash' ? 20 : 16;
         const scoreValues = Array.from(vis.reasonsData.values());
         vis.circlePositions = vis.calculateCirclePosition(scoreValues, distance);
         vis.renderVis();
