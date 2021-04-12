@@ -178,8 +178,10 @@ h3 {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  text-align: center;
 }
 
+/* page 5 - explore vis */
 #explore {
   display: flex;
   flex-direction: column;
@@ -187,12 +189,6 @@ h3 {
 
 #explore-vis {
   display: flex;
-}
-
-#top {
-  display: flex;
-  margin: 15px;
-  font-size: 20px;
 }
 
 #explore-text {
@@ -204,6 +200,13 @@ h3 {
   margin-right: 25px;
 }
 
+/* page 5 - explore vis - meats */
+#top {
+  display: flex;
+  margin: 15px;
+  font-size: 20px;
+}
+
 #liquid-container {
   display: flex;
   justify-content: center;
@@ -211,6 +214,7 @@ h3 {
   text-align: center;
 }
 
+/* page 5 - explore vis - barcharts */
 #bottom {
   display: flex;
   flex-direction: row;

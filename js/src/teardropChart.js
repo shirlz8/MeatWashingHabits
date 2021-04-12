@@ -162,7 +162,6 @@ class TeardropChart {
               <div class="tooltip-title">${vis.properNaming(
     d.data.removeObject,
   )}</div>
-              <div id='teardrop-tooltip-count'>${d.data.count} Claims</div>
             `);
       })
       .on('mouseout', function () {
@@ -173,7 +172,7 @@ class TeardropChart {
     const label = node
       .append('text')
       .attr('dy', '0.5em')
-      .attr('font-size', '18px')
+      .attr('font-size', '12px')
       .style('text-anchor', 'middle')
       .text((d) => d.data.count);
 
