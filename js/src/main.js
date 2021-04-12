@@ -376,11 +376,15 @@ function showNoWashContent() {
 
 // Dynamically set text on button click
 function setTextWash() {
-  d3.selectAll('#pieChartText').text('You are one of the 7 in 10 people who wash meat before cooking! Scroll down to view more details.');
+  d3.selectAll('#user-text').text('You are one of the 7 in 10 people who wash meat before cooking! Scroll down to view more details.');
+  d3.selectAll('#user-text')
+      .style('visibility', 'visible');
 }
 
 function setTextNoWash() {
-  d3.selectAll('#pieChartText').text('You are one of the 3 in 10 people who don\'t wash meat before cooking! Scroll down to view more details.');
+  d3.selectAll('#user-text').text('You are one of the 3 in 10 people who don\'t wash meat before cooking! Scroll down to view more details.');
+  d3.selectAll('#user-text')
+      .style('visibility', 'visible');
 }
 
 // Functions for navigation
@@ -391,7 +395,7 @@ function navigateIntro(){
 
 function navigatePieChart(){
   console.log("navigatePieChart")
-  window.location.hash = "#story1";
+  window.location.hash = "#proportion";
 }
 
 function navigateReasonsBubbleChart(){

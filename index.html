@@ -24,119 +24,128 @@
   <body>
     <div class="container">
       <div id="story">
-        <div id="title-box">
-          <h1 id="title">
-            The Diversity of American Meat Washing Habits before Cooking.
-          </h1>
-        </div>
+        <div id="intro">
+          <div id="title-box">
+            <h1 id="title">
+              The Diversity of American Meat Washing Habits before Cooking.
+            </h1>
+            <p>
+              Do people wash meat before cooking? What do they think they are trying to accomplish by washing their meat? What are some of the main factors behind why americans wash or don't wash their meat?
+            </p>
+            <p>
+              YouTuber (and former public radio reporter) Adam Ragusea asked his viewers to answer a detailed survey about whether (and why, and how) they wash meat before cooking it. You can check out his video here. Our visualization uses the data collected by Ragusea and aims to serve as an exploratory experience to visualize different meat washing habits. We will be showcasing only the responses from American residents.
+            </p>
+          </div>
 
-        <div id="story1">
-          <p id="pieChartIntroText">Do you wash meat before cooking?</p>
-          <div id="buttons">
-            <button class="pieButton" type="button" onclick="showWashContent()">
+          <p id="user-title">Do you wash meat before cooking?</p>
+          <div id="user-buttons">
+            <button class="user-button" type="button" onclick="showWashContent()">
               Yup!
             </button>
             <button
-              class="pieButton"
-              type="button"
-              onclick="showNoWashContent()"
+                    class="user-button"
+                    type="button"
+                    onclick="showNoWashContent()"
             >
               Nope!
             </button>
           </div>
-          <p id="pieChartText"></p>
-
-          <p class="arrowP"><i class="arrow up" onclick="navigateIntro()"></i></p>
-          <div id="pieChart"></div>
-          <p class="arrowP"><i class="arrow down" onclick="navigateReasonsBubbleChart()"></i></p>
+          <p id="user-text">You are one of the 7 in 10 people who wash meat before cooking! Scroll down to view more details.</p>
+          <p class="arrowP"><i class="arrow down" onclick="navigatePieChart()"></i></p>
         </div>
 
-        <div id="story2" class="reasonsBubblePlot">
-          <p class="arrowP"><i class="arrow up" onclick="navigatePieChart()"></i></p>
-          <label class="switch">
-            <input type="checkbox" id="reasonToggle" />
-            <span class="slider round"></span>
-          </label>
-          <div id="reasonsNoWashBubblePlot"></div>
-          <div id="reasonsWashBubblePlot"></div>
-          <p class="arrowP"><i class="arrow down" onclick="navigateRemoveChart()"></i></p>
+<!--        <div id="proportion">-->
+<!--          <p class="arrowP"><i class="arrow up" onclick="navigateIntro()"></i></p>-->
+<!--          <div id="pieChart"></div>-->
+<!--          <p class="arrowP"><i class="arrow down" onclick="navigateReasonsBubbleChart()"></i></p>-->
+<!--        </div>-->
 
-        </div>
+<!--        <div id="story2" class="reasonsBubblePlot">-->
+<!--          <p class="arrowP"><i class="arrow up" onclick="navigatePieChart()"></i></p>-->
+<!--          <label class="switch">-->
+<!--            <input type="checkbox" id="reasonToggle" />-->
+<!--            <span class="slider round"></span>-->
+<!--          </label>-->
+<!--          <div id="reasonsNoWashBubblePlot"></div>-->
+<!--          <div id="reasonsWashBubblePlot"></div>-->
+<!--          <p class="arrowP"><i class="arrow down" onclick="navigateRemoveChart()"></i></p>-->
 
-        <p class="arrowP"><i class="arrow up" onclick="navigateReasonsBubbleChart()"></i></p>
-        <div id="teardropChart">
-          <h1>What People Want to Remove When They Wash Meats</h1>
-        </div>
-        <p class="arrowP"><i class="arrow down" onclick="navigateExploreChart()"></i></p>
-      </div>
+<!--        </div>-->
 
-      <p class="arrowP"><i class="arrow up" onclick="navigateRemoveChart()"></i></p>
-      <div id="explore">
-        <div id="intro">
-          <div id="intro-box">
-            <h1 id="explore-title">Explore the American Meat Washing Habits</h1>
-            <p id="para">
-              Do people wash meat before cooking? What do they think they are
-              trying to accomplish by washing their meat? What are some of the
-              main factors behind why people wash or don't wash their meat?
-              <br />
-              <br />
-              Our visualization aims to serve as an exploratory experience for
-              both food safety experts and curious individuals who want to learn
-              about the different meat washing habits of American citizens.
-              <br />
-              <br />
-              Start by interacting with various visualizations in order to see
-              for yourself the relationships between various factors such as
-              cooking habits, meat type, and demographics on higher or lower
-              meat washing tendencies!
-            </p>
-            <button class="button" type="button" onclick="clearFilters()">
-              Clear all filters
-            </button>
-          </div>
-        </div>
-        <div id="explore-vizzes">
-          <div id="top">
-            <p>Proportion of People that wash a Certain Meat Type</p>
-            <div id="liquidFillGauges"></div>
-          </div>
-          <div id="bottom">
-            <div id="middle" class="bottom-box">
-              <h3 id="habitsBubblePlotTitle">Food Safety Habits</h3>
-              <div id="habitsBubbleRadioFilter">
-                <input
-                  type="radio"
-                  id="washHabitAll"
-                  name="washHabit"
-                  value="all"
-                  checked
-                />
-                Show all data<br />
-                <input
-                  type="radio"
-                  id="washHabitWash"
-                  name="washHabit"
-                  value="wash"
-                />
-                Show only wash<br />
-                <input
-                  type="radio"
-                  id="washHabitNoWash"
-                  name="washHabit"
-                  value="noWash"
-                />
-                Show only don't wash<br />
-              </div>
-              <div id="habitsBubblePlot"></div>
-            </div>
+<!--        <p class="arrowP"><i class="arrow up" onclick="navigateReasonsBubbleChart()"></i></p>-->
+<!--        <div id="teardropChart">-->
+<!--          <h1>What People Want to Remove When They Wash Meats</h1>-->
+<!--        </div>-->
+<!--        <p class="arrowP"><i class="arrow down" onclick="navigateExploreChart()"></i></p>-->
+<!--      </div>-->
 
-            <div id="right" class="bottom-box">
-              <div id="householdSizeBarChart"></div>
-              <div id="foodSafetyBarChart"></div>
-            </div>
-          </div>
-        </div>
+<!--      <p class="arrowP"><i class="arrow up" onclick="navigateRemoveChart()"></i></p>-->
+<!--      <div id="explore">-->
+<!--        <div id="text">-->
+<!--          <div id="intro-box">-->
+<!--            <h1 id="explore-title">Explore the American Meat Washing Habits</h1>-->
+<!--            <p id="para">-->
+<!--              Do people wash meat before cooking? What do they think they are-->
+<!--              trying to accomplish by washing their meat? What are some of the-->
+<!--              main factors behind why people wash or don't wash their meat?-->
+<!--              <br />-->
+<!--              <br />-->
+<!--              Our visualization aims to serve as an exploratory experience for-->
+<!--              both food safety experts and curious individuals who want to learn-->
+<!--              about the different meat washing habits of American citizens.-->
+<!--              <br />-->
+<!--              <br />-->
+<!--              Start by interacting with various visualizations in order to see-->
+<!--              for yourself the relationships between various factors such as-->
+<!--              cooking habits, meat type, and demographics on higher or lower-->
+<!--              meat washing tendencies!-->
+<!--            </p>-->
+<!--            <button class="button" type="button" onclick="clearFilters()">-->
+<!--              Clear all filters-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div id="explore-vizzes">-->
+<!--          <div id="top">-->
+<!--            <p>Proportion of People that wash a Certain Meat Type</p>-->
+<!--            <div id="liquidFillGauges"></div>-->
+<!--          </div>-->
+<!--          <div id="bottom">-->
+<!--            <div id="middle" class="bottom-box">-->
+<!--              <h3 id="habitsBubblePlotTitle">Food Safety Habits</h3>-->
+<!--              <div id="habitsBubbleRadioFilter">-->
+<!--                <input-->
+<!--                  type="radio"-->
+<!--                  id="washHabitAll"-->
+<!--                  name="washHabit"-->
+<!--                  value="all"-->
+<!--                  checked-->
+<!--                />-->
+<!--                Show all data<br />-->
+<!--                <input-->
+<!--                  type="radio"-->
+<!--                  id="washHabitWash"-->
+<!--                  name="washHabit"-->
+<!--                  value="wash"-->
+<!--                />-->
+<!--                Show only wash<br />-->
+<!--                <input-->
+<!--                  type="radio"-->
+<!--                  id="washHabitNoWash"-->
+<!--                  name="washHabit"-->
+<!--                  value="noWash"-->
+<!--                />-->
+<!--                Show only don't wash<br />-->
+<!--              </div>-->
+<!--              <div id="habitsBubblePlot"></div>-->
+<!--            </div>-->
+
+<!--            <div id="right" class="bottom-box">-->
+<!--              <div id="householdSizeBarChart"></div>-->
+<!--              <div id="foodSafetyBarChart"></div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
     </div>
 
