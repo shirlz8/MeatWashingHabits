@@ -9,6 +9,11 @@ window.addEventListener('resize', () => {
   document.documentElement.style.setProperty('--vh', `${vh}px`);
 });
 
+window.onload = function () {
+  currentPage = '#intro';
+  window.location.hash = '#intro';
+};
+
 // Variables to store selected filters
 let meatTypeFilter = 'Wash_Any';
 let householdSizeFilter = 0;
@@ -385,7 +390,7 @@ function navigateDown() {
       d3.selectAll('#reasons-no-wash-bubble-plot').style('display', 'none');
       d3.selectAll('#reasons-wash-bubble-plot').style('display', 'flex');
       document.getElementById('reasonToggle').checked = false;
-      
+
       break;
     case '#reasons':
       currentPage = '#remove';
@@ -465,6 +470,4 @@ function clearFilters() {
   liquidSheepGoatChart.updateVis();
   liquidFishChart.updateVis();
   liquidWashAnyChart.updateVis();
-
-
 }
