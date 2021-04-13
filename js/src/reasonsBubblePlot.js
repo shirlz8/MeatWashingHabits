@@ -148,16 +148,15 @@ class ReasonsBubblePlot {
             .data(vis.reasonsData)
             .join('text')
             .attr('class', 'reason-num-label')
-            .attr('y', vis.height)
+            .attr('y', vis.height + 20)
             .attr('x', (d, i) => {
                 let pos = vis.circlePositions[i];
                 return vis.config.margin.left + pos;
             })
-            .attr('transform', (d) => `translate(0, ${-vis.radiusScale(d[1])})`)
             .style('text-anchor', 'middle')
-            .style('font-size', '11px')
-            .style('fill', 'white')
-            .text((d) => d[1]);
+            .style('font-size', '16px')
+            .style('fill', 'Black')
+            .text((d) => Math.round(d[1] * 10) / 10);
 
         // line labels between the circles and the text
         vis.chart
