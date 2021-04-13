@@ -191,12 +191,28 @@ class ReasonsBubblePlot {
                 return vis.config.margin.left + pos;
             })
             .attr('transform', (d,i) => {
-                if (i < 2) {
-                    return `translate(0, ${6*-vis.radiusScale(d[1])})`
-                } else if (i == 4) {
-                    return `translate(0, ${7.5*-vis.radiusScale(d[1])})`
+                if (vis.type === "wash"){
+                    if (i < 2) {
+                        return `translate(0, ${6.2*-vis.radiusScale(d[1])})`
+                    } else if (i == 4) {
+                        return `translate(0, ${6.5*-vis.radiusScale(d[1])})`
+                    }
+                    else if (i == 5) {
+                        return `translate(0, ${7.5*-vis.radiusScale(d[1])})`
+                    }
+                    else if (i == 6) {
+                        return `translate(0, ${7*-vis.radiusScale(d[1])})`
+                    }
+                    return `translate(0, ${6.5*-vis.radiusScale(d[1])})`
                 }
-                return `translate(0, ${6.5*-vis.radiusScale(d[1])})`
+                else {
+                    if (i < 2) {
+                        return `translate(0, ${6*-vis.radiusScale(d[1])})`
+                    } else if (i == 4) {
+                        return `translate(0, ${7*-vis.radiusScale(d[1])})`
+                    }
+                    return `translate(0, ${6.5*-vis.radiusScale(d[1])})`
+                }
             })
             .style('text-anchor', 'middle')
             .style('font-size', '14px')
