@@ -6,8 +6,9 @@
 }
 
 #habitsBubbleRadioFilter {
-  position: absolute;
-  transform: translate(620px, 5px);
+  position: relative;
+  font-size: 14px;
+  transform: translate(635px, -475px);
 }
 
 #washHabitAll {

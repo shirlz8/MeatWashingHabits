@@ -3,7 +3,7 @@ class HabitsBubblePlot {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 800,
-      containerHeight: 500,
+      containerHeight: 480,
       margin: {
         top: 5,
         right: 25,
@@ -150,7 +150,7 @@ class HabitsBubblePlot {
     vis.xAxisG = vis.chartClip
       .append('g')
       .attr('class', 'axis bubble-x-axis')
-      .attr('transform', 'translate(0,350)')
+      .attr('transform', 'translate(0,330)')
       .style('font-size', '11px');
 
     vis.yAxisG = vis.chartClip.append('g')
@@ -170,7 +170,7 @@ class HabitsBubblePlot {
       .append('g')
       .attr(
         'transform',
-        `translate(${-vis.config.yLabelWidth}, ${vis.height / 2 -50})`,
+        `translate(${-vis.config.yLabelWidth}, ${vis.height / 2 - 50})`,
       )
       .append('text')
       .attr('class', 'axis-label')
