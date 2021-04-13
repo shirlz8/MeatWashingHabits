@@ -36,7 +36,7 @@ h3 {
 }
 
 #intro {
-  /* display: flex; */
+  display: flex;
   flex-direction: column;
   text-align: center;
   justify-content: center;
@@ -73,7 +73,7 @@ h3 {
 #title-box {
   justify-content: center;
   text-align: center;
-  margin: 50px;
+  margin: 0px 50px;
 }
 
 #title {
@@ -94,6 +94,10 @@ h3 {
   width: 125px;
 }
 
+.button :focus{
+  outline: none;
+}
+
 .button-text {
   color: white;
   font-size: 18px;
@@ -106,7 +110,7 @@ h3 {
   height: 100px;
   width: 100px;
   background-color: #008eff;
-  margin: 0 50px;
+  margin: 0px 50px;
 }
 
 .user-button:focus {
@@ -116,12 +120,14 @@ h3 {
 #user-title {
   font-size: 40px;
   font-weight: 500;
+  margin: 0px 50px 50px 50px;
+
 }
 
 #user-text {
   visibility: hidden;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* page 2 - pie chart */
@@ -221,7 +227,7 @@ h3 {
 #top {
   display: flex;
   margin: 15px;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 #liquid-container {
