@@ -2,18 +2,18 @@ class HabitsBubblePlot {
   constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: 600,
+      containerWidth: 800,
       containerHeight: 500,
       margin: {
-        top: 50,
+        top: 5,
         right: 25,
         bottom: 30,
         left: 110
       },
-      legendWidth: 170,
-      legendHeight: 57,
+      legendWidth: 160,
+      legendHeight: 150,
       legendRangeThreshold: 5,
-      yAxisLabelWidth: 80,
+      yAxisLabelWidth: 100,
       yLabelWidth: 90,
     };
     this.data = _data;
@@ -113,7 +113,7 @@ class HabitsBubblePlot {
       .append('clipPath')
       .attr('id', 'chart-mask')
       .append('rect')
-      .attr('width', vis.config.containerWidth + vis.config.yAxisLabelWidth)
+      .attr('width', vis.config.containerWidth - 85)
       .attr('x', -vis.config.yAxisLabelWidth - vis.config.margin.left)
       .attr('y', vis.config.margin.top)
       .attr('height', vis.config.containerHeight);
@@ -124,12 +124,12 @@ class HabitsBubblePlot {
     // Initialize main scales
     vis.xScale = d3
       .scalePoint()
-      .range([30, vis.width - 20])
+      .range([60, vis.width - 220])
       .domain(vis.frequencyLevel);
 
     vis.yScale = d3
       .scalePoint()
-      .range([100, vis.height - vis.config.legendHeight])
+      .range([50, vis.height - vis.config.legendHeight])
       .domain(vis.listOfHabits);
 
     // Initialize additional scales
@@ -150,23 +150,27 @@ class HabitsBubblePlot {
     vis.xAxisG = vis.chartClip
       .append('g')
       .attr('class', 'axis bubble-x-axis')
-      .attr('transform', `translate(0,${vis.height})`);
+      .attr('transform', 'translate(0,350)')
+      .style('font-size', '11px');
 
-    vis.yAxisG = vis.chartClip.append('g').attr('class', 'axis bubble-y-axis');
+    vis.yAxisG = vis.chartClip.append('g')
+        .attr('class', 'axis bubble-y-axis')
+        .attr('transform', 'translate(30,0)')
+        .style('font-size', '11px');
 
     // Create a group for the legend
     vis.legend = vis.svg
       .append('g')
       .attr('width', vis.config.legendWidth)
       .attr('height', vis.config.legendHeight)
-      .attr('transform', 'translate(-175,0)');
+      .attr('transform', `translate(${vis.width - 20},0)`);
 
     // Add axis titles
     vis.chartClip
       .append('g')
       .attr(
         'transform',
-        `translate(${-vis.config.yLabelWidth}, ${vis.height / 2})`,
+        `translate(${-vis.config.yLabelWidth}, ${vis.height / 2 -50})`,
       )
       .append('text')
       .attr('class', 'axis-label')
@@ -178,7 +182,7 @@ class HabitsBubblePlot {
       .append('g')
       .attr(
         'transform',
-        `translate(${vis.width / 2}, ${vis.config.containerHeight - 55})`,
+        `translate(${vis.width / 2-100}, ${vis.config.containerHeight - 120})`,
       )
       .append('text')
       .attr('class', 'axis-label')
@@ -235,8 +239,10 @@ class HabitsBubblePlot {
 
       vis.dataRange = vis.maxCount - vis.minCount;
 
-      // let numOfCircles = (vis.dataRange > vis.config.legendRangeThreshold) ? 4 : 2;
       vis.radiusLegendValues = vis.calculateRadiusLegendValues();
+      vis.circlePositions = vis.calculateCirclePosition(vis.radiusLegendValues, 5);
+      console.log(vis.radiusLegendValues)
+      console.log(vis.circlePositions)
 
       const countExtent = [vis.minCount, vis.maxCount];
       vis.radiusScale.domain(countExtent);
@@ -333,20 +339,22 @@ class HabitsBubblePlot {
         .data(vis.radiusLegendValues, (d) => d)
         .join('circle')
         .attr('class', 'legend legend-element')
-        .attr('r', (d) => vis.radiusScale(d))
-        .attr('cy', 55)
-        .attr('cx', (d, i) => {
+        .attr('r', (d) => {
+          console.log(vis.radiusScale(d))
+          return vis.radiusScale(d)})
+        .attr('cx', 0)
+        .attr('cy', (d, i) => {
           const r = vis.radiusScale(d);
-          return vis.width / 2 + i * (30 + r);
+          return 140 + i * (20 + r);
         })
         .attr('transform', () => {
           if (vis.dataRange < vis.config.legendRangeThreshold) {
             if (vis.dataRange === 0) {
-              return 'translate(200,1)';
+              return 'translate(80,5)';
             }
-            return 'translate(150,1)';
+            return 'translate(80,5)';
           }
-          return 'translate(80,1)';
+          return 'translate(80,5)';
         })
         .style('stroke', 'black')
         .style('stroke-width', '1px')
@@ -357,30 +365,30 @@ class HabitsBubblePlot {
         .data(vis.radiusLegendValues, (d) => d)
         .join('text')
         .attr('class', 'legend legend-label')
-        .attr('y', (d) => 55 - vis.radiusScale(d) - 2)
-        .attr('x', (d, i) => {
+        .attr('x', (d) => 55 - vis.radiusScale(d) - 2)
+        .attr('y', (d, i) => {
           const r = vis.radiusScale(d);
-          return vis.width / 2 + i * (30 + r);
+          return 140 + i * (20 + r);
         })
         .style('text-anchor', 'middle')
         .style('font-size', '12px')
-        .attr('transform', () => {
-          if (vis.dataRange < vis.config.legendRangeThreshold) {
-            if (vis.dataRange === 0) {
-              return 'translate(200,1)';
+          .attr('transform', () => {
+            if (vis.dataRange < vis.config.legendRangeThreshold) {
+              if (vis.dataRange === 0) {
+                return 'translate(0,5)';
+              }
+              return 'translate(0,5)';
             }
-            return 'translate(150,1)';
-          }
-          return 'translate(80,1)';
-        })
+            return 'translate(0,5)';
+          })
         .text((d) => Math.round(d));
 
       // draw the text label for legend
       vis.legend
         .append('text')
         .attr('class', 'legend legend-label')
-        .attr('x', vis.width / 2 - 30)
-        .attr('y', 25)
+        .attr('x', 25)
+        .attr('y', 120)
         .style('font-size', '14px')
         .text('Counts Scale');
 
@@ -389,6 +397,29 @@ class HabitsBubblePlot {
     }
   }
 
+  calculateCirclePosition(scoreValues, distBetweenCircles) {
+    const vis = this;
+    const positionValues = [];
+    console.log(scoreValues)
+    const radiusValues = scoreValues.map(d => vis.radiusScale(d));
+    console.log(radiusValues)
+    let prevNum = 0;
+    let currNum = 0;
+
+    for (let i = 0; i < radiusValues.length; i++) {
+      if (i > 0) {
+        currNum = prevNum + radiusValues[i-1] + radiusValues[i] + distBetweenCircles;
+      } else {
+        currNum = radiusValues[0];
+      }
+      positionValues.push(currNum);
+      prevNum = currNum;
+    }
+    return positionValues;
+  }
+
+
+  // find the data values for the radius legend
   calculateRadiusLegendValues() {
     const vis = this;
 
