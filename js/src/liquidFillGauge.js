@@ -7,10 +7,10 @@ class LiquidFillGauge {
   constructor(_config, _dispatcher, _data, meatType, svgString) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: 150,
+      containerWidth: 160,
       containerHeight: 175,
       margin: {
-        x: -15,
+        x: -10,
         y: -10,
       },
     };
