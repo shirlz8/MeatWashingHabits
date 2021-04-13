@@ -295,7 +295,7 @@ class FoodSafetyBarChart {
         .append('rect')
         .attr('x', 0)
         .attr('y', 0)
-        .attr('width', 130)
+        .attr('width', 120)
         .attr('height', 70)
         .style('fill', '#edf7ff');
 
