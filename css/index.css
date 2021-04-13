@@ -7,10 +7,17 @@ body {
   font-family: 'Roboto', sans-serif;
   overflow: hidden;
   scroll-behavior: smooth;
+  background-color: #edf7ff;
+  font-size: 18px;
 }
 
 h3 {
   margin: 0;
+}
+
+.screen {
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
 }
 
 .container {
@@ -19,7 +26,6 @@ h3 {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  background-color: #edf7ff;
 }
 
 /* story vis */
@@ -34,6 +40,8 @@ h3 {
   display: flex;
   flex-direction: column;
   text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .arrow-element {
@@ -66,7 +74,7 @@ h3 {
 #title-box {
   justify-content: center;
   text-align: center;
-  margin: 50px;
+  margin: 0px 50px;
 }
 
 #title {
@@ -79,37 +87,59 @@ h3 {
   justify-content: center;
 }
 
+.button-text {
+  color: white;
+  font-size: 16px;
+}
+
 .button {
-  border-radius: 8px;
-  box-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  height: 20px;
-  width: 125px;
+  height: 30px;
+  width: 145px;
+  background-color:  #999999;
+}
+
+.button:focus{
+  outline: 0;
+}
+
+.user-button-text {
+  color: white;
+  font-size: 18px;
 }
 
 .user-button {
-  border-radius: 50%;
+  border-radius: 30px;
   box-shadow: 1px 1px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  height: 100px;
+  height: 50px;
   width: 100px;
-  background-color: lightblue;
-  margin: 0 50px;
+  background-color: #999999;
+  margin: 0px 50px;
 }
 
-.user-button:focus {
+.yes:focus {
+  background-color: #4E81BE;
+  outline: 0;
+}
+
+.no:focus {
+  background-color: #C1504F;
   outline: 0;
 }
 
 #user-title {
   font-size: 40px;
-  font-weight: 500;
+  font-weight: 600;
+  margin: 0px 50px 30px 50px;
 }
 
 #user-text {
   visibility: hidden;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* page 2 - pie chart */
@@ -119,7 +149,7 @@ h3 {
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  min-height: 720px;
+  /* min-height: 720px; */
 }
 
 .description {
@@ -142,7 +172,6 @@ h3 {
   display: flex;
   align-items: center;
   flex-direction: row;
-  min-height: 720px;
 }
 
 #bubble-plot-container {
@@ -190,6 +219,7 @@ h3 {
 #explore {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 #explore-vis {
@@ -202,14 +232,14 @@ h3 {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-right: 25px;
+  margin-right: 0px;
 }
 
 /* page 5 - explore vis - meats */
 #top {
   display: flex;
   margin: 15px;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 #liquid-container {

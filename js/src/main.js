@@ -1,3 +1,14 @@
+// First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+let vh = window.innerHeight * 0.01;
+// Then we set the value in the --vh custom property to the root of the document
+document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+window.addEventListener('resize', () => {
+  // We execute the same script as before
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+});
+
 // Variables to store selected filters
 let meatTypeFilter = 'Wash_Any';
 let householdSizeFilter = 0;
@@ -348,14 +359,14 @@ function showNoWashContent() {
 // Dynamically set text on button click
 function setTextWash() {
   d3.selectAll('#user-text').text(
-    'You are one of the 3 in 10 people who wash meat before cooking! Scroll down to view more details.'
+    'You are one of the 3 in 10 people who wash meat before cooking! Click the arrow to continue.'
   );
   d3.selectAll('#user-text').style('visibility', 'visible');
 }
 
 function setTextNoWash() {
   d3.selectAll('#user-text').text(
-    "You are one of the 7 in 10 people who don't wash meat before cooking! Scroll down to view more details."
+    "You are one of the 7 in 10 people who don't wash meat before cooking! Click the arrow to continue."
   );
   d3.selectAll('#user-text').style('visibility', 'visible');
 }
@@ -372,6 +383,9 @@ function navigateDown() {
       currentPage = '#reasons';
       window.location.hash = '#reasons';
       d3.selectAll('#reasons-no-wash-bubble-plot').style('display', 'none');
+      d3.selectAll('#reasons-wash-bubble-plot').style('display', 'flex');
+      document.getElementById('reasonToggle').checked = false;
+      
       break;
     case '#reasons':
       currentPage = '#remove';
@@ -418,6 +432,9 @@ function navigateUp() {
 
 // Clear all filters button
 function clearFilters() {
+  d3.selectAll(`.highlight${meatTypeFilter}`).attr('opacity', 0);
+  d3.selectAll(`.highlightWash_Any`).attr('opacity', 100);
+
   meatTypeFilter = 'Wash_Any';
   householdSizeFilter = 0;
   foodSafetyImportanceFilter = 0;
@@ -448,4 +465,6 @@ function clearFilters() {
   liquidSheepGoatChart.updateVis();
   liquidFishChart.updateVis();
   liquidWashAnyChart.updateVis();
+
+
 }
