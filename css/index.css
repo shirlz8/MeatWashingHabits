@@ -134,7 +134,6 @@ h3 {
   font-size: 40px;
   font-weight: 600;
   margin: 0px 50px 30px 50px;
-
 }
 
 #user-text {
@@ -233,7 +232,7 @@ h3 {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-right: 25px;
+  margin-right: 0px;
 }
 
 /* page 5 - explore vis - meats */

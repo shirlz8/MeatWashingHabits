@@ -8,10 +8,10 @@ class LiquidFillGauge {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 160,
-      containerHeight: 175,
+      containerHeight: 200,
       margin: {
         x: -10,
-        y: -10,
+        y: 5,
       },
     };
 
@@ -131,7 +131,8 @@ class LiquidFillGauge {
       })
       .style('fill', 'grey')
       .style('stroke', 'grey')
-      .style('stroke-width', '20px');
+      .style('stroke-width', '20px')
+      .style('z-index', 2);
 
     // this path is the outline of the svg shape
     vis.gauge
@@ -167,7 +168,7 @@ class LiquidFillGauge {
       .attr('fill', 'black')
       .style('font-size', '16px')
       .text(vis.meatName)
-      .attr('transform', 'translate(70,150)');
+      .attr('transform', 'translate(75,0)');
 
     // Get bounding box
     vis.BBox = d3.select('#outline').node().getBBox();
@@ -191,7 +192,7 @@ class LiquidFillGauge {
       .attr('fill', 'black')
       .style('font-size', '16px')
       .text(`${vis.percent}%`)
-      .attr('transform', 'translate(100,180)');
+      .attr('transform', 'translate(75,170)');
 
     vis.waveHeightScale = d3
       .scaleLinear()

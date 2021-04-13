@@ -3,7 +3,6 @@
   justify-content: center;
   align-items: center;
   background-color: #d4f0ff;
-  height: 100vh;
   flex-direction: column;
 }
 
@@ -11,7 +10,8 @@
   background-image: url('../waterdroplet.png');
   background-repeat: no-repeat;
   background-size: contain;
-  background-position: center;
+  /* background-position: center; */
+  background-position: 80px;
 }
 
 #teardrop-tooltip-count {

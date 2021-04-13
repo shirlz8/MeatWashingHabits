@@ -4,13 +4,13 @@ class TeardropChart {
       parentElement: _config.parentElement,
       containerWidth: 550,
       containerHeight: 500,
-      legendPositionX: 410,
+      legendPositionX: 400,
       legendPositionY: 10,
       margin: {
         top: 220,
         right: 25,
         bottom: 30,
-        left: 150,
+        left: 115,
       },
     };
     this.data = _data;
@@ -22,12 +22,14 @@ class TeardropChart {
   initVis() {
     const vis = this;
 
-    vis.width = vis.config.containerWidth
-      - vis.config.margin.left
-      - vis.config.margin.right;
-    vis.height = vis.config.containerHeight
-      - vis.config.margin.top
-      - vis.config.margin.bottom;
+    vis.width =
+      vis.config.containerWidth -
+      vis.config.margin.left -
+      vis.config.margin.right;
+    vis.height =
+      vis.config.containerHeight -
+      vis.config.margin.top -
+      vis.config.margin.bottom;
 
     vis.svg = d3
       .select(vis.config.parentElement)
@@ -40,7 +42,7 @@ class TeardropChart {
       .append('g')
       .attr(
         'transform',
-        `translate(${vis.config.margin.left},${vis.config.margin.top})`,
+        `translate(${vis.config.margin.left},${vis.config.margin.top})`
       );
 
     vis.updateVis();
@@ -58,7 +60,7 @@ class TeardropChart {
       .append('g')
       .attr(
         'transform',
-        `translate(${vis.config.legendPositionX}, ${vis.config.legendPositionY})`,
+        `translate(${vis.config.legendPositionX}, ${vis.config.legendPositionY})`
       );
 
     vis.colorScale = d3
@@ -132,9 +134,10 @@ class TeardropChart {
   }
 
   generateChart(data, vis) {
-    const bubble = (data2) => d3.pack().size([vis.width, vis.height]).padding(2)(
-      d3.hierarchy({ children: data2 }).sum((d) => d.count),
-    );
+    const bubble = (data2) =>
+      d3.pack().size([vis.width, vis.height]).padding(2)(
+        d3.hierarchy({ children: data2 }).sum((d) => d.count)
+      );
 
     const root = bubble(data);
 
@@ -157,11 +160,10 @@ class TeardropChart {
           .select('#tooltip')
           .style('display', 'block')
           .style('left', `${event.pageX}px`)
-          .style('top', `${event.pageY}px`)
-          .html(`
+          .style('top', `${event.pageY}px`).html(`
               <div class="tooltip-title">${vis.properNaming(
-    d.data.removeObject,
-  )}</div>
+                d.data.removeObject
+              )}</div>
             `);
       })
       .on('mouseout', function () {
@@ -212,7 +214,7 @@ class TeardropChart {
       .text((d) => vis.properNaming(d))
       .attr('dy', '1em')
       .attr('x', '1.5em')
-      .attr('font-size', '12px')
+      .attr('font-size', '14px')
       .attr('y', (d, i) => 30 * i - 7);
   }
 }
