@@ -350,7 +350,7 @@ class HabitsBubblePlot {
         .attr('transform', () => {
           if (vis.dataRange < vis.config.legendRangeThreshold) {
             if (vis.dataRange === 0) {
-              return 'translate(80,5)';
+              return 'translate(80,15)';
             }
             return 'translate(80,5)';
           }
@@ -375,7 +375,7 @@ class HabitsBubblePlot {
           .attr('transform', () => {
             if (vis.dataRange < vis.config.legendRangeThreshold) {
               if (vis.dataRange === 0) {
-                return 'translate(0,5)';
+                return 'translate(0,15)';
               }
               return 'translate(0,5)';
             }
