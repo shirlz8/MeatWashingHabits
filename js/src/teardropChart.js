@@ -176,6 +176,7 @@ class TeardropChart {
       .attr('dy', '0.5em')
       .attr('font-size', '12px')
       .style('text-anchor', 'middle')
+      .attr('fill', 'white')
       .text((d) => d.data.count);
 
     node
