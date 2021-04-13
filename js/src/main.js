@@ -359,14 +359,14 @@ function showNoWashContent() {
 // Dynamically set text on button click
 function setTextWash() {
   d3.selectAll('#user-text').text(
-    'You are one of the 3 in 10 people who wash meat before cooking! Click the arrows to continue.'
+    'You are one of the 3 in 10 people who wash meat before cooking! Click the arrow to continue.'
   );
   d3.selectAll('#user-text').style('visibility', 'visible');
 }
 
 function setTextNoWash() {
   d3.selectAll('#user-text').text(
-    "You are one of the 7 in 10 people who don't wash meat before cooking! Click the arrows to continue."
+    "You are one of the 7 in 10 people who don't wash meat before cooking! Click the arrow to continue."
   );
   d3.selectAll('#user-text').style('visibility', 'visible');
 }
@@ -432,6 +432,9 @@ function navigateUp() {
 
 // Clear all filters button
 function clearFilters() {
+  d3.selectAll(`.highlight${meatTypeFilter}`).attr('opacity', 0);
+  d3.selectAll(`.highlightWash_Any`).attr('opacity', 100);
+
   meatTypeFilter = 'Wash_Any';
   householdSizeFilter = 0;
   foodSafetyImportanceFilter = 0;
@@ -462,4 +465,6 @@ function clearFilters() {
   liquidSheepGoatChart.updateVis();
   liquidFishChart.updateVis();
   liquidWashAnyChart.updateVis();
+
+
 }

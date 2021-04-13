@@ -51,23 +51,23 @@
           <p id="user-title">Do you wash meat before cooking?</p>
           <div id="user-buttons">
             <button
-              class="user-button"
+              class="user-button yes"
               type="button"
               onclick="showWashContent()"
             >
-              <text class="button-text">Yes</text>
+              <text class="user-button-text">Yes</text>
             </button>
             <button
-              class="user-button"
+              class="user-button no"
               type="button"
               onclick="showNoWashContent()"
             >
-              <text class="button-text">No</text>
+              <text class="user-button-text">No</text>
             </button>
           </div>
           <p id="user-text">
             You are one of the 7 in 10 people who wash meat before cooking!
-            Click the arrows to continue.
+            Click the arrow to continue.
           </p>
           <p class="arrow-element">
             <i class="arrow down" id="arrow-down" onclick="navigateDown()"></i>
@@ -130,11 +130,10 @@
         <div id="top">
           <div id="explore-text">
             <p>
-              Start by interacting with various visualizations in order to see
-              for yourself the relationships between various factors!
+              Start by interacting with the visualizations to see the relationships between various factors!
             </p>
             <button class="button" type="button" onclick="clearFilters()">
-              Clear all filters
+              <text class="button-text">Clear all filters</text>
             </button>
           </div>
 
