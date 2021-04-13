@@ -383,6 +383,9 @@ function navigateDown() {
       currentPage = '#reasons';
       window.location.hash = '#reasons';
       d3.selectAll('#reasons-no-wash-bubble-plot').style('display', 'none');
+      d3.selectAll('#reasons-wash-bubble-plot').style('display', 'flex');
+      document.getElementById('reasonToggle').checked = false;
+      
       break;
     case '#reasons':
       currentPage = '#remove';
