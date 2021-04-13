@@ -8,12 +8,12 @@ class FoodSafetyBarChart {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 350,
-      containerHeight: 240,
+      containerHeight: 200,
       legendPosition: 50,
       margin: {
-        top: 80,
+        top: 17,
         right: 15,
-        bottom: 40,
+        bottom: 50,
         left: 45,
       },
     };
@@ -61,48 +61,11 @@ class FoodSafetyBarChart {
 
     vis.title = vis.svg // Add chart title
       .append('text')
-      .attr('transform', `translate(${vis.config.containerWidth / 2},${30})`)
+      .attr('transform', `translate(${vis.config.containerWidth / 2},15)`)
       .attr('class', 'chart-title')
       .attr('text-anchor', 'middle')
       .text('Food Safe Importance Washing Trend');
 
-    // add legend
-    vis.legend = vis.svg
-      .append('g')
-      .attr(
-        'transform',
-        `translate(${vis.config.legendPosition}, ${vis.config.legendPosition})`,
-      );
-
-    vis.legend
-      .append('rect')
-      .attr('x', 100)
-      .attr('y', 0)
-      .attr('width', 20)
-      .attr('height', 20)
-      .style('fill', '#C1504F');
-
-    vis.legend
-      .append('rect')
-      .attr('x', 225)
-      .attr('y', 0)
-      .attr('width', 20)
-      .attr('height', 20)
-      .style('fill', '#4E81BE');
-
-    vis.legend
-      .append('text')
-      .attr('x', 125)
-      .attr('y', 0)
-      .attr('dy', '1em')
-      .text('Do Not Wash');
-
-    vis.legend
-      .append('text')
-      .attr('x', 250)
-      .attr('y', 0)
-      .attr('dy', '1em')
-      .text('Wash');
 
     // Append group element that will contain our actual chart
     // and position it according to the given margin config
@@ -145,7 +108,7 @@ class FoodSafetyBarChart {
       .append('g')
       .attr(
         'transform',
-        `translate(${vis.width / 2}, ${vis.config.containerHeight - 80})`,
+        `translate(${vis.width / 2}, ${vis.config.containerHeight - 25})`,
       )
       .append('text')
       .attr('class', 'axis-label')
@@ -224,6 +187,8 @@ class FoodSafetyBarChart {
    */
   renderVis() {
     const vis = this;
+    this.renderLegend();
+
     vis.tooltipPadding = 10;
 
     const bars = vis.chart
@@ -316,6 +281,54 @@ class FoodSafetyBarChart {
       .call(vis.wrap, vis.xScale.bandwidth());
 
     vis.yAxisG.call(vis.yAxis).call((g) => g.select('.domain').remove());
+  }
+
+  renderLegend() {
+    const vis = this;
+
+    // add legend
+    vis.legend = vis.chart
+        .append('g')
+        .attr('transform', 'translate(10, 0)');
+
+    vis.legend
+        .append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', 130)
+        .attr('height', 70)
+        .style('fill', '#edf7ff');
+
+    vis.legend
+        .append('rect')
+        .attr('x', 5)
+        .attr('y', 10)
+        .attr('width', 20)
+        .attr('height', 20)
+        .style('fill', '#4E81BE');
+
+    vis.legend
+        .append('rect')
+        .attr('x', 5)
+        .attr('y', 40)
+        .attr('width', 20)
+        .attr('height', 20)
+        .style('fill', '#C1504F');
+
+    vis.legend
+        .append('text')
+        .attr('x', 30)
+        .attr('y', 25)
+        .style('font-size', '14px')
+        .text('Do Not Wash');
+
+    vis.legend
+        .append('text')
+        .attr('x', 30)
+        .attr('y', 55)
+        .style('font-size', '14px')
+        .text('Wash');
+
   }
 
   // Function to wrap X axis labs

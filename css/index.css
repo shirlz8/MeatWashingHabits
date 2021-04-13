@@ -238,7 +238,7 @@ h3 {
 /* page 5 - explore vis - meats */
 #top {
   display: flex;
-  margin: 15px;
+  margin: 15px 0 0 0;
   font-size: 16px;
 }
 

@@ -8,10 +8,10 @@ class HouseholdSizeBarChart {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 350,
-      containerHeight: 240,
+      containerHeight: 200,
       legendPosition: 50,
       margin: {
-        top: 60,
+        top: 17,
         right: 15,
         bottom: 40,
         left: 45,
@@ -46,48 +46,10 @@ class HouseholdSizeBarChart {
 
     vis.title = vis.svg // Add chart title
       .append('text')
-      .attr('transform', `translate(${vis.config.containerWidth / 2},${30})`)
+      .attr('transform', `translate(${vis.config.containerWidth / 2},15)`)
       .attr('class', 'chart-title')
       .attr('text-anchor', 'middle')
       .text('Household Size Washing Trend');
-
-    // add legend
-    vis.legend = vis.svg
-      .append('g')
-      .attr(
-        'transform',
-        `translate(${vis.config.legendPosition}, ${vis.config.legendPosition})`,
-      );
-
-    vis.legend
-      .append('rect')
-      .attr('x', 100)
-      .attr('y', 0)
-      .attr('width', 20)
-      .attr('height', 20)
-      .style('fill', '#C1504F');
-
-    vis.legend
-      .append('rect')
-      .attr('x', 225)
-      .attr('y', 0)
-      .attr('width', 20)
-      .attr('height', 20)
-      .style('fill', '#4E81BE');
-
-    vis.legend
-      .append('text')
-      .attr('x', 125)
-      .attr('y', 0)
-      .attr('dy', '1em')
-      .text('Do Not Wash');
-
-    vis.legend
-      .append('text')
-      .attr('x', 250)
-      .attr('y', 0)
-      .attr('dy', '1em')
-      .text('Wash');
 
     // Append group element that will contain our actual chart
     // and position it according to the given margin config
@@ -122,18 +84,18 @@ class HouseholdSizeBarChart {
     // Add axis titles
     vis.chart
       .append('g')
-      .attr('transform', `translate(${-34}, ${vis.height / 2})`)
+      .attr('transform', `translate(-34, ${vis.height / 2})`)
       .append('text')
       .attr('class', 'axis-label')
       .attr('text-anchor', 'middle')
       .attr('transform', 'rotate(-90)')
-      .text('# of repondants');
+      .text('# of respondents');
 
     vis.chart
       .append('g')
       .attr(
         'transform',
-        `translate(${vis.width / 2}, ${vis.config.containerHeight - 60})`,
+        `translate(${vis.width / 2}, ${vis.config.containerHeight - 25})`,
       )
       .append('text')
       .attr('class', 'axis-label')
@@ -212,6 +174,7 @@ class HouseholdSizeBarChart {
    */
   renderVis() {
     const vis = this;
+    this.renderLegend();
 
     const bars = vis.chart
       .selectAll('.bar_g')
@@ -295,5 +258,53 @@ class HouseholdSizeBarChart {
     vis.xAxisG.call(vis.xAxis).call((g) => g.select('.domain').remove());
 
     vis.yAxisG.call(vis.yAxis).call((g) => g.select('.domain').remove());
+  }
+
+  renderLegend() {
+    const vis = this;
+
+    // add legend
+    vis.legend = vis.chart
+        .append('g')
+        .attr('transform', 'translate(160, 1)',);
+
+    vis.legend
+        .append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', 130)
+        .attr('height', 70)
+        .style('fill', '#edf7ff');
+
+    vis.legend
+        .append('rect')
+        .attr('x', 5)
+        .attr('y', 10)
+        .attr('width', 20)
+        .attr('height', 20)
+        .style('fill', '#4E81BE');
+
+    vis.legend
+        .append('rect')
+        .attr('x', 5)
+        .attr('y', 40)
+        .attr('width', 20)
+        .attr('height', 20)
+        .style('fill', '#C1504F');
+
+    vis.legend
+        .append('text')
+        .attr('x', 30)
+        .attr('y', 25)
+        .style('font-size', '14px')
+        .text('Do Not Wash');
+
+    vis.legend
+        .append('text')
+        .attr('x', 30)
+        .attr('y', 55)
+        .style('font-size', '14px')
+        .text('Wash');
+
   }
 }
