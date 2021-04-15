@@ -60,6 +60,23 @@ We used the Airbnb style guide and added eslint to our project to improve code r
     -   updateVis() - called from the dispatcher
 
     -   Onclick linkage with dispatch to other charts
+  
+- [teardropChart.js](https://github.students.cs.ubc.ca/cpsc436v-2020w-t2/436v-project_f9d1b_h8u0b_u3u0b/blob/master/js/src/teardropChart.js)
+
+    -   Implements the What people are trying to remove bubble chart view
+
+    -   3 main functions : init, update, render
+
+- [pieChart.js](https://github.students.cs.ubc.ca/cpsc436v-2020w-t2/436v-project_f9d1b_h8u0b_u3u0b/blob/master/js/src/pieChart.js)
+    -   Implements the pie chart
+
+    -   3 main functions : init, update, render
+
+- [reasonsBubblePlot.js](https://github.students.cs.ubc.ca/cpsc436v-2020w-t2/436v-project_f9d1b_h8u0b_u3u0b/blob/master/js/src/pieChart.js)
+    -   Implements the reasons people are washing / not washing view
+    -   The same code is used for both the wash and no wash charts
+    -   3 main functions : init, update, render
+
 
 **svg** -  contains all our svg images
 
