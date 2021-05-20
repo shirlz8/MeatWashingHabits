@@ -282,7 +282,7 @@ class HouseholdSizeBarChart {
         .attr('y', 8)
         .attr('width', 20)
         .attr('height', 20)
-        .style('fill', '#4E81BE');
+        .style('fill', '#C1504F');
 
     vis.legend
         .append('rect')
@@ -290,7 +290,7 @@ class HouseholdSizeBarChart {
         .attr('y', 38)
         .attr('width', 20)
         .attr('height', 20)
-        .style('fill', '#C1504F');
+        .style('fill', '#4E81BE');
 
     vis.legend
         .append('text')

@@ -305,7 +305,7 @@ class FoodSafetyBarChart {
         .attr('y', 10)
         .attr('width', 20)
         .attr('height', 20)
-        .style('fill', '#4E81BE');
+        .style('fill', '#C1504F');
 
     vis.legend
         .append('rect')
@@ -313,7 +313,7 @@ class FoodSafetyBarChart {
         .attr('y', 40)
         .attr('width', 20)
         .attr('height', 20)
-        .style('fill', '#C1504F');
+        .style('fill', '#4E81BE');
 
     vis.legend
         .append('text')
